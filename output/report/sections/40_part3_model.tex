@@ -1,0 +1,22 @@
+\section{Phase 3 Strategy: Forecasting the Vietnamese Fashion Frontier}
+
+\textit{Having established the historical baseline and identified the operational friction points, we now transition to the prospective forecasting phase. The objective is to predict daily revenue for the period 01/01/2023 to 01/07/2024 with a degree of precision that allows for proactive inventory management.}
+
+\subsection{Architectural Blueprint: Hybrid Predictive Modeling}
+In thirty years, I have seen that time-series in high-growth e-commerce cannot be solved with simple regression. Our proposed pipeline utilizes a hybrid approach:
+
+\begin{enumerate}
+    \item \textbf{High-Dimensional Feature Engineering}:
+    \begin{itemize}
+        \item \textit{Recursive Lags}: Capturing the 7, 14, and 30-day "momentum" effects.
+        \item \textit{Fourier Seasonality}: Modeling the identified Wednesday spike and the May anomaly as repeating cycles.
+        \item \textit{Operational Signals}: Integrating stock-out flags and conversion rate trends from the operational data layers.
+    \end{itemize}
+    \item \textbf{Gradient Boosted Ensembles (XGBoost/LightGBM)}: We will prioritize ensemble methods for their superior ability to handle non-linear feature interactions—specifically the interaction between promotion intensity and seasonal peaks.
+    \item \textbf{Prophet for Structural Trend}: Utilizing additive models to isolate the long-term 70x growth trend from the short-term noise.
+\end{enumerate}
+
+\subsection{Validation Protocol: Temporal Walk-Forward}
+We will reject standard random cross-validation. Instead, we will employ a \textbf{Temporal Walk-Forward} strategy: training on 2012--2020 data and validating on the volatile 2021--2022 period. This ensures the model is robust against the "Post-Pandemic Acceleration" identified in our audit.
+
+\textit{Final Vision: The goal is not just a prediction; it is an early-warning system. By forecasting the May peak 6 months in advance, we move the business from a reactive stance to a predictive one.}

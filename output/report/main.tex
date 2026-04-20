@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[final, main]{neurips_2025}
+\setcitestyle{numbers}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amssymb}
+
+\input{sections/00_styling}
+
+\begin{document}
+
+\input{sections/01_title}
+
+\maketitle
+
+\input{sections/02_abstract}
+
+% Core content: 3 pages for Part 2 + 1 page for Part 3
+\input{sections/20_part2_eda}
+
+\newpage
+\input{sections/40_part3_model}
+
+% Mandatory sequence: References then Appendices
+\newpage
+\input{sections/30_references}
+
+\newpage
+\appendix
+\input{sections/25_appendices}
+
+\end{document}

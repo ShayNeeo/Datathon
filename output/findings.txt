@@ -1,0 +1,161 @@
+============================================================
+COMPREHENSIVE DATA ANALYSIS - KEY FINDINGS REPORT
+============================================================
+
+------------------------------------------------------------
+REVENUE TREND OVER TIME - KEY FINDINGS
+===============================================
+
+Total Revenue (2012-2022): 16,430,476,586 VND
+Average Daily Revenue: 4,286,584 VND
+Maximum Daily Revenue: 20,905,271 VND on 2018-05-30
+Minimum Daily Revenue: 279,814 VND on 2013-03-02
+Number of Days: 3833
+
+Data Period: 2012-07-04 to 2022-12-31
+
+------------------------------------------------------------
+SEASONALITY ANALYSIS - KEY FINDINGS
+=========================================
+
+Monthly Revenue Patterns:
+- Best Month: 5 (Avg: 6,575,416 VND)
+- Worst Month: 12 (Avg: 2,524,350 VND)
+
+Day of Week Patterns:
+- Best Day: Wed (Avg: 4,680,065 VND)
+- Worst Day: Sat (Avg: 3,906,581 VND)
+
+Monthly Std Dev: 2,072,266 VND
+
+------------------------------------------------------------
+PRODUCT CATEGORY PERFORMANCE - KEY FINDINGS
+======================================================
+
+Categories Analyzed: 4
+
+Revenue by Category (sorted):
+category
+Streetwear    1.313135e+10
+Outdoor       2.494883e+09
+Casual        4.606484e+08
+GenZ          3.435991e+08
+
+Top Category by Revenue: Streetwear
+Total Units Sold: 3,213,143
+Total Orders: 650,651
+
+------------------------------------------------------------
+CUSTOMER SEGMENTS - KEY FINDINGS
+=========================================
+
+Segments Analyzed: 8
+
+Orders by Segment:
+segment
+Everyday       181514
+Activewear     171011
+Balanced       103023
+Performance     96303
+Trendy          37054
+Premium         30944
+All-weather     22553
+Standard        10924
+
+Revenue by Segment:
+segment
+Everyday       5.376849e+09
+Balanced       5.127409e+09
+Performance    2.390412e+09
+Activewear     2.047815e+09
+Premium        4.801314e+08
+All-weather    4.275845e+08
+Trendy         3.435991e+08
+Standard       2.366771e+08
+
+Top Segment by Orders: Everyday
+Top Segment by Revenue: Everyday
+
+------------------------------------------------------------
+RETURN REASONS ANALYSIS - KEY FINDINGS
+=============================================
+
+Total Returns: 39,939
+Total Orders: 646,945
+Overall Return Rate: 6.17%
+
+Top Return Reasons:
+return_reason
+wrong_size          13967
+defective            8020
+not_as_described     7035
+changed_mind         6931
+late_delivery        3986
+
+Highest Return Rate Category: GenZ (3.52%)
+Lowest Return Rate Category: Casual (3.26%)
+
+------------------------------------------------------------
+PROMOTION EFFECTIVENESS - KEY FINDINGS
+=============================================
+
+Orders with Promotion: 248,242
+Orders without Promotion: 398,972
+Promotion Usage Rate: 38.4%
+
+Average Order Value:
+- With Promotion: 19,671 VND
+- Without Promotion: 25,083 VND
+- Difference: -5,412 VND
+
+------------------------------------------------------------
+GEOGRAPHIC DISTRIBUTION - KEY FINDINGS
+===============================================
+
+Regions Analyzed: 3
+
+Revenue by Region:
+region
+East       7.637533e+09
+Central    4.941908e+09
+West       3.851035e+09
+
+Top 10 Cities:
+city
+Son Tay        5.811808e+08
+Nam Dinh       5.728497e+08
+Thai Nguyen    5.652550e+08
+Phu Ly         5.597473e+08
+Hanoi          5.596519e+08
+Ninh Binh      5.523954e+08
+Hai Phong      5.471745e+08
+Ha Long        5.469700e+08
+Viet Tri       5.449273e+08
+Bac Giang      5.354577e+08
+
+Top Region: East
+Top City: Son Tay
+
+------------------------------------------------------------
+WEB TRAFFIC ANALYSIS - KEY FINDINGS
+============================================
+
+Total Sessions: 91,452,537
+Total Unique Visitors: 69,502,689
+Overall Conversion Rate: 76.00%
+
+Traffic Source Performance:
+                sessions  conversion_rate
+traffic_source                           
+organic_search  27196976        75.836030
+paid_search     19598271        76.141339
+social_media    15816226        76.175347
+email_campaign  12792670        75.828283
+referral         9476845        76.185893
+direct           6571549        75.882414
+
+Top Source by Sessions: organic_search
+Best Conversion Rate: referral (76.19%)
+
+Data Period: 2013-01-01 to 2022-12-31
+

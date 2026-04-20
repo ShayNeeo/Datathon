@@ -1,0 +1,35 @@
+% Custom Commands and Color Definitions
+
+% Color definitions
+\definecolor{vietnameseRed}{RGB}{203, 20, 43}
+\definecolor{vietnameseGold}{RGB}{255, 180, 0}
+\definecolor{vuNavy}{RGB}{0, 51, 102}
+\definecolor{vuGold}{RGB}{255, 215, 0}
+\definecolor{correct}{rgb}{0.0, 0.6, 0.3}
+
+% Answer box command
+\newcommand{\answerbox}[1]{%
+  \begin{center}
+    \framebox[0.9\textwidth]{%
+      \parbox{0.85\textwidth}{\centering \textbf{#1}}
+    }
+  \end{center}
+}
+
+% Part header command
+\newcommand{\partheader}[1]{%
+  \section{#1}
+  \vspace{0.5em}
+}
+
+% Custom section style
+\newcommand{\question}[1]{%
+  \subsection{#1}
+}
+
+% Figure reference helper
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+
+% MCQ answer and explanation commands
+\newcommand{\answer}[1]{\textcolor{correct}{\textbf{#1}}}
+\newcommand{\explanation}[1]{\textcolor{blue}{#1}}

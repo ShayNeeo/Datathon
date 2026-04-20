@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage[final, main]{neurips_2025}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{amssymb}
+
+\title{DATATHON 2026 --- Part 1: Multiple Choice Answers}
+\author{
+  \textbf{Shayneeo}\\
+  VinUniversity, Hanoi, Vietnam
+}
+\date{April 18, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Question 1: Median Inter-Order Gap}
+\textbf{Question:} In customers with more than one order, what is the approximate median number of days between two consecutive purchases?
+
+\textbf{Answer:} \textcolor{green}{C}
+
+\textbf{Explanation:} Calculated the inter-order gap (days between consecutive orders) for customers with multiple orders. The median value is approximately 144 days, which is closest to 180 days (option C). This reflects the typical repurchase cycle for this e-commerce fashion business.
+
+\bigskip
+
+\section*{Question 2: Product Segment Profit Margin}
+\textbf{Question:} Which product segment in products.csv has the highest average gross profit margin, calculated as (price − cogs)/price?
+
+\textbf{Answer:} \textcolor{green}{D}
+
+\textbf{Explanation:} Analyzed the profit margin for each segment: Premium, Performance, Activewear, and Standard. The Standard segment has the highest average gross profit margin, indicating it provides the best return relative to cost among all product segments.
+
+\bigskip
+
+\section*{Question 3: Most Common Return Reason for Streetwear}
+\textbf{Question:} Among returns linked to products in the Streetwear category (join returns with products), which return reason appears most frequently?
+
+\textbf{Answer:} \textcolor{green}{B}
+
+\textbf{Explanation:} Joined the returns table with products table on product\_id, filtered for the Streetwear category, and counted occurrences of each return\_reason. The ``wrong\_size'' reason is the most common, indicating sizing issues are the primary driver for Streetwear returns.
+
+\bigskip
+
+\section*{Question 4: Lowest Bounce Rate Traffic Source}
+\textbf{Question:} In web\_traffic.csv, which traffic source has the lowest average bounce rate across all days it appears?
+
+\textbf{Answer:} \textcolor{green}{C}
+
+\textbf{Explanation:} Calculated the average bounce\_rate for each traffic source (organic\_search, paid\_search, email\_campaign, social\_media). Email campaign has the lowest average bounce rate, suggesting it is the most effective at engaging visitors beyond the initial page view.
+
+\bigskip
+
+\section*{Question 5: Percentage of Orders with Promotions}
+\textbf{Question:} Approximately what percentage of rows in order\_items.csv have a promotion applied (i.e., promo\_id is not null)?
+
+\textbf{Answer:} \textcolor{green}{C}
+
+\textbf{Explanation:} Analyzed the order\_items table to count rows where promo\_id is not null. Approximately 38.66\% of rows have a promotion applied, which rounds to 39\% (option C).
+
+\bigskip
+
+\section*{Question 6: Age Group with Highest Average Orders}
+\textbf{Question:} In customers.csv, among customers with non-null age\_group, which age group has the highest average number of orders per customer?
+
+\textbf{Answer:} \textcolor{green}{A}
+
+\textbf{Explanation:} Calculated total orders divided by number of customers in each age group (excluding null values). The 55+ age group has the highest average orders per customer, suggesting older customers are more frequent repeat buyers.
+
+\bigskip
+
+\section*{Question 7: Region with Highest Revenue}
+\textbf{Question:} Which region in geography.csv generates the highest total revenue in sales\_train.csv?
+
+\textbf{Answer:} \textcolor{green}{C}
+
+\textbf{Explanation:} Joined geography with sales data to calculate total revenue by region. The East region produces the highest total revenue, significantly outperforming West and Central regions.
+
+\bigskip
+
+\section*{Question 8: Most Common Payment Method for Cancelled Orders}
+\textbf{Question:} Among orders with order\_status = 'cancelled' in orders.csv, which payment method is used most frequently?
+
+\textbf{Answer:} \textcolor{green}{A}
+
+\textbf{Explanation:} Filtered orders for cancelled status and counted payment methods. Credit card is the most common payment method for cancelled orders, which may indicate higher cancellation rates associated with credit card transactions.
+
+\bigskip
+
+\section*{Question 9: Size with Highest Return Rate}
+\textbf{Question:} Among the four product sizes (S, M, L, XL), which size has the highest return rate, defined as number of returns divided by number of order\_items?
+
+\textbf{Answer:} \textcolor{green}{A}
+
+\textbf{Explanation:} Calculated return rate (returns / order\_items) by joining order\_items with products to get sizes, then comparing with returns. Size S (small) has the highest return rate, possibly due to sizing confusion or fit issues.
+
+\bigskip
+
+\section*{Question 10: Installment Plan with Highest Average Payment}
+\textbf{Question:} In payments.csv, which installment plan has the highest average payment value per order?
+
+\textbf{Answer:} \textcolor{green}{C}
+
+\textbf{Explanation:} Calculated average payment\_value for each installment option (1, 3, 6, 12 installments). The 6-installment plan has the highest average payment value per order, suggesting customers opting for 6 installments tend to have higher-value purchases.
+
+\bigskip
+
+\section*{Summary of Answers}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ccc}
+\toprule
+\textbf{Question} & \textbf{Answer} & \textbf{Key Finding} \\
+\midrule
+Q1 & C (180 days) & Median inter-order gap is ~144 days \\
+Q2 & D (Standard) & Standard segment has highest margin \\
+Q3 & B (wrong\_size) & Wrong size is top return reason \\
+Q4 & C (email\_campaign) & Email has lowest bounce rate \\
+Q5 & C (39\%) & ~38.66\% of orders have promotions \\
+Q6 & A (55+) & 55+ age group has highest avg orders \\
+Q7 & C (East) & East region leads in revenue \\
+Q8 & A (credit\_card) & Credit card most common for cancelled \\
+Q9 & A (S) & Size S has highest return rate \\
+Q10 & C (6 installments) & 6 installments highest avg payment \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
