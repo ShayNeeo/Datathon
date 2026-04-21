@@ -94,6 +94,89 @@ Channel Investment → Customer Acquisition → Revenue Generation → BUT: Vary
 
 ---
 
+### 4. Acquisition Quality Disparity (Channel Optimization)
+**Visual Evidence:** `ltv_by_channel.png`, `repeat_rate_by_channel.png`
+
+![Avg LTV by Channel](ltv_by_channel.png)
+![Repeat Rate by Channel](repeat_rate_by_channel.png)
+
+**Causal Chain:**
+```
+Channel Mix → Customer Type → LTV & Loyalty → Differential ROI
+```
+
+**Root Cause Analysis:**
+- **Symptom**: High variation in LTV and repeat rates across channels
+- **Primary Driver**: Different channels attract different customer segments (e.g., `organic_search` for high-intent/high-value, `direct` for loyalists)
+- **Secondary Driver**: Variations in channel-specific customer acquisition costs (CAC)
+- **Tertiary Driver**: Channel-specific marketing message resonance
+
+**Impact Quantification:**
+- ROI variance: Significant potential for budget reallocation
+- Customer lifetime value: High-quality channels drive disproportionate revenue
+
+**Strategic Implications:**
+- Prioritize high-LTV channels in budget allocation
+- Investigate why some channels attract low-loyalty customers
+- Optimize messaging for different channels
+- Priority: HIGH - Marketing efficiency
+
+---
+
+### 5. Demographic LTV Sweet Spots (Precision Targeting)
+**Visual Evidence:** `ltv_demographics_heatmap.png`
+
+![Demographics Heatmap](ltv_demographics_heatmap.png)
+
+**Causal Chain:**
+```
+Demographic Profile → Purchasing Power → LTV → Targeted Marketing Efficiency
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Distinct LTV clusters in age/gender segments
+- **Primary Driver**: Product-market fit varies by demographic
+- **Secondary Driver**: Differential disposable income across segments
+- **Tertiary Driver**: Age-specific shopping behaviors and channel preferences
+
+**Impact Quantification:**
+- Targeting efficiency: High potential for increased ROAS by focusing on LTV sweet spots
+- Market expansion: Identifying underserved but potentially high-value segments
+
+**Strategic Implications:**
+- Tailor product development and marketing to high-LTV segments
+- Use demographic data for personalized customer journeys
+- Priority: MEDIUM - Growth through precision
+
+---
+
+### 6. The "One-and-Done" Trap (Retention Barrier)
+**Visual Evidence:** `order_frequency_dist.png`
+
+![Order Frequency](order_frequency_dist.png)
+
+**Causal Chain:**
+```
+Initial Purchase → Lack of Engagement → Single-Order Customers → High Churn
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Skewed distribution with a massive number of single-order customers
+- **Primary Driver**: Weak post-purchase engagement and retention mechanisms
+- **Secondary Driver**: Lack of personalized re-engagement
+- **Tertiary Driver**: High friction in the repeat purchase process
+
+**Impact Quantification:**
+- Acquisition waste: High CAC with no LTV tail
+- Revenue ceiling: Growth is entirely dependent on constant new acquisition
+
+**Strategic Implications:**
+- Focus on the "Second Purchase" milestone
+- Implement automated re-engagement sequences
+- Priority: CRITICAL - Fundamental business model sustainability
+
+---
+
 ## 🎯 Strategic Recommendations
 
 ### Immediate Actions (Next 30 Days)
