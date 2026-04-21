@@ -17,9 +17,9 @@ The business has demonstrated a massive 70x growth trajectory, reaching a total 
 *   **Weekly Pulse**: A recurring "Wednesday Pulse" indicates specific mid-week consumer behavior patterns.
 
 **Visual Assets:**
-- `output/figures_living/category_pie.png` (Market Concentration)
-- `output/figures_living/seasonality_month.png` (Seasonal Pivot)
-- `output/figures_living/seasonality_dow.png` (Weekly Pulse)
+![Market Concentration](../figures_living/01_product_market_dominance/category_pie.png)
+![Seasonal Pivot](../figures_living/03_operational_friction_leakage/seasonality_month.png)
+![Weekly Pulse](../figures_living/03_operational_friction_leakage/seasonality_dow.png)
 
 ### 👥 B. Customer Lifecycle & Acquisition
 *   **The Loyalty Paradox**: Historical data shows early cohorts had >40% retention, but modern cohorts have collapsed to <10%. The business is becoming increasingly dependent on expensive new customer acquisition rather than lifetime value (LTV).
@@ -37,10 +37,10 @@ The business has demonstrated a massive 70x growth trajectory, reaching a total 
 *   **Digital Funnel Gaps**: The relationship between website sessions, conversion rates, and actual revenue shows significant volatility, suggesting UX/UI or inventory availability issues during peak periods.
 
 **Visual Assets:**
-- `output/figures_living/returns_bar.png` (Return Reasons)
-- `output/figures_living/return_friction_matrix.png` (Category-specific Returns)
-- `output/figures_living/inventory_risk_analysis.png` (Revenue Leakage)
-- `output/figures_living/digital_funnel_efficiency.png` (Conversion Gaps)
+![Return Reasons](../figures_living/03_operational_friction_leakage/returns_bar.png)
+![Category-specific Returns](../figures_living/03_operational_friction_leakage/return_friction_matrix.png)
+![Revenue Leakage](../figures_living/03_operational_friction_leakage/inventory_risk_analysis.png)
+![Conversion Gaps](../figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png)
 
 ### 💰 D. Financial & Payment Dynamics
 *   **SaigonFlex Profitability**: The core brand (SaigonFlex) shows significant margin variance by size, with **L and XL sizes yielding much higher margins** than S and M.

@@ -20,8 +20,13 @@ warnings.filterwarnings('ignore')
 # CONFIGURATION & UNIFIED THEME
 # ----------------------------------------------------------------------------
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
-OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living'
-DEEP_DIVE_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/deep_dive'
+BASE_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living'
+# Organized subdirectories
+OUTPUT_DIR_01 = f'{BASE_DIR}/01_product_market_dominance'
+OUTPUT_DIR_02 = f'{BASE_DIR}/02_customer_lifecycle_acquisition'
+OUTPUT_DIR_03 = f'{BASE_DIR}/03_operational_friction_leakage'
+OUTPUT_DIR_04 = f'{BASE_DIR}/04_financial_payment_dynamics'
+DEEP_DIVE_DIR = f'{BASE_DIR}/deep_dive'
 
 PALETTE = {
     'authority': '#003366',    # Deep Navy
@@ -112,7 +117,7 @@ for i in range(len(dem_pivot.index)):
             ax.text(j, i, f'{val/1e6:.1f}M', ha='center', va='center', color='white' if val > dem_pivot.values.max()/2 else 'black', fontsize=10, fontweight='bold')
 
 plt.colorbar(im, ax=ax, label='Revenue (VND)')
-plt.savefig(f'{DEEP_DIVE_DIR}/demographics_wealth.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_02}/demographics_wealth.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -131,7 +136,7 @@ master_ax(ax, "ACQUISITION EFFICIENCY", subtitle="Total Revenue by Customer Acqu
 for i, v in enumerate(acq_stats.values):
     ax.text(i, v/1e6 + 0.5, f'{v/1e6:.1f}M', ha='center', fontsize=10, fontweight='bold')
 
-plt.savefig(f'{DEEP_DIVE_DIR}/acquisition_efficiency.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_02}/acquisition_efficiency.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -167,7 +172,7 @@ for i, v in enumerate(aov_vals):
     ax2.text(i, v/1e3 + 5, f'{v/1e3:.1f}K', ha='center', fontsize=11, fontweight='bold')
 
 plt.tight_layout()
-plt.savefig(f'{DEEP_DIVE_DIR}/promotion_impact.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_04}/promotion_impact.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -193,7 +198,7 @@ for i in range(len(return_pivot.index)):
             ax.text(j, i, str(val), ha='center', va='center', color='white' if val > return_pivot.values.max()/2 else 'black', fontsize=10, fontweight='bold')
 
 plt.colorbar(im, ax=ax, label='Return Count')
-plt.savefig(f'{DEEP_DIVE_DIR}/return_friction_matrix.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/return_friction_matrix.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -219,7 +224,7 @@ master_ax(ax2, "AVG RATING BY CATEGORY", xlabel="Average Rating", ylabel="Catego
 ax2.set_xlim(0, 5)
 
 plt.tight_layout()
-plt.savefig(f'{DEEP_DIVE_DIR}/customer_satisfaction.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/customer_satisfaction.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -255,7 +260,7 @@ ax1.legend(loc='upper left')
 ax2.legend(loc='upper right')
 ax3.legend(loc='lower right')
 
-plt.savefig(f'{DEEP_DIVE_DIR}/digital_funnel_efficiency.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/digital_funnel_efficiency.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -278,7 +283,7 @@ ax2.bar(source_counts.index, source_counts.values, color=PALETTE['context'], edg
 master_ax(ax2, "ORDER VOLUME BY SOURCE", xlabel="Source", ylabel="Order Count")
 
 plt.tight_layout()
-plt.savefig(f'{DEEP_DIVE_DIR}/device_source_mix.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/device_source_mix.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -301,7 +306,7 @@ scatter = ax.scatter(risk_df['stockout_days'], risk_df['revenue'],
 master_ax(ax, "INVENTORY RISK: STOCKOUTS VS REVENUE", subtitle="Bubble size = Fill Rate; Color = Revenue", xlabel="Cumulative Stockout Days", ylabel="Total Product Revenue (VND)")
 plt.colorbar(scatter, ax=ax, label='Revenue (VND)')
 
-plt.savefig(f'{DEEP_DIVE_DIR}/inventory_risk_analysis.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/inventory_risk_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 print("\nDEEP DIVE MASTER SUITE REGENERATED.")

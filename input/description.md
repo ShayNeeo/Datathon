@@ -188,3 +188,28 @@ Bộ dữ liệu mô phỏng hoạt động của một doanh nghiệp thời tr
 |orders ↔ reviews|1 : 0 hoặc nhiều (~20% đơn delivered)|
 |order_items ↔ promotions|nhiều : 0 hoặc 1|
 |products ↔ inventory|1 : nhiều (1 dòng/sản phẩm/tháng)|
+
+---
+
+## 📊 EDA Visualizations Reference
+
+Key visualizations generated from this dataset are available in `output/figures_living/`:
+
+### Product & Market Analysis
+![Market Concentration](../output/figures_living/01_product_market_dominance/category_pie.png)
+![Margin by Size](../output/figures_living/01_product_market_dominance/margin_by_size.png)
+![May Products](../output/figures_living/01_product_market_dominance/may_products.png)
+
+### Customer Lifecycle
+![Cohort Growth](../output/figures_living/02_customer_lifecycle_acquisition/cohort_growth.png)
+![Demographics Wealth](../output/figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png)
+
+### Operational Friction
+![Returns Bar](../output/figures_living/03_operational_friction_leakage/returns_bar.png)
+![Inventory Risk Analysis](../output/figures_living/03_operational_friction_leakage/inventory_risk_analysis.png)
+![Seasonality Month](../output/figures_living/03_operational_friction_leakage/seasonality_month.png)
+
+### Financial Dynamics
+![Revenue Trend](../output/figures_living/04_financial_payment_dynamics/revenue_trend.png)
+![Payment Analysis](../output/figures_living/04_financial_payment_dynamics/payment_analysis.png)
+![Promotion Impact](../output/figures_living/04_financial_payment_dynamics/promotion_impact.png)

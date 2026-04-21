@@ -7,6 +7,35 @@
 ## 1. Bức tranh tổng thể: Con số 16,43 tỷ đồng
 Trong suốt một thập kỷ (2012–2022), doanh nghiệp đã xử lý hơn **650.000 đơn hàng**, mang về tổng doanh thu thuần **16,43 tỷ VNĐ**. Tốc độ tăng trưởng đạt mức kinh ngạc — gấp 70 lần kể từ ngày đầu thành lập. Đặc biệt, giai đoạn "tăng tốc hậu đại dịch" vào năm 2021 đã đưa doanh nghiệp lên một vị thế hoàn toàn mới.
 
+## 📊 Biểu đồ Chiến lược
+
+### 1. Thống trị Thị trường Sản phẩm
+![Streetwear Hegemony](output/figures_living/01_product_market_dominance/category_pie.png)
+![Margin by Size](output/figures_living/01_product_market_dominance/margin_by_size.png)
+![May Products](output/figures_living/01_product_market_dominance/may_products.png)
+![SaigonFlex Attributes](output/figures_living/01_product_market_dominance/saigonflex_attributes.png)
+![Segments](output/figures_living/01_product_market_dominance/segments.png)
+
+### 2. Vòng đời Khách hàng
+![Cohort Growth](output/figures_living/02_customer_lifecycle_acquisition/cohort_growth.png)
+![Acquisition Efficiency](output/figures_living/02_customer_lifecycle_acquisition/acquisition_efficiency.png)
+![Demographics Wealth](output/figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png)
+
+### 3. Ma sát Vận hành
+![Returns Bar](output/figures_living/03_operational_friction_leakage/returns_bar.png)
+![Inventory Risk Analysis](output/figures_living/03_operational_friction_leakage/inventory_risk_analysis.png)
+![Return Friction Matrix](output/figures_living/03_operational_friction_leakage/return_friction_matrix.png)
+![Digital Funnel Efficiency](output/figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png)
+![Seasonality Month](output/figures_living/03_operational_friction_leakage/seasonality_month.png)
+
+### 4. Tài chính & Thanh toán
+![Revenue Trend](output/figures_living/04_financial_payment_dynamics/revenue_trend.png)
+![Payment Analysis](output/figures_living/04_financial_payment_dynamics/payment_analysis.png)
+![Promotion Impact](output/figures_living/04_financial_payment_dynamics/promotion_impact.png)
+![Financial Velocity](output/figures_living/04_financial_payment_dynamics/financial_velocity.png)
+
+---
+
 ## 2. "Long mạch" của doanh nghiệp: Đế chế Streetwear
 Dữ liệu chỉ ra một sự thật hiển nhiên: **Streetwear là tất cả.**
 - Danh mục này chiếm tới **80,0% tổng lượng hàng bán ra**.

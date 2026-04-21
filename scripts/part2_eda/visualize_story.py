@@ -19,8 +19,14 @@ warnings.filterwarnings('ignore')
 # CONFIGURATION & UNIFIED THEME
 # ----------------------------------------------------------------------------
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
-OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living'
-TOP_PROD_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/top_product_segment'
+BASE_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living'
+# Organized subdirectories
+OUTPUT_DIR_01 = f'{BASE_DIR}/01_product_market_dominance'
+OUTPUT_DIR_02 = f'{BASE_DIR}/02_customer_lifecycle_acquisition'
+OUTPUT_DIR_03 = f'{BASE_DIR}/03_operational_friction_leakage'
+OUTPUT_DIR_04 = f'{BASE_DIR}/04_financial_payment_dynamics'
+TOP_PROD_DIR = f'{BASE_DIR}/top_product_segment'
+DEEP_DIVE_DIR = f'{BASE_DIR}/deep_dive'
 
 PALETTE = {
     'authority': '#003366',    # Deep Navy
@@ -106,7 +112,7 @@ for i in range(ret_matrix.shape[0]):
             ax.text(j, i, f'{val:.0f}', ha='center', va='center', color='white' if val > 40 else 'black', fontsize=9)
 
 plt.colorbar(im, label='Retention Rate (%)')
-plt.savefig(f'{OUTPUT_DIR}/cohort_growth.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_02}/cohort_growth.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -124,7 +130,7 @@ ax2.bar([0.35,1.35], p_stats['order_id'] / 1e3, 0.35, color=PALETTE['authority']
 master_ax(ax, "THE PROMOTION PARADOX", xlabel="Order Type (Organic vs. Promoted)", ylabel="Avg Unit Price (K VND)")
 ax2.set_ylabel("Order Volume (K Units)", color=PALETTE['authority'], fontweight='bold')
 ax.set_xticks([0.17, 1.17]); ax.set_xticklabels(['ORGANIC', 'PROMOTED'], fontweight='bold')
-plt.savefig(f'{OUTPUT_DIR}/promotions_fight.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_04}/promotions_fight.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 6: Traffic Horizontal
@@ -132,7 +138,7 @@ t_vol = web_traffic.groupby('traffic_source')['sessions'].sum().sort_values(asce
 fig, ax = plt.subplots(figsize=(12, 7))
 ax.barh(t_vol.index, t_vol.values / 1e6, color=cm.Blues(np.linspace(0.4, 0.9, len(t_vol))), edgecolor=PALETTE['ink'])
 master_ax(ax, "DIGITAL ACQUISITION FUNNEL", xlabel="Total Sessions (Millions)", ylabel="Traffic Source")
-plt.savefig(f'{OUTPUT_DIR}/traffic_treemap.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/traffic_treemap.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 1: Category
@@ -141,7 +147,7 @@ fig, ax = plt.subplots(figsize=(10, 8))
 ax.pie(c_st, labels=c_st.index, autopct='%1.1f%%', startangle=140, colors=[PALETTE['authority'], PALETTE['context'], PALETTE['gold'], PALETTE['highlight']], explode=[0.08, 0, 0, 0])
 ax.add_artist(plt.Circle((0,0), 0.70, fc=PALETTE['paper']))
 ax.set_title("THE STREETWEAR HEGEMONY", fontsize=18, fontweight='bold', color=PALETTE['authority'], pad=20)
-plt.savefig(f'{OUTPUT_DIR}/category_pie.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_01}/category_pie.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 2: Returns
@@ -149,7 +155,7 @@ r_v = returns['return_reason'].value_counts().sort_values(ascending=True)
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.barh(r_v.index, r_v.values, color=PALETTE['friction'], edgecolor=PALETTE['ink'])
 master_ax(ax, "THE SIZING CRISIS", xlabel="Return Count", ylabel="Reason")
-plt.savefig(f'{OUTPUT_DIR}/returns_bar.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/returns_bar.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 3: Revenue Trend
@@ -159,7 +165,7 @@ ax.plot(s_v.index, s_v.values, color=PALETTE['authority'], linewidth=3)
 ax.fill_between(s_v.index, s_v.values, color=PALETTE['authority'], alpha=0.1)
 master_ax(ax, "THE 16.43B VND GROWTH ENGINE", xlabel="Fiscal Year", ylabel="Monthly Revenue (VND)")
 ax.yaxis.set_major_formatter(ticker.FuncFormatter(format_vnd))
-plt.savefig(f'{OUTPUT_DIR}/revenue_trend.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_04}/revenue_trend.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 7: Geography
@@ -168,7 +174,7 @@ e_v = o_g[o_g['region'] == 'East']['city'].value_counts().head(5)
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.bar(e_v.index, e_v.values / 1e3, color=PALETTE['authority'], edgecolor=PALETTE['ink'])
 master_ax(ax, "URBAN POWER CENTERS", xlabel="City", ylabel="Order Volume (K)")
-plt.savefig(f'{OUTPUT_DIR}/geography_map.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/geography_map.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 8: Monthly Seasonality
@@ -177,7 +183,7 @@ fig, ax = plt.subplots(figsize=(10, 5))
 ax.bar(range(1,13), m_r / 1e6, color=PALETTE['context'], edgecolor=PALETTE['ink'])
 master_ax(ax, "THE MAY ANOMALY", xlabel="Month", ylabel="Avg Daily Revenue (M VND)")
 ax.set_xticks(range(1,13)); ax.set_xticklabels(['J','F','M','A','M','J','J','A','S','O','N','D'])
-plt.savefig(f'{OUTPUT_DIR}/seasonality_month.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/seasonality_month.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 9: Weekly Seasonality
@@ -186,7 +192,7 @@ d_v = orders['dow'].value_counts().reindex(['Monday', 'Tuesday', 'Wednesday', 'T
 fig, ax = plt.subplots(figsize=(10, 5))
 ax.bar(d_v.index, d_v.values / 1e3, color=PALETTE['highlight'], edgecolor=PALETTE['ink'])
 master_ax(ax, "THE WEDNESDAY PULSE", xlabel="Day of Week", ylabel="Order Volume (K)")
-plt.savefig(f'{OUTPUT_DIR}/seasonality_dow.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/seasonality_dow.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 10: Segment Revenue
@@ -194,7 +200,7 @@ sg_v = item_rev.groupby('segment')['revenue'].sum().sort_values(ascending=True)
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.barh(sg_v.index, sg_v.values / 1e9, color=PALETTE['authority'], edgecolor=PALETTE['ink'])
 master_ax(ax, "SEGMENT REVENUE SHARE", xlabel="Revenue (Billions VND)", ylabel="Market Segment")
-plt.savefig(f'{OUTPUT_DIR}/segments.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_01}/segments.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 11: Inventory
@@ -207,7 +213,7 @@ ax2 = ax.twinx()
 ax2.bar(iv_m.index, iv_m['Revenue'] / 1e6, color=PALETTE['authority'], alpha=0.2, width=20)
 master_ax(ax, "SUPPLY-SIDE CAPACITY CEILING", xlabel="Date", ylabel="Fill Rate (%)")
 ax2.set_ylabel("Revenue (M VND)", color=PALETTE['authority'], fontweight='bold')
-plt.savefig(f'{OUTPUT_DIR}/inventory_friction.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/inventory_friction.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 12: Conversion Matrix
@@ -217,7 +223,7 @@ ax.scatter(tr_s['sessions']/1e6, tr_s['bounce_rate'], s=tr_s['sessions']/5e4, c=
 master_ax(ax, "ENGAGEMENT EFFICIENCY MATRIX", xlabel="Total Sessions (Millions)", ylabel="Avg Bounce Rate (%)")
 for i, txt in enumerate(tr_s.index):
     ax.annotate(txt, (tr_s['sessions'].iloc[i]/1e6, tr_s['bounce_rate'].iloc[i]), xytext=(5,5), textcoords='offset points', fontweight='bold')
-plt.savefig(f'{OUTPUT_DIR}/conversion_matrix.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_03}/conversion_matrix.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # Fig 13: Financial Velocity
@@ -225,7 +231,7 @@ pm_s = payments.groupby('installments')['payment_value'].mean()
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.bar(pm_s.index.astype(str), pm_s.values / 1e3, color=PALETTE['gold'], edgecolor=PALETTE['ink'])
 master_ax(ax, "FINANCIAL VELOCITY", xlabel="Installment Tier", ylabel="AOV (K VND)")
-plt.savefig(f'{OUTPUT_DIR}/financial_velocity.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_04}/financial_velocity.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -273,7 +279,7 @@ ax2.set_yticklabels([p.replace(' ', '\n') if len(p) > 15 else p for p in may_pro
 master_ax(ax2, "MAY TOP 10 PRODUCTS", xlabel="Revenue (M VND)", ylabel="Product")
 
 plt.tight_layout()
-plt.savefig(f'{OUTPUT_DIR}/may_products.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_01}/may_products.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # # ----------------------------------------------------------------------------
@@ -420,7 +426,7 @@ ax4.legend(title='Size', loc='upper left', fontsize=8)
 fig.suptitle("SAIGONFLEX PRODUCT ATTRIBUTE ANALYSIS", fontsize=16, fontweight='bold', color=PALETTE['authority'], y=1.02)
 
 plt.tight_layout()
-plt.savefig(f'{OUTPUT_DIR}/saigonflex_attributes.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_01}/saigonflex_attributes.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -482,7 +488,7 @@ ax3_twin.legend(loc='upper right')
 fig.suptitle("PROFIT MARGIN ANALYSIS BY SIZE", fontsize=16, fontweight='bold', color=PALETTE['authority'], y=1.02)
 
 plt.tight_layout()
-plt.savefig(f'{OUTPUT_DIR}/margin_by_size.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_01}/margin_by_size.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 # ----------------------------------------------------------------------------
@@ -571,7 +577,7 @@ plt.colorbar(im4, ax=ax4, label='%')
 fig.suptitle("PAYMENT TYPES ANALYSIS: GEOGRAPHY, PRODUCTS & TRAFFIC", fontsize=16, fontweight='bold', color=PALETTE['authority'], y=1.02)
 
 plt.tight_layout()
-plt.savefig(f'{OUTPUT_DIR}/payment_analysis.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'{OUTPUT_DIR_04}/payment_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 print("\nLONGITUDINAL MASTER SUITE REGENERATED.")

@@ -3,18 +3,31 @@
 ## 1. Strategic Chart Overview
 
 ### 📂 Demographics & Acquisition
-- **Demographics Wealth (`demographics_wealth.png`)**: Heatmap revealing which age groups and genders drive the most revenue.
-- **Acquisition Efficiency (`acquisition_efficiency.png`)**: Bar chart showing the ROI of different marketing channels.
+![Demographics Wealth](figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png)
+*Heatmap revealing which age groups and genders drive the most revenue.*
+
+![Acquisition Efficiency](figures_living/02_customer_lifecycle_acquisition/acquisition_efficiency.png)
+*Bar chart showing the ROI of different marketing channels.*
 
 ### 📂 Promotion & Product Dynamics
-- **Promotion Impact (`promotion_impact.png`)**: Comparison of revenue and AOV with vs. without promotions.
-- **Return Friction Matrix (`return_friction_matrix.png`)**: Heatmap identifying specific categories and reasons for high return volumes.
-- **Customer Satisfaction (`customer_satisfaction.png`)**: Analysis of brand sentiment through ratings and category-level satisfaction.
+![Promotion Impact](figures_living/04_financial_payment_dynamics/promotion_impact.png)
+*Comparison of revenue and AOV with vs. without promotions.*
+
+![Return Friction Matrix](figures_living/03_operational_friction_leakage/return_friction_matrix.png)
+*Heatmap identifying specific categories and reasons for high return volumes.*
+
+![Customer Satisfaction](figures_living/03_operational_friction_leakage/customer_satisfaction.png)
+*Analysis of brand sentiment through ratings and category-level satisfaction.*
 
 ### 📂 Digital & Operational Efficiency
-- **Digital Funnel Efficiency (`digital_funnel_efficiency.png`)**: Longitudinal view of sessions, conversion rate, and revenue.
-- **Device & Source Mix (`device_source_mix.png`)**: Breakdown of how customers access and find the store.
-- **Inventory Risk (`inventory_risk_analysis.png`)**: Correlation between stockout days and revenue loss.
+![Digital Funnel Efficiency](figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png)
+*Longitudinal view of sessions, conversion rate, and revenue.*
+
+![Device & Source Mix](figures_living/03_operational_friction_leakage/device_source_mix.png)
+*Breakdown of how customers access and find the store.*
+
+![Inventory Risk](figures_living/03_operational_friction_leakage/inventory_risk_analysis.png)
+*Correlation between stockout days and revenue loss.*
 
 ---
 
