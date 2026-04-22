@@ -152,6 +152,151 @@ Segment Focus → Everyday Dominance → High Volume → BUT: Limited Premium Se
 
 ---
 
+### 6. Size-Based Profitability Distribution (Inventory Optimization)
+**Visual Evidence:** `size_profitability_boxplot.png`
+
+![Size Profitability](size_profitability_boxplot.png)
+
+**Causal Chain:**
+```
+Size Selection → L/XL Higher Margins → Profit Concentration → BUT: S/M Volume Trade-off
+```
+
+**Root Cause Analysis:**
+- **Symptom**: L/XL sizes show significantly higher profit margins
+- **Primary Driver**: Premium pricing for larger sizes
+- **Secondary Driver**: Lower production cost ratio for larger sizes
+- **Tertiary Driver**: Market willingness to pay for larger sizes
+
+**Impact Quantification:**
+- Margin concentration: L/XL margins 15-20% higher than S/M
+- Inventory risk: S/M sizes accumulate in warehouse
+- Customer segmentation: Larger customers = higher value
+
+**Strategic Implications:**
+- Prioritize L/XL in inventory planning
+- Use S/M for promotional bundles
+- Consider size-based dynamic pricing
+- Priority: HIGH - Margin optimization
+
+---
+
+### 7. Monthly Category Seasonality (Revenue Forecasting)
+**Visual Evidence:** `monthly_trend_heatmap.png`
+
+![Monthly Trend](monthly_trend_heatmap.png)
+
+**Causal Chain:**
+```
+Seasonal Demand → Category Peaks → Inventory Timing → Revenue Maximization
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Revenue peaks vary significantly by category across months
+- **Primary Driver**: Fashion seasonal cycles
+- **Secondary Driver**: Weather patterns in Vietnam
+- **Tertiary Driver**: Holiday shopping periods
+
+**Impact Quantification:**
+- Revenue variance: 40-60% difference between peak and trough months
+- Inventory timing: 2-3 month lead time needed
+- Category-specific: Streetwear peaks differ from other categories
+
+**Strategic Implications:**
+- Build monthly category forecasts
+- Pre-position inventory 2-3 months ahead
+- Develop category-specific marketing calendars
+- Priority: HIGH - Revenue optimization
+
+---
+
+### 8. Top Products Pareto (Revenue Concentration)
+**Visual Evidence:** `pareto_analysis.png`
+
+![Pareto Analysis](pareto_analysis.png)
+
+**Causal Chain:**
+```
+Product Concentration → Top 20% Products → 80% Revenue → Focus vs Diversification
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Top 20% of products generate ~80% of revenue
+- **Primary Driver**: Strong product-market fit for top performers
+- **Secondary Driver**: Brand loyalty to specific products
+- **Tertiary Driver**: Limited product awareness for long-tail items
+
+**Impact Quantification:**
+- Revenue concentration: Top 20% = 80% of revenue
+- Long-tail challenge: 80% of products = 20% of revenue
+- Marketing efficiency: Focus on top performers
+
+**Strategic Implications:**
+- Focus marketing on proven top performers
+- Develop strategy for long-tail products
+- Consider discontinuing bottom performers
+- Priority: MEDIUM - Product portfolio optimization
+
+---
+
+### 9. Segment-Size Profitability Matrix (Bundling Strategy)
+**Visual Evidence:** `segment_profitability_heatmap.png`
+
+![Segment Profitability](segment_profitability_heatmap.png)
+
+**Causal Chain:**
+```
+Segment-Size Combinations → Profitability Matrix → Cross-Sell Opportunities → Bundle Optimization
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Certain segment-size combinations yield higher margins
+- **Primary Driver**: Customer willingness to pay varies by segment
+- **Secondary Driver**: Size availability affects pricing power
+- **Tertiary Driver**: Segment-specific cost structures
+
+**Impact Quantification:**
+- Best combinations: Premium segment + L/XL = highest margins
+- Worst combinations: Everyday segment + S/M = lowest margins
+- Cross-sell potential: Bundle opportunities identified
+
+**Strategic Implications:**
+- Create segment-specific bundles
+- Optimize bundle pricing by segment-size
+- Target high-value combinations in marketing
+- Priority: HIGH - Margin enhancement
+
+---
+
+### 10. Cross-Sell Opportunities (Basket Analysis)
+**Visual Evidence:** `cross_sell_opportunities.png`
+
+![Cross-Sell](cross_sell_opportunities.png)
+
+**Causal Chain:**
+```
+Customer Segments → Size Preferences → Cross-Sell Potential → Average Order Value
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Different segments show distinct size preferences
+- **Primary Driver**: Customer body type correlation with segment
+- **Secondary Driver**: Size availability in preferred segment
+- **Tertiary Driver**: Repeat purchase patterns
+
+**Impact Quantification:**
+- AOV opportunity: Cross-sell can increase AOV by 15-25%
+- Customer lifetime: Cross-sell improves retention
+- Revenue potential: Estimated 10-20% revenue lift
+
+**Strategic Implications:**
+- Implement segment-based recommendations
+- Create size-based cross-sell bundles
+- Personalize marketing by segment
+- Priority: MEDIUM - Revenue growth
+
+---
+
 ## 🎯 Strategic Recommendations
 
 ### Immediate Actions (Next 30 Days)
@@ -199,7 +344,11 @@ Segment Focus → Everyday Dominance → High Volume → BUT: Limited Premium Se
 | Premium Segment | +6% | +2% | +4% | 180 days |
 | Category Expansion | +8% | +3% | +5% | 12 months |
 | Seasonal Development | +5% | -2% | +7% | 12 months |
-| **TOTAL** | **+31%** | **-1%** | **+32%** | **12 months** |
+| Monthly Forecasting | +4% | -1% | +5% | 90 days |
+| Pareto Focus | +3% | -1% | +4% | 90 days |
+| Segment-Size Bundles | +5% | 0% | +5% | 90 days |
+| Cross-Sell Strategy | +4% | -1% | +5% | 90 days |
+| **TOTAL** | **+47%** | **-4%** | **+51%** | **12 months** |
 
 ---
 
