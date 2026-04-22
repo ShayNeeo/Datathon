@@ -91,22 +91,56 @@ def plot_size_profitability_boxplot(oi_df, products_df):
     print("Generated: size_profitability_boxplot.png")
 
 def plot_monthly_trend_heatmap(oi_df, products_df):
-    """Heatmap showing monthly revenue trends by category"""
-    plt.figure(figsize=(16, 8))
+    """Heatmap showing monthly revenue trends by category - READABLE version"""
+    import matplotlib.ticker as ticker
+    import matplotlib.dates as mdates
     
-    monthly = oi_df.groupby(['month', 'category'])['unit_price'].sum().reset_index()
-    monthly_pivot = monthly.pivot(index='month', columns='category', values='unit_price')
+    # Create Year-Month format for clear labeling
+    oi_df = oi_df.copy()
+    oi_df['year_month'] = oi_df['order_date'].dt.to_period('M')
+    oi_df['year_month_str'] = oi_df['year_month'].astype(str)
+    
+    monthly = oi_df.groupby(['year_month_str', 'category'])['unit_price'].sum().reset_index()
+    monthly_pivot = monthly.pivot(index='year_month_str', columns='category', values='unit_price')
     monthly_pivot = monthly_pivot.fillna(0)
     
+    # Convert to millions VND for readable annotations
+    monthly_millions = monthly_pivot / 1_000_000
+    
+    # Create figure - wider to fit all months
+    n_months = len(monthly_pivot)
+    fig_height = 8
+    fig_width = max(18, min(28, n_months * 0.12 + 4))
+    
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height))
+    
     if len(monthly_pivot) > 0:
-        sns.heatmap(monthly_pivot.T, cmap='YlOrRd', annot=True, fmt='.0f', cbar_kws={'label': 'Revenue'})
-        plt.title('Monthly Revenue Trends by Category', fontsize=16, fontweight='bold')
-        plt.xlabel('Month', fontsize=12)
+        # Plot with actual values (in millions), small font for annotations
+        sns.heatmap(monthly_millions.T, cmap='YlOrRd', 
+                    annot=True, fmt='.0f', 
+                    annot_kws={'size': 6},  # Small annotations
+                    cbar_kws={'label': 'Revenue (Million VND)'},
+                    ax=ax,
+                    linewidths=0.1,
+                    linecolor='white')
+        
+        plt.title('Monthly Revenue Trends by Category (2012-2022)\nValues in Million VND', 
+                  fontsize=14, fontweight='bold')
+        plt.xlabel('Year-Month', fontsize=12)
         plt.ylabel('Category', fontsize=12)
+        
+        # Rotate labels and set step to show every month clearly
+        plt.xticks(rotation=45, ha='right', fontsize=7)
+        plt.yticks(fontsize=10)
+        
+        # Ensure all month labels are shown
+        ax.set_xticks(range(n_months))
+        ax.set_xticklabels(monthly_pivot.index.tolist(), rotation=45, ha='right', fontsize=7)
+        
         plt.tight_layout()
-        plt.savefig(os.path.join(OUTPUT_DIR, 'monthly_trend_heatmap.png'))
+        plt.savefig(os.path.join(OUTPUT_DIR, 'monthly_trend_heatmap.png'), dpi=150, bbox_inches='tight')
         plt.close()
-        print("Generated: monthly_trend_heatmap.png")
+        print("Generated: monthly_trend_heatmap.png (READABLE: Year-Month labels, Revenue in Millions)")
 
 def plot_top_products_treemap(oi_df, products_df):
     """Treemap showing top products by revenue"""
