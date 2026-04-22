@@ -30,9 +30,9 @@ The business has demonstrated a massive **70x growth trajectory**, reaching a to
 ### 🛍️ A. Product & Market Dominance (01)
 
 #### 1. Streetwear Monopoly (Market Concentration Risk)
-**Visual Evidence:** `../figures_living/01_product_market_dominance/category_pie.png`
+**Visual Evidence:** `figures_living/01_product_market_dominance/category_pie.png`
 
-![Market Concentration](../figures_living/01_product_market_dominance/category_pie.png)
+![Market Concentration](figures_living/01_product_market_dominance/category_pie.png)
 
 **Causal Chain:**
 ```
@@ -58,10 +58,10 @@ Streetwear Focus → 80% Market Share → High Brand Recognition → Customer Lo
 ---
 
 #### 2. SaigonFlex Brand Power
-**Visual Evidence:** `../figures_living/01_product_market_dominance/saigonflex_attributes.png`, `../figures_living/01_product_market_dominance/margin_by_size.png`
+**Visual Evidence:** `figures_living/01_product_market_dominance/saigonflex_attributes.png`, `figures_living/01_product_market_dominance/margin_by_size.png`
 
-![SaigonFlex Attributes](../figures_living/01_product_market_dominance/saigonflex_attributes.png)
-![Margin by Size](../figures_living/01_product_market_dominance/margin_by_size.png)
+![SaigonFlex Attributes](figures_living/01_product_market_dominance/saigonflex_attributes.png)
+![Margin by Size](figures_living/01_product_market_dominance/margin_by_size.png)
 
 **Causal Chain:**
 ```
@@ -87,9 +87,9 @@ SaigonFlex Brand → High Customer Recognition → Premium Pricing → Higher Ma
 ---
 
 #### 3. Size-Based Margin Optimization
-**Visual Evidence:** `../figures_living/01_product_market_dominance/size_profitability_new.png`
+**Visual Evidence:** `figures_living/01_product_market_dominance/size_profitability_new.png`
 
-![Size Profitability](../figures_living/01_product_market_dominance/size_profitability_new.png)
+![Size Profitability](figures_living/01_product_market_dominance/size_profitability_new.png)
 
 **Causal Chain:**
 ```
@@ -115,9 +115,9 @@ Size-Based Pricing → L/XL Premium → Higher Margins → BUT: S/M Volume Trade
 ---
 
 #### 4. Monthly Category Seasonality
-**Visual Evidence:** `../figures_living/01_product_market_dominance/monthly_trend_heatmap.png`
+**Visual Evidence:** `figures_living/01_product_market_dominance/monthly_trend_heatmap.png`
 
-![Monthly Trend](../figures_living/01_product_market_dominance/monthly_trend_heatmap.png)
+![Monthly Trend](figures_living/01_product_market_dominance/monthly_trend_heatmap.png)
 
 **Causal Chain:**
 ```
@@ -143,9 +143,9 @@ Seasonal Demand Patterns → Category Peaks → Inventory Timing → Revenue Max
 ---
 
 #### 5. Product Revenue Pareto
-**Visual Evidence:** `../figures_living/01_product_market_dominance/pareto_analysis.png`
+**Visual Evidence:** `figures_living/01_product_market_dominance/pareto_analysis.png`
 
-![Pareto Analysis](../figures_living/01_product_market_dominance/pareto_analysis.png)
+![Pareto Analysis](figures_living/01_product_market_dominance/pareto_analysis.png)
 
 **Causal Chain:**
 ```
@@ -166,10 +166,10 @@ Product Concentration → Top 20% Products → 80% Revenue → Focus vs Diversif
 ---
 
 #### 6. Star vs Bait Portfolio Optimization ("Ai là ngôi sao, ai là hàng mồi?")
-**Visual Evidence:** `../figures_living/01_product_market_dominance/star_vs_bait_analysis.png`, `../figures_living/01_product_market_dominance/brand_performance.png`
+**Visual Evidence:** `figures_living/01_product_market_dominance/star_vs_bait_analysis.png`, `figures_living/01_product_market_dominance/brand_performance.png`
 
-![Star vs Bait](../figures_living/01_product_market_dominance/star_vs_bait_analysis.png)
-![Brand Performance](../figures_living/01_product_market_dominance/brand_performance.png)
+![Star vs Bait](figures_living/01_product_market_dominance/star_vs_bait_analysis.png)
+![Brand Performance](figures_living/01_product_market_dominance/brand_performance.png)
 
 **Causal Chain:**
 ```
@@ -199,9 +199,9 @@ Line Code Portfolio → STAR vs BAIT Classification → Margin Optimization → 
 ### 👥 B. Customer Lifecycle & Acquisition (02)
 
 #### 1. The Loyalty Paradox (Retention Crisis)
-**Visual Evidence:** `../figures_living/02_customer_lifecycle_acquisition/cohort_growth.png`
+**Visual Evidence:** `figures_living/02_customer_lifecycle_acquisition/cohort_growth.png`
 
-![Cohort Growth](../figures_living/02_customer_lifecycle_acquisition/cohort_growth.png)
+![Cohort Growth](figures_living/02_customer_lifecycle_acquisition/cohort_growth.png)
 
 **Causal Chain:**
 ```
@@ -227,9 +227,9 @@ Early Cohorts (2012-2015) → High Retention (>40%) → Modern Cohorts (2018-202
 ---
 
 #### 2. Demographic Wealth Concentration
-**Visual Evidence:** `../figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png`
+**Visual Evidence:** `figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png`
 
-![Demographics Wealth](../figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png)
+![Demographics Wealth](figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png)
 
 **Causal Chain:**
 ```
@@ -254,9 +254,9 @@ Specific Demographics → High Revenue → Targeting Efficiency → BUT: Over-Re
 ---
 
 #### 3. Acquisition Channel Efficiency
-**Visual Evidence:** `../figures_living/02_customer_lifecycle_acquisition/acquisition_efficiency.png`
+**Visual Evidence:** `figures_living/02_customer_lifecycle_acquisition/acquisition_efficiency.png`
 
-![Acquisition Efficiency](../figures_living/02_customer_lifecycle_acquisition/acquisition_efficiency.png)
+![Acquisition Efficiency](figures_living/02_customer_lifecycle_acquisition/acquisition_efficiency.png)
 
 **Causal Chain:**
 ```
@@ -282,9 +282,9 @@ Channel Investment → Customer Quality → LTV → ROI Optimization
 ---
 
 #### 4. Single-Order Customer Problem
-**Visual Evidence:** `../figures_living/02_customer_lifecycle_acquisition/order_frequency_dist.png`
+**Visual Evidence:** `figures_living/02_customer_lifecycle_acquisition/order_frequency_dist.png`
 
-![Order Frequency](../figures_living/02_customer_lifecycle_acquisition/order_frequency_dist.png)
+![Order Frequency](figures_living/02_customer_lifecycle_acquisition/order_frequency_dist.png)
 
 **Causal Chain:**
 ```
@@ -309,9 +309,9 @@ Initial Purchase → Lack of Engagement → Single-Order Customers → High Chur
 ---
 
 #### 5. Product Line Acquisition Patterns
-**Visual Evidence:** `../figures_living/02_customer_lifecycle_acquisition/line_revenue_acquisition.png`
+**Visual Evidence:** `figures_living/02_customer_lifecycle_acquisition/line_revenue_acquisition.png`
 
-![Line Revenue Acquisition](../figures_living/02_customer_lifecycle_acquisition/line_revenue_acquisition.png)
+![Line Revenue Acquisition](figures_living/02_customer_lifecycle_acquisition/line_revenue_acquisition.png)
 
 **Causal Chain:**
 ```
@@ -334,9 +334,9 @@ Product Line → Customer Acquisition → Revenue Contribution → Acquisition S
 ### ⚙️ C. Operational Friction & Leakage (03)
 
 #### 1. The Sizing Crisis (Wrong Size Returns)
-**Visual Evidence:** `../figures_living/03_operational_friction_leakage/returns_bar.png`
+**Visual Evidence:** `figures_living/03_operational_friction_leakage/returns_bar.png`
 
-![Returns Bar](../figures_living/03_operational_friction_leakage/returns_bar.png)
+![Returns Bar](figures_living/03_operational_friction_leakage/returns_bar.png)
 
 **Causal Chain:**
 ```
@@ -362,9 +362,9 @@ Sizing Ambiguity → Wrong Size Orders → Returns → Logistics Costs → Margi
 ---
 
 #### 2. Inventory-Revenue Mismatch
-**Visual Evidence:** `../figures_living/03_operational_friction_leakage/inventory_risk_analysis.png`
+**Visual Evidence:** `figures_living/03_operational_friction_leakage/inventory_risk_analysis.png`
 
-![Inventory Risk](../figures_living/03_operational_friction_leakage/inventory_risk_analysis.png)
+![Inventory Risk](figures_living/03_operational_friction_leakage/inventory_risk_analysis.png)
 
 **Causal Chain:**
 ```
@@ -390,9 +390,9 @@ Demand Forecasting → Stockouts → Revenue Leakage → Missed Sales
 ---
 
 #### 3. Digital Funnel Gaps
-**Visual Evidence:** `../figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png`
+**Visual Evidence:** `figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png`
 
-![Digital Funnel](../figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png)
+![Digital Funnel](figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png)
 
 **Causal Chain:**
 ```
@@ -417,9 +417,9 @@ Sessions → Conversion → Revenue → Optimization Opportunities
 ---
 
 #### 4. Category-Specific Returns
-**Visual Evidence:** `../figures_living/03_operational_friction_leakage/return_friction_matrix.png`
+**Visual Evidence:** `figures_living/03_operational_friction_leakage/return_friction_matrix.png`
 
-![Return Friction Matrix](../figures_living/03_operational_friction_leakage/return_friction_matrix.png)
+![Return Friction Matrix](figures_living/03_operational_friction_leakage/return_friction_matrix.png)
 
 **Causal Chain:**
 ```
@@ -444,9 +444,9 @@ Product Categories → Return Patterns → Category-Specific Solutions
 ---
 
 #### 5. Product Line Operational Failure
-**Visual Evidence:** `../figures_living/03_operational_friction_leakage/line_failure_rate.png`
+**Visual Evidence:** `figures_living/03_operational_friction_leakage/line_failure_rate.png`
 
-![Line Failure Rate](../figures_living/03_operational_friction_leakage/line_failure_rate.png)
+![Line Failure Rate](figures_living/03_operational_friction_leakage/line_failure_rate.png)
 
 **Causal Chain:**
 ```
@@ -469,9 +469,9 @@ Product Line → Operational Issues → Failure Rate → Quality Control
 ### 💰 D. Financial & Payment Dynamics (04)
 
 #### 1. SaigonFlex Profitability by Size
-**Visual Evidence:** `../figures_living/04_financial_payment_dynamics/payment_analysis.png`
+**Visual Evidence:** `figures_living/04_financial_payment_dynamics/payment_analysis.png`
 
-![Payment Analysis](../figures_living/04_financial_payment_dynamics/payment_analysis.png)
+![Payment Analysis](figures_living/04_financial_payment_dynamics/payment_analysis.png)
 
 **Causal Chain:**
 ```
@@ -497,9 +497,9 @@ Brand + Size → Pricing Strategy → Margin → Profitability
 ---
 
 #### 2. Promotion ROI
-**Visual Evidence:** `../figures_living/04_financial_payment_dynamics/promotion_impact.png`
+**Visual Evidence:** `figures_living/04_financial_payment_dynamics/promotion_impact.png`
 
-![Promotion Impact](../figures_living/04_financial_payment_dynamics/promotion_impact.png)
+![Promotion Impact](figures_living/04_financial_payment_dynamics/promotion_impact.png)
 
 **Causal Chain:**
 ```
@@ -525,10 +525,10 @@ Promotions → Volume → AOV → Margin Trade-off
 ---
 
 #### 3. Installment Plans (Financial Engineering)
-**Visual Evidence:** `../figures_living/04_financial_payment_dynamics/installment_aov_boxplot.png`, `../figures_living/04_financial_payment_dynamics/monthly_installments_trend.png`
+**Visual Evidence:** `figures_living/04_financial_payment_dynamics/installment_aov_boxplot.png`, `figures_living/04_financial_payment_dynamics/monthly_installments_trend.png`
 
-![Installment AOV](../figures_living/04_financial_payment_dynamics/installment_aov_boxplot.png)
-![Installments Trend](../figures_living/04_financial_payment_dynamics/monthly_installments_trend.png)
+![Installment AOV](figures_living/04_financial_payment_dynamics/installment_aov_boxplot.png)
+![Installments Trend](figures_living/04_financial_payment_dynamics/monthly_installments_trend.png)
 
 **Causal Chain:**
 ```
@@ -554,9 +554,9 @@ Installment Options → Higher AOV → +35% Transaction Value → Financial Engi
 ---
 
 #### 4. Payment Method LTV Relationships
-**Visual Evidence:** `../figures_living/04_financial_payment_dynamics/ltv_by_payment_method.png`
+**Visual Evidence:** `figures_living/04_financial_payment_dynamics/ltv_by_payment_method.png`
 
-![LTV by Payment](../figures_living/04_financial_payment_dynamics/ltv_by_payment_method.png)
+![LTV by Payment](figures_living/04_financial_payment_dynamics/ltv_by_payment_method.png)
 
 **Causal Chain:**
 ```
@@ -582,9 +582,9 @@ Payment Method → Customer Quality → LTV → Segmentation Strategy
 ---
 
 #### 5. Product Line Financial Impact
-**Visual Evidence:** `../figures_living/04_financial_payment_dynamics/line_financial_impact.png`
+**Visual Evidence:** `figures_living/04_financial_payment_dynamics/line_financial_impact.png`
 
-![Line Financial Impact](../figures_living/04_financial_payment_dynamics/line_financial_impact.png)
+![Line Financial Impact](figures_living/04_financial_payment_dynamics/line_financial_impact.png)
 
 **Causal Chain:**
 ```
