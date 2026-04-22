@@ -177,6 +177,35 @@ Initial Purchase → Lack of Engagement → Single-Order Customers → High Chur
 
 ---
 
+### 6. Product Line Acquisition Patterns ("Which Lines Drive Customers?")
+**Visual Evidence:** `line_revenue_acquisition.png`
+
+![Line Revenue Acquisition](line_revenue_acquisition.png)
+
+**Causal Chain:**
+```
+Product Line → Customer Acquisition → Revenue Contribution → Acquisition Strategy
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Different product lines contribute differently to acquisition
+- **Primary Driver**: Line-specific brand awareness and marketing
+- **Secondary Driver**: Product line pricing and positioning
+- **Tertiary Driver**: Customer segment preferences by line
+
+**Impact Quantification:**
+- Acquisition contribution: Top lines drive significant acquisition
+- Revenue vs orders: Some lines have high revenue but low order count (premium)
+- Customer quality: Different lines attract different customer types
+
+**Strategic Implications:**
+- Match product lines to acquisition channels
+- Use high-awareness lines for top-of-funnel
+- Target premium lines to high-value customers
+- Priority: MEDIUM - Acquisition optimization
+
+---
+
 ## 🎯 Strategic Recommendations
 
 ### Immediate Actions (Next 30 Days)

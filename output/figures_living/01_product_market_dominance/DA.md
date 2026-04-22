@@ -268,7 +268,74 @@ Segment-Size Combinations → Profitability Matrix → Cross-Sell Opportunities 
 
 ---
 
-### 10. Cross-Sell Opportunities (Basket Analysis)
+### 11. Star vs Bait Portfolio Optimization ("Ai là ngôi sao, ai là hàng mồi?")
+**Visual Evidence:** `star_vs_bait_analysis.png`, `brand_performance.png`
+
+![Star vs Bait](star_vs_bait_analysis.png)
+![Brand Performance](brand_performance.png)
+
+**Causal Chain:**
+```
+Line Code Portfolio → STAR vs BAIT Classification → Margin Optimization → Portfolio Restructuring
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Different product lines show dramatically different margin profiles
+- **Primary Driver**: Line-specific pricing and cost structure
+- **Secondary Driver**: Brand positioning and target market
+- **Tertiary Driver**: Production efficiency by line
+
+**Line Code Classifications:**
+| Classification | Line Codes | Avg Margin | Action |
+|---------------|-----------|-----------|--------|
+| STAR (High Margin) | UR | 31.3% | Invest & Expand |
+| BALANCED | MP, RS, MA, RP, UE, UM | 25.8-28.7% | Maintain |
+| BAIT (Low Margin) | YY, UC | 23.6-24.1% | Review or Phase Out |
+
+**Impact Quantification:**
+- Margin spread: 7.7% difference between best (UR 31.3%) and worst (YY 23.6%)
+- Product concentration: Top 3 lines = 60% of products
+- Revenue vs margin: BAIT lines may drive volume but sacrifice margin
+
+**Strategic Implications:**
+- Prioritize UR line expansion (highest margin)
+- Review YY/UC lines for pricing improvement or phase-out
+- Use STAR lines for premium positioning
+- Maintain balanced lines for market coverage
+- Priority: HIGH - Portfolio optimization
+
+---
+
+### 12. Brand Performance Analysis
+**Visual Evidence:** `brand_performance.png`
+
+![Brand Performance](brand_performance.png)
+
+**Causal Chain:**
+```
+Brand Portfolio → Margin Variation → Brand Strategy → Market Positioning
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Different brands show different margin and product count profiles
+- **Primary Driver**: Brand positioning strategy
+- **Secondary Driver**: Target customer segments
+- **Tertiary Driver**: Production and sourcing strategies
+
+**Impact Quantification:**
+- Brand margin variance: Significant differences between brands
+- Product count: Uneven portfolio distribution across brands
+- Market coverage: Different brands target different segments
+
+**Strategic Implications:**
+- Leverage high-margin brands for premium positioning
+- Use established brands for customer acquisition
+- Consider brand consolidation or expansion
+- Priority: MEDIUM - Brand portfolio strategy
+
+---
+
+### 13. Cross-Sell Opportunities (Basket Analysis)
 **Visual Evidence:** `cross_sell_opportunities.png`
 
 ![Cross-Sell](cross_sell_opportunities.png)

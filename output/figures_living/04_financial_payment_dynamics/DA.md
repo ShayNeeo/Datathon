@@ -248,6 +248,35 @@ Payment Preference → Customer Profile → LTV → Loyalty & Retention
 
 ---
 
+### 10. Product Line Financial Impact
+**Visual Evidence:** `line_financial_impact.png`
+
+![Line Financial Impact](line_financial_impact.png)
+
+**Causal Chain:**
+```
+Product Line → Revenue & Margin Contribution → Financial Health → Portfolio Strategy
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Different product lines contribute differently to revenue and margin
+- **Primary Driver**: Line-specific pricing and cost structures
+- **Secondary Driver**: Volume vs margin trade-offs
+- **Tertiary Driver**: Marketing investment differences
+
+**Impact Quantification:**
+- Revenue concentration: Top lines drive majority of revenue
+- Margin variation: Significant spread between lines
+- Financial health: Line mix directly affects profitability
+
+**Strategic Implications:**
+- Focus on high-margin, high-revenue lines
+- Review or improve low-margin lines
+- Balance volume (BAIT) with margin (STAR) lines
+- Priority: HIGH - Financial optimization
+
+---
+
 ## 🎯 Comprehensive Financial Recommendations
 
 ### Immediate Actions (Next 30 Days)

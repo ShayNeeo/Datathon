@@ -220,6 +220,35 @@ Product/Service Issues → Low Ratings → Negative Social Proof → Lower Conve
 
 ---
 
+### 8. Product Line Operational Failure Analysis
+**Visual Evidence:** `line_failure_rate.png`
+
+![Line Failure Rate](line_failure_rate.png)
+
+**Causal Chain:**
+```
+Product Line → Operational Issues → Failure Rate → Quality Control
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Different product lines show varying failure/cancellation rates
+- **Primary Driver**: Line-specific quality control issues
+- **Secondary Driver**: Supplier/manufacturing differences
+- **Tertiary Driver**: Inventory and stockout patterns
+
+**Impact Quantification:**
+- Failure rate variance: Significant differences between lines
+- Operational cost: Higher failure = higher operational costs
+- Customer experience: Failure affects satisfaction
+
+**Strategic Implications:**
+- Identify and address problem lines
+- Strengthen quality control for high-failure lines
+- Use data to improve supplier management
+- Priority: MEDIUM - Operational efficiency
+
+---
+
 ## 🎯 Strategic Recommendations
 
 ### Immediate Actions (Next 30 Days)
