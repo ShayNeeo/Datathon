@@ -196,6 +196,29 @@ Line Code Portfolio → STAR vs BAIT Classification → Margin Optimization → 
 
 ---
 
+#### 7. The Tết Cycle & Mega-Sale Product Shifts
+**Visual Evidence:** `figures_living/01_product_market_dominance/temporal_product_shifts.png`
+
+![Temporal Product Shifts](figures_living/01_product_market_dominance/temporal_product_shifts.png)
+
+**Causal Chain:**
+```
+Temporal Events (Tết vs Double Days) → Distinct Product Preferences → Inventory Mismatch → Margin/Revenue Impact
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Product mix shifts sharply based on event type.
+- **Primary Driver**: Tết Approach drives demand for premium, high-margin STAR products.
+- **Secondary Driver**: Double Days (9/9, 10/10, 11/11, 12/12) drive volume for discounted Everyday or BAIT products.
+- **Tertiary Driver**: Payday weeks create smaller full-price demand pulses around mid-month and month-end.
+
+**Strategic Implications:**
+- Launch premium products during the Tết approach window.
+- Reserve Double Days for BAIT-line clearance and S/M inventory movement.
+- **Priority: HIGH** - Temporal portfolio alignment
+
+---
+
 ### 👥 B. Customer Lifecycle & Acquisition (02)
 
 #### 1. The Loyalty Paradox (Retention Crisis)
@@ -328,6 +351,29 @@ Product Line → Customer Acquisition → Revenue Contribution → Acquisition S
 - Match product lines to acquisition channels
 - Use high-awareness lines for top-of-funnel
 - **Priority: MEDIUM** - Acquisition optimization
+
+---
+
+#### 6. Macro-Regime Shifts & Event-Driven Acquisition
+**Visual Evidence:** `figures_living/02_customer_lifecycle_acquisition/regime_double_day_ltv.png`
+
+![Regime and Double Day LTV](figures_living/02_customer_lifecycle_acquisition/regime_double_day_ltv.png)
+
+**Causal Chain:**
+```
+Macro Regimes (Pre-Covid ≤2018 vs CovidEra 2019+) → Acquisition Quality Shift → Double-Day Dependency → LTV Collapse
+```
+
+**Root Cause Analysis:**
+- **Symptom**: The Loyalty Paradox aligns with the Pre-Covid → CovidEra regime boundary.
+- **Primary Driver**: Modern cohorts are increasingly acquired during Double Day mega-sales, not organically.
+- **Secondary Driver**: Deal-hunter acquisition produces structurally lower LTV and higher churn.
+- **Tertiary Driver**: Economic tightening in the later regime pushed consumers toward price-sensitive behavior.
+
+**Strategic Implications:**
+- Differentiate LTV calculations: Organic vs Double Day acquisition.
+- Adjust CAC targets downward for Mega-Sale cohorts.
+- **Priority: HIGH** - Re-calibrating acquisition math
 
 ---
 
@@ -466,6 +512,29 @@ Product Line → Operational Issues → Failure Rate → Quality Control
 
 ---
 
+#### 6. The Tết Logistics Blackout & Recovery Friction
+**Visual Evidence:** `figures_living/03_operational_friction_leakage/tet_holiday_friction.png`
+
+![Tet Holiday Friction](figures_living/03_operational_friction_leakage/tet_holiday_friction.png)
+
+**Causal Chain:**
+```
+Tết Holiday Closure (7 Days) → Massive Order Backlog → 14-Day Recovery Bottleneck → SLA Failures & Spiking Cancellations
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Drastic SLA failures and 3x cancellation spikes right after Lunar New Year.
+- **Primary Driver**: The 7-day complete logistics standstill creates an immediate, severe backlog.
+- **Secondary Driver**: The 14-day recovery window struggles to clear the backlog alongside incoming organic orders.
+- **Tertiary Driver**: Late deliveries from the backlog directly trigger downstream "changed_mind" returns.
+
+**Strategic Implications:**
+- Pre-pack and stage popular items before the holiday begins.
+- Dynamically extend promised delivery SLAs on the storefront during the recovery period.
+- **Priority: CRITICAL** - Seasonal operational survival
+
+---
+
 ### 💰 D. Financial & Payment Dynamics (04)
 
 #### 1. SaigonFlex Profitability by Size
@@ -601,6 +670,27 @@ Product Line → Revenue & Margin → Financial Health → Portfolio Strategy
 - Focus on high-margin, high-revenue lines
 - Review or improve low-margin lines
 - **Priority: HIGH** - Financial optimization
+
+#### 6. Promotion Urgency & Stackability Economics
+**Visual Evidence:** `figures_living/04_financial_payment_dynamics/promo_urgency_stackability.png`
+
+![Promo Urgency & Stackability](figures_living/04_financial_payment_dynamics/promo_urgency_stackability.png)
+
+**Causal Chain:**
+```
+Promo Mechanics → Urgency + Stackability Dynamics → Late-Stage Revenue Surges → Unpredictable Margin Dilution
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Revenue spikes nonlinearly at promo tail-ends, but net margins are often highly unstable.
+- **Primary Driver**: Days-to-end urgency reliably pushes late-stage conversion spikes (the final 48 hours).
+- **Secondary Driver**: Stackable promos bypass intended discount limits, frequently eroding margins past the dangerous 30% dilution threshold.
+- **Tertiary Driver**: Customers delay cart checkouts until the final day or until stackable vouchers go live.
+
+**Strategic Implications:**
+- Control stackable flags rigorously to enforce strict discount caps.
+- Shift marketing budget to retarget abandoners exclusively in the final 48-hour urgency window.
+- **Priority: HIGH** - Promo margin protection
 
 ---
 
