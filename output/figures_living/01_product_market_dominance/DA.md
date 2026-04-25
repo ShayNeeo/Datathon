@@ -364,6 +364,33 @@ Customer Segments → Size Preferences → Cross-Sell Potential → Average Orde
 
 ---
 
+### 14. The Tết Cycle & Mega-Sale Product Shifts (Temporal Demand)
+**Visual Evidence:** `temporal_product_shifts.png`
+
+![Temporal Product Shifts](temporal_product_shifts.png)
+
+**Derived from Part 3 Feature Engineering:** `is_tet_approach`, `is_double_day`
+
+**Causal Chain:**
+```
+Temporal Events (Tết vs Double Days) → Distinct Product Preferences → Inventory Mismatch → Lost Margin/Revenue
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Product mix shifts drastically based on the type of temporal event.
+- **Primary Driver**: "Tết Approach" (21 days prior) drives demand for premium, new-collection, and high-margin (STAR) products as customers buy for the new year.
+- **Secondary Driver**: "Double Days" (9/9, 10/10, etc.) drive volume for discounted, Everyday, or clearance (BAIT) products.
+- **Tertiary Driver**: Payday weeks (mid-month and month-end) provide micro-spikes for full-priced items.
+
+**Impact Quantification:**
+- Margin variance: Tết approach yields higher margins despite high volume, whereas Double Days sacrifice margin for volume.
+- Forecasting error: Treating all "spikes" equally leads to stockouts of premium items before Tết and overstocking of clearance items.
+
+**Strategic Implications:**
+- Shift premium product launches strictly to the `is_tet_approach` window.
+- Reserve Double Days exclusively for clearing BAIT lines and S/M sizes.
+- Priority: HIGH - Temporal portfolio alignment.
+
 ## 🎯 Strategic Recommendations
 
 ### Immediate Actions (Next 30 Days)

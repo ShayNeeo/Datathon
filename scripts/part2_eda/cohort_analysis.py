@@ -62,3 +62,79 @@ plt.close()
 print(f"Cohort analysis complete. Saved to {output_path}")
 print(f"Total cohorts: {len(retention)}")
 print(f"Max months tracked: {len(retention.columns)}")
+# ----------------------------------------------------------------------------
+# PART 3 FEATURE INSPIRED: REGIME AND DOUBLE DAY COHORT QUALITY
+# ----------------------------------------------------------------------------
+print("Generating regime and Double Day cohort quality analysis...")
+
+orders_full = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/orders.csv', parse_dates=['order_date'])
+customers_full = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/customers.csv', parse_dates=['signup_date'])
+order_items_full = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/order_items.csv')
+
+orders_full['year'] = orders_full['order_date'].dt.year
+orders_full['regime'] = np.where(orders_full['year'] <= 2018, 'High_PreCovid (2012-2018)', 'Low_CovidEra (2019-2022)')
+orders_full['is_double_day'] = (
+    ((orders_full['order_date'].dt.month == 9) & (orders_full['order_date'].dt.day == 9)) |
+    ((orders_full['order_date'].dt.month == 10) & (orders_full['order_date'].dt.day == 10)) |
+    ((orders_full['order_date'].dt.month == 11) & (orders_full['order_date'].dt.day == 11)) |
+    ((orders_full['order_date'].dt.month == 12) & (orders_full['order_date'].dt.day == 12))
+)
+
+revenue_by_order = order_items_full.groupby('order_id')['unit_price'].sum().reset_index(name='order_revenue')
+orders_enriched = orders_full.merge(revenue_by_order, on='order_id', how='left')
+orders_enriched = orders_enriched.merge(
+    customers_full[['customer_id', 'acquisition_channel', 'signup_date']],
+    on='customer_id', how='left'
+)
+
+customer_summary = orders_enriched.groupby('customer_id').agg(
+    first_order=('order_date', 'min'),
+    order_count=('order_id', 'nunique'),
+    ltv=('order_revenue', 'sum'),
+    double_day_orders=('is_double_day', 'sum')
+).reset_index()
+customer_summary['first_order_year'] = customer_summary['first_order'].dt.year
+customer_summary['acquisition_regime'] = np.where(
+    customer_summary['first_order_year'] <= 2018,
+    'High_PreCovid (2012-2018)',
+    'Low_CovidEra (2019-2022)'
+)
+customer_summary['double_day_acquired'] = customer_summary['double_day_orders'] > 0
+
+fig, axes = plt.subplots(1, 2, figsize=(16, 7))
+
+regime_stats = customer_summary.groupby('acquisition_regime').agg(
+    avg_orders=('order_count', 'mean'),
+    median_ltv=('ltv', 'median')
+).reset_index()
+
+ax1 = axes[0]
+x = np.arange(len(regime_stats))
+ax1.bar(x - 0.2, regime_stats['avg_orders'], 0.4, label='Avg Orders / Customer', color='#003366')
+ax1.set_ylabel('Avg Orders / Customer', color='#003366', fontweight='bold')
+ax1.tick_params(axis='y', labelcolor='#003366')
+ax1.set_xticks(x)
+ax1.set_xticklabels(regime_stats['acquisition_regime'], rotation=15, ha='right')
+ax1_t = ax1.twinx()
+ax1_t.bar(x + 0.2, regime_stats['median_ltv'] / 1_000_000, 0.4, label='Median LTV (M VND)', color='#B8860B')
+ax1_t.set_ylabel('Median LTV (M VND)', color='#B8860B', fontweight='bold')
+ax1_t.tick_params(axis='y', labelcolor='#B8860B')
+ax1.set_title('Customer Quality by Acquisition Regime', fontsize=14, fontweight='bold')
+
+ax2 = axes[1]
+double_stats = customer_summary.groupby(['acquisition_regime', 'double_day_acquired']).agg(
+    customers=('customer_id', 'count'),
+    median_ltv=('ltv', 'median')
+).reset_index()
+sns.barplot(data=double_stats, x='acquisition_regime', y='median_ltv', hue='double_day_acquired', ax=ax2, palette=['#7DAACB', '#CE2626'])
+ax2.set_title('Median LTV: Double-Day Exposed vs Non-Exposed Customers', fontsize=14, fontweight='bold')
+ax2.set_xlabel('Acquisition Regime')
+ax2.set_ylabel('Median LTV (VND)')
+ax2.tick_params(axis='x', rotation=15)
+ax2.legend(title='Bought on Double Day')
+
+plt.tight_layout()
+output_path = '/home/shayneeo/Downloads/Datathon/output/figures_living/02_customer_lifecycle_acquisition/regime_double_day_ltv.png'
+plt.savefig(output_path, dpi=200, bbox_inches='tight', facecolor='white')
+plt.close()
+print(f"Saved to {output_path}")

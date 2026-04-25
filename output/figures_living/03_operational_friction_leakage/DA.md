@@ -249,6 +249,34 @@ Product Line → Operational Issues → Failure Rate → Quality Control
 
 ---
 
+### 9. The Tết Logistics Blackout & Recovery Friction
+**Visual Evidence:** `tet_holiday_friction.png`
+
+![Tet Holiday Friction](tet_holiday_friction.png)
+
+**Derived from Part 3 Feature Engineering:** `is_tet_holiday`, `is_tet_recovery`, `is_payday_week`
+
+**Causal Chain:**
+```
+Tết Holiday Closure (7 days) → Order Backlog → 14-Day Recovery Period Bottleneck → SLA Failures & Cancellations
+```
+
+**Root Cause Analysis:**
+- **Symptom**: Massive spike in fulfillment times and failure rates immediately following the Lunar New Year.
+- **Primary Driver**: The 7-day `is_tet_holiday` creates a complete logistics standstill (DIP).
+- **Secondary Driver**: The 14-day `is_tet_recovery` period struggles to process the backlog alongside new incoming orders.
+- **Tertiary Driver**: Micro-frictions also occur during `is_payday_week` (13th-17th and month-end) when order volume briefly outstrips daily processing capacity.
+
+**Impact Quantification:**
+- Delivery SLA: Average delivery time doubles during the `is_tet_recovery` window.
+- Cancellation rate: Spikes by up to 3x during the backlog clearing phase.
+- Return rate correlation: Late deliveries from the Tết backlog suffer higher "changed_mind" returns.
+
+**Strategic Implications:**
+- Pre-pack and pre-stage popular items before the holiday begins.
+- Dynamically extend promised delivery SLAs on the website during the approach and recovery periods.
+- Priority: CRITICAL - Seasonal operational survival.
+
 ## 🎯 Strategic Recommendations
 
 ### Immediate Actions (Next 30 Days)

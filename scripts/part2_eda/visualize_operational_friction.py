@@ -537,3 +537,44 @@ print("\nOPERATIONAL FRICTION & LEAKAGE ANALYSIS COMPLETE.")
 print("="*60)
 print(f"Generated 10 advanced operational intelligence assets in: {OUTPUT_DIR}")
 print("="*60)
+
+# ----------------------------------------------------------------------------
+# ASSET 11: TET HOLIDAY & RECOVERY FRICTION
+# ----------------------------------------------------------------------------
+print("[11/11] Asset 11: Rendering Tet Holiday & Recovery Friction...")
+
+orders['temporal_phase'] = 'Normal'
+for year, tet_str in {2019: "2019-02-05", 2020: "2020-01-25", 2021: "2021-02-12", 2022: "2022-02-01"}.items():
+    tet = pd.Timestamp(tet_str)
+    approach = (orders["order_date"] >= tet - pd.Timedelta(days=21)) & (orders["order_date"] < tet)
+    holiday  = (orders["order_date"] >= tet) & (orders["order_date"] < tet + pd.Timedelta(days=7))
+    recovery = (orders["order_date"] >= tet + pd.Timedelta(days=7)) & (orders["order_date"] < tet + pd.Timedelta(days=21))
+    
+    orders.loc[approach, 'temporal_phase'] = 'Tet Approach (-21d)'
+    orders.loc[holiday, 'temporal_phase'] = 'Tet Holiday (DIP)'
+    orders.loc[recovery, 'temporal_phase'] = 'Tet Recovery (+14d)'
+
+tet_orders = orders[orders['temporal_phase'] != 'Normal'].copy()
+tet_orders = tet_orders.merge(shipments[['order_id', 'delivery_days']], on='order_id', how='left')
+
+fig, axes = plt.subplots(1, 2, figsize=(16, 7))
+
+# Plot delivery times by Tet Phase
+phase_order = ['Tet Approach (-21d)', 'Tet Holiday (DIP)', 'Tet Recovery (+14d)']
+ax1 = axes[0]
+sns.boxplot(data=tet_orders, x='temporal_phase', y='delivery_days', order=phase_order, palette=['#003366', '#CE2626', '#B8860B'], ax=ax1, showfliers=False)
+master_ax(ax1, "DELIVERY SLA BY TET PHASE", xlabel="Temporal Phase", ylabel="Delivery Days")
+
+# Plot cancellation rates
+ax2 = axes[1]
+cancel_rates = tet_orders.groupby('temporal_phase').apply(lambda x: (x['order_status'] == 'cancelled').mean() * 100).reindex(phase_order)
+ax2.bar(cancel_rates.index, cancel_rates.values, color=['#003366', '#CE2626', '#B8860B'])
+for i, v in enumerate(cancel_rates.values):
+    ax2.text(i, v + 0.1, f'{v:.1f}%', ha='center', fontweight='bold')
+master_ax(ax2, "CANCELLATION RATE BY TET PHASE", xlabel="Temporal Phase", ylabel="Cancellation Rate (%)")
+
+plt.tight_layout()
+plt.savefig(f'{OUTPUT_DIR}/tet_holiday_friction.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+print("\nOPERATIONAL FRICTION & LEAKAGE ANALYSIS COMPLETE (INCLUDING PART 3 ENHANCEMENTS).")

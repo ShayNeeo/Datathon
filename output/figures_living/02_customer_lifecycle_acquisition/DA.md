@@ -206,6 +206,33 @@ Product Line → Customer Acquisition → Revenue Contribution → Acquisition S
 
 ---
 
+### 7. Macro-Regime Shifts & Event-Driven Acquisition
+**Visual Evidence:** `regime_double_day_ltv.png`
+
+![Regime and Double Day LTV](regime_double_day_ltv.png)
+
+**Derived from Part 3 Feature Engineering:** `Regime` (Pre-Covid vs CovidEra), `is_double_day`
+
+**Causal Chain:**
+```
+Macro Regimes (Pre-2018 vs Post-2019) → Shift in Acquisition Quality → Lower Baseline Retention → Dependency on Mega-Sales
+```
+
+**Root Cause Analysis:**
+- **Symptom**: The "Loyalty Paradox" strongly aligns with the shift from the "High_PreCovid" regime (≤2018) to the "Low_CovidEra" regime (2019-2022).
+- **Primary Driver**: Early cohorts were acquired organically; modern cohorts are increasingly acquired during high-discount "Double Day" events.
+- **Secondary Driver**: Mega-sale acquired customers inherently show lower LTV and higher churn ("deal hunters").
+- **Tertiary Driver**: Economic tightening in the later regime shifted consumer behavior toward price sensitivity.
+
+**Impact Quantification:**
+- Regime shift: The baseline retention rate permanently shifted downward post-2018.
+- Event dependency: A growing percentage of new users only buy during `is_double_day` or specific promo windows.
+
+**Strategic Implications:**
+- Differentiate LTV calculations based on acquisition regime and acquisition event (Organic vs Double Day).
+- Adjust CAC targets downward for customers acquired during Mega-Sales due to their lower expected LTV.
+- Priority: HIGH - Re-calibrating acquisition math.
+
 ## 🎯 Strategic Recommendations
 
 ### Immediate Actions (Next 30 Days)
