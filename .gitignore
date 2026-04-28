@@ -6,3 +6,7 @@ exam.*
 GEMINI.md
 context.md
 .ignore
+AGENTS.md
+REORGANIZATION_SUMMARY.md
+conductor
+docs/*
