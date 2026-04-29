@@ -1,71 +1,96 @@
 \section{Part 2: Strategic Forensic Audit}
 
-\textit{This audit turns 15 linked tables into a unified business diagnosis. The top-line metric—16.43 billion VND in revenue—suggests success, but our forensic data linking reveals four structural leaks draining the company's profitability. The following analysis satisfies the four required rubric levels: Descriptive, Diagnostic, Predictive, and Prescriptive.}
+\textit{This audit synthesizes four major research directions (Directions 01--04) into a unified business diagnosis: top-line revenue is masking severe structural leaks in retention, pricing, logistics, and seasonality. Together they constitute a ``leaky bucket'' — the growth engine has demand, but loses value at every stage after acquisition.}
 
 \begin{table}[htbp]
 \centering
 \small
-\begin{tabular}{@{}llp{5.2cm}@{}}
+\begin{tabular}{@{}lllp{4.6cm}@{}}
 \toprule
-\textbf{The Leak} & \textbf{Key Evidence} & \textbf{Prescriptive Action} \\
+\textbf{Leak} & \textbf{Direction} & \textbf{Evidence} & \textbf{Prescriptive Action} \\
 \midrule
-1. Loyalty Collapse & Retention fell 64.7\% $\rightarrow$ 6.7\% & Shift spend from acquisition to CRM \\
-2. Loss-Leader Trap & Basket profit -1{,}473 VND/order & Enforce margin floors / bundling \\
-3. Inelastic Logistics & 74\% repeat rate regardless of speed & Downgrade to economy shipping \\
-4. Tet Demand Shock & 40--80\% pre-Tet surge, then crash & Pre-stage inventory by T-30 \\
+Loyalty Collapse  & 02 & Retention 64.7\%$\rightarrow$6.7\%   & Lifecycle CRM \& loyalty tiers \\
+Loss-Leader Trap  & 01 & Profit -1{,}473 VND/order             & Enforce bundling \& margin floor \\
+Inelastic Ship.   & 03 & 74\% repeat regardless of speed       & Downgrade to economy shipping \\
+Campaign Paradox  & 04 & Year-End: -46\% rev, 1.5\% margin    & Tiered rewards, hard margin floor \\
 \bottomrule
 \end{tabular}
-\caption{The Four Structural Leaks.}
+\caption{The Four Structural Leaks across research directions.}
 \label{tab:part2_leaks}
-\vspace{-0.3cm}
+\vspace{-0.4cm}
 \end{table}
 
-\subsection{1. The Loyalty Collapse}
+% ------------------------------------------------------------------
+\subsection{1. Loyalty Collapse — Direction 02 (Customer Lifecycle)}
+% ------------------------------------------------------------------
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{../figures_living/part2_exceptional/6_loyalty_collapse.png}
-\caption{Next-year retention across annual customer cohorts (2012--2021).}
+\includegraphics[width=0.72\textwidth]{figures/6_loyalty_collapse.png}
+\caption{Next-year retention across annual customer cohorts, 2012--2021 (Direction 02).}
 \label{fig:loyalty_collapse}
 \vspace{-0.2cm}
 \end{figure}
 
-\textbf{Descriptive:} Acquisition volume is climbing, but next-year retention has plummeted from 64.7\% (2012 cohort) to 6.7\% (2021 cohort). \textbf{Diagnostic:} The business has transitioned from a sticky, community-driven brand to a highly transactional storefront. \textbf{Predictive:} If this trajectory holds, Customer Acquisition Cost (CAC) will rapidly exceed Customer Lifetime Value (LTV), suffocating cash flow. \textbf{Prescriptive:} Immediately freeze generic acquisition spend and redirect it toward lifecycle CRM, reactivation campaigns, and tiered loyalty rewards.
+Our Direction 02 Customer Lifecycle analysis computed next-year retention for every acquisition cohort from 2012 to 2021 by joining \texttt{orders}, \texttt{customers}, and \texttt{order\_items} across order-date windows.
+\textbf{Descriptive:} The 2012 cohort retained 64.7\% of customers the following year; the 2021 cohort retained only 6.7\%.
+\textbf{Diagnostic:} The business has shifted from a community-driven brand to a transactional storefront. The acceleration after 2018 — confirmed in Figure~\ref{fig:appendix_customer_quality} (Appendix~B) — aligns with the Double-Day discount era, which attracted low-LTV bargain hunters.
+\textbf{Predictive:} If the trend holds, Customer Acquisition Cost (CAC) will exceed LTV within two years.
+\textbf{Prescriptive:} Freeze broad acquisition spend; redirect to lifecycle CRM, post-purchase reactivation flows, and tiered loyalty rewards.
 
-\subsection{2. The Loss-Leader Trap}
+% ------------------------------------------------------------------
+\subsection{2. Loss-Leader Trap — Direction 01 (Product Dominance)}
+% ------------------------------------------------------------------
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{../figures_living/part2_exceptional/1_loss_leader_trap.png}
-\caption{Basket economics: Standard orders vs. orders containing loss-leader SKUs.}
+\includegraphics[width=0.72\textwidth]{figures/1_loss_leader_trap.png}
+\caption{Basket economics: loss-leader orders vs.\ standard orders (Direction 01).}
 \label{fig:loss_leader}
 \vspace{-0.2cm}
 \end{figure}
 
-\textbf{Descriptive:} Orders containing extreme low-margin products ($\le$ 5.5\%) generate similar revenue ($\sim$24.2K VND) to standard orders, but their basket profit drops to \textit{-1,473 VND}. \textbf{Diagnostic:} The loss-leader strategy is failing. Customers buy the cheap item but only add +0.22 extra items to their cart, failing to cross-subsidize the loss. \textbf{Predictive:} Continued reliance on these 461 SKUs for volume will compress total gross margin irreparably. \textbf{Prescriptive:} Discontinue standalone sales of loss-leaders; they must be gated behind high \texttt{min\_order\_value} thresholds or hard-bundled.
+Direction 01 audited every SKU's unit margin using \texttt{products.cogs} and \texttt{products.price}, then linked to \texttt{order\_items} to measure downstream basket effects.
+\textbf{Descriptive:} 461 SKUs operate at $\le$5.5\% gross margin; orders containing them average ${\sim}$24.2K VND revenue — but basket profit collapses to -1{,}473 VND versus +3{,}980 VND for standard orders.
+\textbf{Diagnostic:} Cross-sell is failing: customers add only +0.22 extra items per basket. The strategy loses money without generating the compensating upsell it was designed to trigger. Figure~\ref{fig:appendix_margin_size} (Appendix~A) further shows that L/XL sizes carry the highest margin per unit — the assortment mix is skewed against the company's own best pockets.
+\textbf{Predictive:} Continued loss-leader reliance will compress gross margin irreparably.
+\textbf{Prescriptive:} Discontinue standalone loss-leader selling; gate purchases behind a basket-margin floor or hard bundle.
 
-\subsection{3. The Inelastic Logistics Paradox}
+% ------------------------------------------------------------------
+\subsection{3. Inelastic Logistics Paradox — Direction 03 (Operational Friction)}
+% ------------------------------------------------------------------
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{../figures_living/part2_exceptional/2_logistics_paradox.png}
-\caption{Customer repurchase rate plotted against first-order delivery time.}
+\includegraphics[width=0.72\textwidth]{figures/2_logistics_paradox.png}
+\caption{Repurchase rate vs.\ first-order delivery speed, 2012--2022 (Direction 03).}
 \label{fig:logistics_paradox}
 \vspace{-0.2cm}
 \end{figure}
 
-\textbf{Descriptive:} Repurchase rates remain completely flat at $\sim$74\% whether a customer receives their first order in 2 days or 14 days. \textbf{Diagnostic:} VinUni customers exhibit massive inelasticity regarding shipping speed; the brand strength overrides delivery delays. \textbf{Predictive:} Paying premium 3PL fees for expedited shipping will not yield higher LTV. \textbf{Prescriptive:} Downgrade non-urgent orders to economy shipping tiers to instantly recapture logistics margin without sacrificing customer loyalty.
+Direction 03 linked \texttt{shipments}, \texttt{orders}, and repeat-purchase flags derived from \texttt{order\_items} to test whether delivery speed predicts customer return.
+\textbf{Descriptive:} The repurchase rate holds flat at ${\sim}$74\% across the full 2--14 day delivery spectrum.
+\textbf{Diagnostic:} Brand loyalty, not logistics, drives repurchase; premium 3PL costs are wasted. The same direction's seasonal audit — see Figure~\ref{fig:appendix_tet} (Appendix~C) — shows Tet demand surges 40--80\% at T-30, then collapses, creating avoidable stockout stress that \emph{does} affect fulfilment quality.
+\textbf{Predictive:} Maintaining express shipping SLAs will continue to drain logistics margin with zero LTV uplift.
+\textbf{Prescriptive:} Switch non-urgent orders to economy tiers immediately. Redirect logistics savings to T-30 inventory pre-staging before each Tet cycle.
 
-\subsection{4. The Tet Demand Shock}
+% ------------------------------------------------------------------
+\subsection{4. Campaign ROI Paradox — Direction 04 (Financial Dynamics)}
+% ------------------------------------------------------------------
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{../figures_living/part2_exceptional/4_tet_effect.png}
-\caption{Revenue velocity indexed around the Lunar New Year (Day 0).}
-\label{fig:tet_effect}
+\includegraphics[width=0.72\textwidth]{figures/5_campaign_roi.png}
+\caption{Campaign lift vs.\ gross margin: Spring Sale succeeds, Year-End Sale destroys value (Direction 04).}
+\label{fig:campaign_roi}
 \vspace{-0.2cm}
 \end{figure}
 
-\textbf{Descriptive:} Demand surges 40--80\% starting 30 days before Tet, followed by a severe contraction during the holiday. \textbf{Diagnostic:} This is a structural calendar regime, causing massive stockout risks before the holiday and dead inventory during it. \textbf{Predictive:} Failing to front-load supply guarantees missed revenue and fulfillment bottlenecks. \textbf{Prescriptive:} Transition to a T-30 supply staging policy. Cut marketing spend at T-5 as logistics networks freeze.
+Direction 04 joined \texttt{promotions}, \texttt{order\_items}, and the \texttt{sales.csv} daily revenue series to isolate promotion-window effects.
+\textbf{Descriptive:} Spring Sale lifts revenue +44.2\% while protecting 10.5\% gross margin. Year-End Sale cuts revenue -46.3\% and compresses margin to 1.5\%.
+\textbf{Diagnostic:} Deep year-end discounting trains customers to wait for markdowns, suppressing baseline revenue during the window. Figure~\ref{fig:appendix_revenue_margin} (Appendix~D) confirms that revenue has grown 10$\times$ over the decade while gross margin has compressed — the discount habit is eroding the long-run financial baseline.
+\textbf{Predictive:} Repeating Year-End mechanics will continue to destroy pricing power.
+\textbf{Prescriptive:} Eliminate flat year-end markdowns; replace with tiered loyalty discounts and a hard 8\% gross-margin floor on all promotion events.
 
-\textit{Note: See Appendix for supporting evidence on campaign ROI (Figure~\ref{fig:campaign_roi}), sizing returns (Figure~\ref{fig:returns_bar}), and product innovation (Figure~\ref{fig:product_lifecycle}).}
+\vspace{0.3cm}
+\textit{Supporting evidence across all four directions is organized in the Appendix: product economics (A), customer quality regimes (B), seasonal and returns friction (C), and financial velocity (D).}
