@@ -7,15 +7,18 @@
 \small
 \begin{tabular}{@{}lllp{4.6cm}@{}}
 \toprule
-\textbf{Leak} & \textbf{Direction} & \textbf{Evidence} & \textbf{Prescriptive Action} \\
+\textbf{Leak / Finding} & \textbf{Dir.} & \textbf{Evidence} & \textbf{Prescriptive Action} \\
 \midrule
 Loyalty Collapse  & 02 & Retention 64.7\%$\rightarrow$6.7\%   & Lifecycle CRM \& loyalty tiers \\
+Star vs. Bait Portfolio & 01 & UR line (31\%) vs. YY line (23\%)  & Expand UR, review YY pricing \\
 Loss-Leader Trap  & 01 & Profit -1{,}473 VND/order             & Enforce bundling \& margin floor \\
 Inelastic Ship.   & 03 & 74\% repeat regardless of speed       & Downgrade to economy shipping \\
+Installment AOV   & 04 & +35\% AOV lift on installments        & Feature installments as default \\
+Payment LTV Gap   & 04 & Credit card LTV 2--3$\times$ COD        & Incentivize payment upgrades \\
 Campaign Paradox  & 04 & Year-End: -46\% rev, 1.5\% margin    & Tiered rewards, hard margin floor \\
 \bottomrule
 \end{tabular}
-\caption{The Four Structural Leaks across research directions.}
+\caption{Structural Leaks and Financial Levers across research directions.}
 \label{tab:part2_leaks}
 \vspace{-0.4cm}
 \end{table}
@@ -33,7 +36,7 @@ Campaign Paradox  & 04 & Year-End: -46\% rev, 1.5\% margin    & Tiered rewards, 
 \end{figure}
 
 Our Direction 02 Customer Lifecycle analysis computed next-year retention for every acquisition cohort from 2012 to 2021 by joining \texttt{orders}, \texttt{customers}, and \texttt{order\_items} across order-date windows.
-\textbf{Descriptive:} The 2012 cohort retained 64.7\% of customers the following year; the 2021 cohort retained only 6.7\%.
+\textbf{Descriptive:} The 2012 cohort retained 64.7\% of customers the following year; the 2021 cohort retained only 6.7\%. Figure~\ref{fig:appendix_order_freq} (Appendix~B) confirms a massive single-order customer base.
 \textbf{Diagnostic:} The business has shifted from a community-driven brand to a transactional storefront. The acceleration after 2018 — confirmed in Figure~\ref{fig:appendix_customer_quality} (Appendix~B) — aligns with the Double-Day discount era, which attracted low-LTV bargain hunters.
 \textbf{Predictive:} If the trend holds, Customer Acquisition Cost (CAC) will exceed LTV within two years.
 \textbf{Prescriptive:} Freeze broad acquisition spend; redirect to lifecycle CRM, post-purchase reactivation flows, and tiered loyalty rewards.
@@ -41,22 +44,22 @@ Our Direction 02 Customer Lifecycle analysis computed next-year retention for ev
 \FloatBarrier
 
 % ------------------------------------------------------------------
-\subsection{2. Loss-Leader Trap — Direction 01 (Product Dominance)}
+\subsection{2. Star vs. Bait and the Loss-Leader Trap — Direction 01 (Product Dominance)}
 % ------------------------------------------------------------------
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{figures/1_loss_leader_trap.png}
-\caption{Basket economics: loss-leader orders vs.\ standard orders (Direction 01).}
-\label{fig:loss_leader}
+\includegraphics[width=0.72\textwidth]{figures/star_vs_bait_analysis.png}
+\caption{Star vs. Bait Portfolio: Margin vs. Volume by product line code (Direction 01).}
+\label{fig:star_vs_bait}
 \vspace{-0.2cm}
 \end{figure}
 
-Direction 01 audited every SKU's unit margin using \texttt{products.cogs} and \texttt{products.price}, then linked to \texttt{order\_items} to measure downstream basket effects.
-\textbf{Descriptive:} 461 SKUs operate at $\le$5.5\% gross margin; orders containing them average ${\sim}$24.2K VND revenue — but basket profit collapses to -1{,}473 VND versus +3{,}980 VND for standard orders.
-\textbf{Diagnostic:} Cross-sell is failing: customers add only +0.22 extra items per basket. The strategy loses money without generating the compensating upsell it was designed to trigger. Figure~\ref{fig:appendix_margin_size} (Appendix~A) further shows that L/XL sizes carry the highest margin per unit — the assortment mix is skewed against the company's own best pockets.
-\textbf{Predictive:} Continued loss-leader reliance will compress gross margin irreparably.
-\textbf{Prescriptive:} Discontinue standalone loss-leader selling; gate purchases behind a basket-margin floor or hard bundle.
+Direction 01 evaluated SKU-level economics, mapping brand prefixes into a "Star vs. Bait" portfolio matrix based on \texttt{products.cogs} and \texttt{price}.
+\textbf{Descriptive:} The UR line (Star) achieves 31.3\% margins, while YY/UC lines (Bait) linger around 23--24\%. At the SKU level (Figure~\ref{fig:loss_leader_trap}, Appendix~A), 461 items operate at $\le$5.5\% margin, destroying basket profit (-1{,}473 VND per order).
+\textbf{Diagnostic:} The "Bait" lines and extreme loss-leaders fail to generate compensating cross-sell (+0.22 extra items per basket). The strategy loses money without triggering sufficient upsell.
+\textbf{Predictive:} Continued reliance on Bait lines for volume will irreversibly compress total gross margin.
+\textbf{Prescriptive:} Expand investment in the high-margin UR Star line. Discontinue standalone sales of deep loss-leaders by gating them behind a minimum basket-margin floor or hard bundle.
 
 \FloatBarrier
 
@@ -81,22 +84,24 @@ Direction 03 linked \texttt{shipments}, \texttt{orders}, and repeat-purchase fla
 \FloatBarrier
 
 % ------------------------------------------------------------------
-\subsection{4. Campaign ROI Paradox — Direction 04 (Financial Dynamics)}
+\subsection{4. Payment Engineering \& Campaign Paradox — Direction 04 (Financial Dynamics)}
 % ------------------------------------------------------------------
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.72\textwidth]{figures/5_campaign_roi.png}
-\caption{Campaign lift vs.\ gross margin: Spring Sale succeeds, Year-End Sale destroys value (Direction 04).}
-\label{fig:campaign_roi}
+\includegraphics[width=0.48\textwidth]{figures/installment_aov_boxplot.png}
+\hfill
+\includegraphics[width=0.48\textwidth]{figures/ltv_by_payment_method.png}
+\caption{Left: AOV lift from Installment plans. Right: LTV by Payment Method (Direction 04).}
+\label{fig:financial_engineering}
 \vspace{-0.2cm}
 \end{figure}
 
-Direction 04 joined \texttt{promotions}, \texttt{order\_items}, and the \texttt{sales.csv} daily revenue series to isolate promotion-window effects.
-\textbf{Descriptive:} Spring Sale lifts revenue +44.2\% while protecting 10.5\% gross margin. Year-End Sale cuts revenue -46.3\% and compresses margin to 1.5\%.
-\textbf{Diagnostic:} Deep year-end discounting trains customers to wait for markdowns, suppressing baseline revenue during the window. Figure~\ref{fig:appendix_revenue_margin} (Appendix~D) confirms that revenue has grown 10$\times$ over the decade while gross margin has compressed — the discount habit is eroding the long-run financial baseline.
-\textbf{Predictive:} Repeating Year-End mechanics will continue to destroy pricing power.
-\textbf{Prescriptive:} Eliminate flat year-end markdowns; replace with tiered loyalty discounts and a hard 8\% gross-margin floor on all promotion events.
+Direction 04 investigated financial flows by joining \texttt{payments}, \texttt{orders}, and \texttt{promotions}.
+\textbf{Descriptive:} Installment plans lift Average Order Value (AOV) by +35\%. Furthermore, credit card users generate 2--3$\times$ higher Customer Lifetime Value (LTV) than Cash-on-Delivery (COD) users. Conversely, deep promotional discounting during the Year-End Sale (Figure~\ref{fig:appendix_campaign}, Appendix~D) drops revenue -46.3\% and compresses margin to 1.5\%.
+\textbf{Diagnostic:} Payment methods directly select for customer quality and basket size, while poorly structured campaigns (flat markdowns) erode pricing power. Stackable promos (Figure~\ref{fig:appendix_stackability}, Appendix~D) frequently breach the 30\% margin dilution threshold.
+\textbf{Predictive:} Over-reliance on COD and flat discounting will suffocate long-term financial baseline health.
+\textbf{Prescriptive:} Feature installments as the default checkout option. Incentivize payment method upgrades from COD to credit cards. Replace flat markdowns with tiered rewards and a hard 8\% gross-margin floor.
 
 \FloatBarrier
 
