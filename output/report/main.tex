@@ -5,19 +5,6 @@
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
 
-% Override NeurIPS letterpaper with A4 after its AtBeginDocument hook fires
-\AtBeginDocument{%
-  \newgeometry{
-    a4paper,
-    textheight=9in,
-    textwidth=5.5in,
-    top=1in,
-    headheight=12pt,
-    headsep=25pt,
-    footskip=30pt
-  }%
-}
-
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
@@ -28,6 +15,7 @@
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{amssymb}
+\usepackage{placeins}   % provides \FloatBarrier
 
 \input{sections/00_styling}
 

@@ -2,7 +2,7 @@
 
 \textit{This audit synthesizes four major research directions (Directions 01--04) into a unified business diagnosis: top-line revenue is masking severe structural leaks in retention, pricing, logistics, and seasonality. Together they constitute a ``leaky bucket'' — the growth engine has demand, but loses value at every stage after acquisition.}
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
 \centering
 \small
 \begin{tabular}{@{}lllp{4.6cm}@{}}
@@ -24,7 +24,7 @@ Campaign Paradox  & 04 & Year-End: -46\% rev, 1.5\% margin    & Tiered rewards, 
 \subsection{1. Loyalty Collapse — Direction 02 (Customer Lifecycle)}
 % ------------------------------------------------------------------
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.72\textwidth]{figures/6_loyalty_collapse.png}
 \caption{Next-year retention across annual customer cohorts, 2012--2021 (Direction 02).}
@@ -38,11 +38,13 @@ Our Direction 02 Customer Lifecycle analysis computed next-year retention for ev
 \textbf{Predictive:} If the trend holds, Customer Acquisition Cost (CAC) will exceed LTV within two years.
 \textbf{Prescriptive:} Freeze broad acquisition spend; redirect to lifecycle CRM, post-purchase reactivation flows, and tiered loyalty rewards.
 
+\FloatBarrier
+
 % ------------------------------------------------------------------
 \subsection{2. Loss-Leader Trap — Direction 01 (Product Dominance)}
 % ------------------------------------------------------------------
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.72\textwidth]{figures/1_loss_leader_trap.png}
 \caption{Basket economics: loss-leader orders vs.\ standard orders (Direction 01).}
@@ -56,11 +58,13 @@ Direction 01 audited every SKU's unit margin using \texttt{products.cogs} and \t
 \textbf{Predictive:} Continued loss-leader reliance will compress gross margin irreparably.
 \textbf{Prescriptive:} Discontinue standalone loss-leader selling; gate purchases behind a basket-margin floor or hard bundle.
 
+\FloatBarrier
+
 % ------------------------------------------------------------------
 \subsection{3. Inelastic Logistics Paradox — Direction 03 (Operational Friction)}
 % ------------------------------------------------------------------
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.72\textwidth]{figures/2_logistics_paradox.png}
 \caption{Repurchase rate vs.\ first-order delivery speed, 2012--2022 (Direction 03).}
@@ -74,11 +78,13 @@ Direction 03 linked \texttt{shipments}, \texttt{orders}, and repeat-purchase fla
 \textbf{Predictive:} Maintaining express shipping SLAs will continue to drain logistics margin with zero LTV uplift.
 \textbf{Prescriptive:} Switch non-urgent orders to economy tiers immediately. Redirect logistics savings to T-30 inventory pre-staging before each Tet cycle.
 
+\FloatBarrier
+
 % ------------------------------------------------------------------
 \subsection{4. Campaign ROI Paradox — Direction 04 (Financial Dynamics)}
 % ------------------------------------------------------------------
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.72\textwidth]{figures/5_campaign_roi.png}
 \caption{Campaign lift vs.\ gross margin: Spring Sale succeeds, Year-End Sale destroys value (Direction 04).}
@@ -91,6 +97,8 @@ Direction 04 joined \texttt{promotions}, \texttt{order\_items}, and the \texttt{
 \textbf{Diagnostic:} Deep year-end discounting trains customers to wait for markdowns, suppressing baseline revenue during the window. Figure~\ref{fig:appendix_revenue_margin} (Appendix~D) confirms that revenue has grown 10$\times$ over the decade while gross margin has compressed — the discount habit is eroding the long-run financial baseline.
 \textbf{Predictive:} Repeating Year-End mechanics will continue to destroy pricing power.
 \textbf{Prescriptive:} Eliminate flat year-end markdowns; replace with tiered loyalty discounts and a hard 8\% gross-margin floor on all promotion events.
+
+\FloatBarrier
 
 \vspace{0.3cm}
 \textit{Supporting evidence across all four directions is organized in the Appendix: product economics (A), customer quality regimes (B), seasonal and returns friction (C), and financial velocity (D).}
