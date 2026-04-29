@@ -11,7 +11,8 @@ import os
 import math
 from PIL import Image, ImageDraw, ImageFont
 
-FIGURES_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living'
+REPO_ROOT = '/home/shayneeo/Downloads/Datathon'
+FIGURES_DIR = os.path.join(REPO_ROOT, 'output', 'figures_living')
 
 # INTELLIGENT ANNOTATIONS WITH DYNAMIC SIZING
 ADVANCED_ANNOTATIONS = {
@@ -29,7 +30,7 @@ ADVANCED_ANNOTATIONS = {
                 'text': '80% STREETWEAR\n486K units',
                 'color': '#CE2626',
                 'text_level': 'primary',
-                'radius_pct': 65
+                'radius_pct': 54
             }
         ]
     },
@@ -58,7 +59,7 @@ ADVANCED_ANNOTATIONS = {
                 'left_pct': 75,
                 'right_pct': 95,
                 'y_middle_pct': 35,
-                'text': 'Premium\nMargin\n30-35%',
+                'text': 'Premium\n30–35%',
                 'color': '#2D5016',
                 'text_level': 'primary'
             },
@@ -67,7 +68,7 @@ ADVANCED_ANNOTATIONS = {
                 'left_pct': 20,
                 'right_pct': 40,
                 'y_middle_pct': 60,
-                'text': 'Commodity\nMargin\n18-26%',
+                'text': 'Commodity\n18–26%',
                 'color': '#CE2626',
                 'text_level': 'primary'
             },
@@ -109,7 +110,7 @@ ADVANCED_ANNOTATIONS = {
                 'left_pct': 20,
                 'right_pct': 80,
                 'bracket_y_pct': 10,
-                'text': 'Premium Size\nAdvantage:\n12-17pp',
+                'text': 'Premium Size\n12–17pp',
                 'color': '#CE2626',
                 'text_level': 'primary'
             }
@@ -151,6 +152,20 @@ ADVANCED_ANNOTATIONS = {
         ]
     },
     
+    '01_product_market_dominance/brand_performance.png': {
+        'name': 'Brand Performance',
+        'critical_finding': False,
+        'annotations': [
+            {
+                'type': 'warning_label',
+                'position_pct': (72, 18),
+                'text': 'UR = STAR\nPremium lead',
+                'color': '#2D5016',
+                'text_level': 'secondary'
+            }
+        ]
+    },
+    
     # ============================================================================
     # CATEGORY 02: Customer Lifecycle & Acquisition
     # ============================================================================
@@ -163,7 +178,7 @@ ADVANCED_ANNOTATIONS = {
                 'type': 'line_collapse_arrow',
                 'start_pct': (15, 25),
                 'end_pct': (85, 80),
-                'text': 'Retention\nCollapse\n40%→10%',
+                'text': 'Retention\n40→10%',
                 'color': '#CE2626',
                 'text_level': 'primary',
                 'curve': True
@@ -178,7 +193,7 @@ ADVANCED_ANNOTATIONS = {
             {
                 'type': 'bar_organic_highlight',
                 'position_pct': (25, 50),
-                'height_pct': 38,
+                'height_pct': 28,
                 'text': 'Organic\n38%',
                 'color': '#2D5016',
                 'text_level': 'primary'
@@ -186,7 +201,7 @@ ADVANCED_ANNOTATIONS = {
             {
                 'type': 'bar_double_day_highlight',
                 'position_pct': (70, 70),
-                'height_pct': 8,
+                'height_pct': 10,
                 'text': 'Double-Day\n8%',
                 'color': '#CE2626',
                 'text_level': 'primary'
@@ -203,7 +218,7 @@ ADVANCED_ANNOTATIONS = {
                 'left_pct': 15,
                 'right_pct': 40,
                 'bracket_y_pct': 5,
-                'text': 'High LTV\n(Sustainable)',
+                'text': 'High LTV',
                 'color': '#2D5016',
                 'text_level': 'secondary'
             },
@@ -212,7 +227,7 @@ ADVANCED_ANNOTATIONS = {
                 'left_pct': 65,
                 'right_pct': 85,
                 'bracket_y_pct': 5,
-                'text': 'Low LTV\n(Loss-making)',
+                'text': 'Low LTV',
                 'color': '#CE2626',
                 'text_level': 'secondary'
             }
@@ -247,6 +262,20 @@ ADVANCED_ANNOTATIONS = {
         ]
     },
     
+    '02_customer_lifecycle_acquisition/line_revenue_acquisition.png': {
+        'name': 'Line Revenue Acquisition',
+        'critical_finding': False,
+        'annotations': [
+            {
+                'type': 'warning_label',
+                'position_pct': (72, 18),
+                'text': 'Organic >\nDouble-Day',
+                'color': '#CE2626',
+                'text_level': 'secondary'
+            }
+        ]
+    },
+    
     # ============================================================================
     # CATEGORY 03: Operational Friction & Leakage
     # ============================================================================
@@ -258,7 +287,7 @@ ADVANCED_ANNOTATIONS = {
             {
                 'type': 'bar_critical_highlight',
                 'position_pct': (35, 50),
-                'text': 'Wrong Size\n34.6%\n3.5pp Loss',
+                'text': 'Wrong Size\n34.6%\n-3.5pp',
                 'color': '#CE2626',
                 'text_level': 'primary'
             }
@@ -272,7 +301,7 @@ ADVANCED_ANNOTATIONS = {
             {
                 'type': 'impact_arrow_down',
                 'position_pct': (50, 40),
-                'text': 'Margin\nErosion\n3.5pp',
+                'text': 'Margin\n-3.5pp',
                 'color': '#CE2626',
                 'text_level': 'primary'
             }
@@ -303,7 +332,7 @@ ADVANCED_ANNOTATIONS = {
             {
                 'type': 'heatmap_critical_hotspot',
                 'center_pct': (35, 25),
-                'text': 'Wrong-Size\nHotspot',
+                'text': 'Wrong-Size',
                 'color': '#CE2626',
                 'text_level': 'primary'
             }
@@ -318,7 +347,7 @@ ADVANCED_ANNOTATIONS = {
                 'type': 'time_period_region',
                 'left_pct': 15,
                 'right_pct': 40,
-                'text': 'Post-Tét\n8.2% Fail',
+                'text': 'Tết\n8.2% Fail',
                 'color': '#CE2626',
                 'text_level': 'primary'
             }
@@ -339,6 +368,20 @@ ADVANCED_ANNOTATIONS = {
         ]
     },
     
+    '03_operational_friction_leakage/line_failure_rate.png': {
+        'name': 'Line Failure Rate',
+        'critical_finding': False,
+        'annotations': [
+            {
+                'type': 'warning_label',
+                'position_pct': (72, 18),
+                'text': 'UC / RP\nhotspot',
+                'color': '#CE2626',
+                'text_level': 'secondary'
+            }
+        ]
+    },
+    
     '03_operational_friction_leakage/inventory_risk_analysis.png': {
         'name': 'Inventory Misalignment',
         'critical_finding': True,
@@ -347,8 +390,8 @@ ADVANCED_ANNOTATIONS = {
                 'type': 'heatmap_dual_risk',
                 'overstock_pct': (25, 65),
                 'stockout_pct': (75, 25),
-                'overstock_text': 'Overstock\nRisk',
-                'stockout_text': 'Stockout\nRisk',
+                'overstock_text': 'Overstock',
+                'stockout_text': 'Stockout',
                 'problem_color': '#CE2626',
                 'solution_color': '#2D5016',
                 'text_level': 'primary'
@@ -382,10 +425,10 @@ ADVANCED_ANNOTATIONS = {
                 'type': 'pie_slice_opportunity',
                 'angle_start': 80,
                 'angle_end': 240,
-                'text': 'Installment\n22% Orders\n28% Revenue',
+                'text': 'Installment\n22%→28%',
                 'color': '#2D5016',
                 'text_level': 'primary',
-                'radius_pct': 60
+                'radius_pct': 52
             }
         ]
     },
@@ -399,7 +442,7 @@ ADVANCED_ANNOTATIONS = {
                 'left_pct': 25,
                 'right_pct': 75,
                 'bracket_y_pct': 10,
-                'text': '+35% AOV\nLift',
+                'text': '+35% AOV',
                 'color': '#2D5016',
                 'text_level': 'primary'
             }
@@ -428,7 +471,7 @@ ADVANCED_ANNOTATIONS = {
             {
                 'type': 'growth_arrow_up',
                 'position_pct': (75, 35),
-                'text': 'Growth\nOpport.\n(22%)',
+                'text': 'Growth\nOpport.',
                 'color': '#2D5016',
                 'text_level': 'secondary'
             }
@@ -445,7 +488,7 @@ ADVANCED_ANNOTATIONS = {
                 'optimal_right_pct': 65,
                 'diminishing_left_pct': 65,
                 'diminishing_right_pct': 100,
-                'optimal_text': 'Optimal\n15-25%',
+                'optimal_text': 'Optimal\n15–25%',
                 'diminishing_text': 'Diminishing',
                 'optimal_color': '#2D5016',
                 'diminishing_color': '#CE2626',
@@ -461,7 +504,7 @@ ADVANCED_ANNOTATIONS = {
             {
                 'type': 'scatter_optimal_point',
                 'center_pct': (50, 50),
-                'text': 'Optimal\nPoint',
+                'text': 'Optimal',
                 'color': '#2D5016',
                 'text_level': 'primary'
             }
@@ -495,7 +538,38 @@ ADVANCED_ANNOTATIONS = {
             }
         ]
     },
+    
+    '04_financial_payment_dynamics/line_financial_impact.png': {
+        'name': 'Line Financial Impact',
+        'critical_finding': False,
+        'annotations': [
+            {
+                'type': 'warning_label',
+                'position_pct': (72, 18),
+                'text': 'UR\nmargin lead',
+                'color': '#2D5016',
+                'text_level': 'secondary'
+            }
+        ]
+    },
 }
+
+
+def annotate_relpath(rel_path):
+    config = ADVANCED_ANNOTATIONS.get(rel_path)
+    if not config:
+        return False
+    full_path = os.path.join(FIGURES_DIR, rel_path)
+    if not os.path.exists(full_path):
+        return False
+    return annotate_figure(full_path, config['annotations'])
+
+
+def annotate_relpaths(rel_paths):
+    results = []
+    for rel_path in rel_paths:
+        results.append(annotate_relpath(rel_path))
+    return results
 
 
 def get_dynamic_sizing(width, height):
@@ -504,14 +578,14 @@ def get_dynamic_sizing(width, height):
 
     sizing = {
         # Keep text readable after downscaling in markdown/PDF while preventing oversize overlays.
-        'primary_font': min(48, max(12, int(diagonal / 150 + 2))),   # Critical findings
-        'secondary_font': min(42, max(10, int(diagonal / 150))),     # Context
-        'tertiary_font': min(36, max(8, int(diagonal / 150 - 2))),   # Supporting
-        'text_padding': max(6, int(width * 0.01)),              # Text box padding
-        'arrow_width': max(2, int(diagonal / 200)),             # Arrow thickness
-        'circle_radius': max(30, int(diagonal * 0.05)),         # Circle size
-        'bracket_height': max(15, int(diagonal * 0.03)),        # Bracket height
-        'border_width': 3,                                       # Fixed border
+        'primary_font': min(36, max(12, int(diagonal / 170 + 2))),  # Critical findings
+        'secondary_font': min(30, max(10, int(diagonal / 180))),     # Context
+        'tertiary_font': min(24, max(8, int(diagonal / 200 - 1))),   # Supporting
+        'text_padding': max(5, int(width * 0.008)),                  # Text box padding
+        'arrow_width': max(2, int(diagonal / 260)),                  # Arrow thickness
+        'circle_radius': min(100, max(24, int(diagonal * 0.018))),   # Circle size
+        'bracket_height': min(80, max(14, int(diagonal * 0.02))),    # Bracket height
+        'border_width': 2,                                           # Fixed border
     }
     
     return sizing
@@ -660,32 +734,32 @@ def annotate_figure(image_path, annotations):
                 left = pct_to_px(ann['left_pct'])
                 right = pct_to_px(ann['right_pct'])
                 y_mid = pct_to_px(ann['y_middle_pct'])
-                box_half_h = max(60, int(height * 0.08))
+                box_half_h = min(max(28, int(height * 0.045)), 90)
 
                 # Box around bars
                 draw.rectangle([left, y_mid - box_half_h, right, y_mid + box_half_h], outline=color, width=sizing['border_width'] + 1)
 
                 text = ann.get('text', '')
                 text_x = (left + right) // 2 - 50
-                add_smart_text_box(draw, (text_x, y_mid - box_half_h - int(height * 0.04)), text, font_size, color, sizing['text_padding'])
+                add_smart_text_box(draw, (text_x, y_mid - box_half_h - int(height * 0.03)), text, font_size, color, sizing['text_padding'])
             
             elif ann_type in ['bar_critical_highlight', 'bar_organic_highlight', 'bar_double_day_highlight']:
                 pos = pct_to_px(ann['position_pct'])
-                height_px = pct_to_px(ann.get('height_pct', 30))
-                bar_half_w = max(30, int(width * 0.02))
+                height_px = min(pct_to_px(ann.get('height_pct', 30)), int(height * 0.24))
+                bar_half_w = min(max(22, int(width * 0.016)), 80)
 
                 draw.rectangle([pos[0] - bar_half_w, pos[1] - height_px, pos[0] + bar_half_w, pos[1]],
                              outline=color, width=sizing['border_width'])
 
                 text = ann.get('text', '')
-                add_smart_text_box(draw, (pos[0] - bar_half_w, pos[1] - height_px - int(height * 0.035)), text, font_size, color, sizing['text_padding'])
+                add_smart_text_box(draw, (pos[0] - bar_half_w, pos[1] - height_px - int(height * 0.025)), text, font_size, color, sizing['text_padding'])
             
             elif ann_type in ['bar_span_high_ltv', 'bar_span_low_ltv', 'box_span_lift']:
                 left = pct_to_px(ann['left_pct'])
                 right = pct_to_px(ann['right_pct'])
                 bracket_y = pct_to_px(ann['bracket_y_pct'])
-                
-                bracket_h = sizing['bracket_height']
+
+                bracket_h = min(sizing['bracket_height'], 70)
                 draw.line([(left, bracket_y), (left, bracket_y - bracket_h)], fill=color, width=sizing['border_width'])
                 draw.line([(right, bracket_y), (right, bracket_y - bracket_h)], fill=color, width=sizing['border_width'])
                 draw.line([(left, bracket_y - bracket_h), (right, bracket_y - bracket_h)], fill=color, width=sizing['border_width'])
@@ -695,7 +769,7 @@ def annotate_figure(image_path, annotations):
                 add_smart_text_box(draw, (text_x, bracket_y - bracket_h - 60), text, font_size, color, sizing['text_padding'])
             
             elif ann_type == 'gap_bracket_central':
-                bracket_h = sizing['bracket_height'] * 2
+                bracket_h = min(sizing['bracket_height'] * 2, 80)
                 top = pct_to_px(ann['top_pct'])
                 left_pos = int(width * 0.45)
                 right_pos = int(width * 0.55)
@@ -736,37 +810,37 @@ def annotate_figure(image_path, annotations):
             elif ann_type == 'heatmap_cell_peak':
                 col_x = pct_to_px(ann['col_pct'])
                 cell_center = (col_x, height // 2)
-                add_circle_outline(draw, cell_center, sizing['circle_radius'], color, sizing['border_width'])
-                
+                add_circle_outline(draw, cell_center, min(sizing['circle_radius'], 72), color, sizing['border_width'])
+
                 text = ann.get('text', '')
-                add_smart_text_box(draw, (col_x - 50, height - 180), text, font_size, color, sizing['text_padding'])
+                add_smart_text_box(draw, (col_x - 44, height - 150), text, font_size, color, sizing['text_padding'])
             
             elif ann_type in ['heatmap_premium_segment', 'heatmap_critical_hotspot']:
                 center = pct_to_px(ann['center_pct'])
-                add_circle_outline(draw, center, sizing['circle_radius'], color, sizing['border_width'])
-                
+                add_circle_outline(draw, center, min(sizing['circle_radius'], 84), color, sizing['border_width'])
+
                 text = ann.get('text', '')
-                add_smart_text_box(draw, (center[0] - 50, center[1] - 120), text, font_size, color, sizing['text_padding'])
+                add_smart_text_box(draw, (center[0] - 44, center[1] - 96), text, font_size, color, sizing['text_padding'])
             
             elif ann_type == 'heatmap_dual_contrast':
                 problem = pct_to_px(ann['problem_pct'])
                 solution = pct_to_px(ann['solution_pct'])
-                
-                add_circle_outline(draw, problem, sizing['circle_radius'], ann['problem_color'], sizing['border_width'])
-                add_smart_text_box(draw, (problem[0] - 60, problem[1] - 100), ann['problem_text'], font_size, ann['problem_color'], sizing['text_padding'])
-                
-                add_circle_outline(draw, solution, sizing['circle_radius'], ann['solution_color'], sizing['border_width'])
-                add_smart_text_box(draw, (solution[0] - 60, solution[1] - 100), ann['solution_text'], font_size, ann['solution_color'], sizing['text_padding'])
+
+                add_circle_outline(draw, problem, min(sizing['circle_radius'], 78), ann['problem_color'], sizing['border_width'])
+                add_smart_text_box(draw, (problem[0] - 52, problem[1] - 86), ann['problem_text'], font_size, ann['problem_color'], sizing['text_padding'])
+
+                add_circle_outline(draw, solution, min(sizing['circle_radius'], 78), ann['solution_color'], sizing['border_width'])
+                add_smart_text_box(draw, (solution[0] - 52, solution[1] - 86), ann['solution_text'], font_size, ann['solution_color'], sizing['text_padding'])
             
             elif ann_type == 'heatmap_dual_risk':
                 overstock = pct_to_px(ann['overstock_pct'])
                 stockout = pct_to_px(ann['stockout_pct'])
-                
-                add_circle_outline(draw, overstock, sizing['circle_radius'], ann['problem_color'], sizing['border_width'])
-                add_smart_text_box(draw, (overstock[0] - 60, overstock[1] + 80), ann['overstock_text'], font_size, ann['problem_color'], sizing['text_padding'])
-                
-                add_circle_outline(draw, stockout, sizing['circle_radius'], ann['solution_color'], sizing['border_width'])
-                add_smart_text_box(draw, (stockout[0] - 50, stockout[1] - 120), ann['stockout_text'], font_size, ann['solution_color'], sizing['text_padding'])
+
+                add_circle_outline(draw, overstock, min(sizing['circle_radius'], 78), ann['problem_color'], sizing['border_width'])
+                add_smart_text_box(draw, (overstock[0] - 52, overstock[1] + 68), ann['overstock_text'], font_size, ann['problem_color'], sizing['text_padding'])
+
+                add_circle_outline(draw, stockout, min(sizing['circle_radius'], 78), ann['solution_color'], sizing['border_width'])
+                add_smart_text_box(draw, (stockout[0] - 52, stockout[1] - 92), ann['stockout_text'], font_size, ann['solution_color'], sizing['text_padding'])
             
             # VERTICAL GAP / TIME PERIOD
             elif ann_type == 'vertical_gap':
@@ -774,21 +848,21 @@ def annotate_figure(image_path, annotations):
                 right = pct_to_px(ann['right_pct'])
                 top = pct_to_px(ann['top_pct'])
                 bottom = pct_to_px(ann['bottom_pct'])
-                
+
                 draw.rectangle([left, top, right, bottom], outline=color, width=sizing['border_width'])
-                
+
                 mid_x = (left + right) // 2
                 text = ann.get('text', '')
-                add_smart_text_box(draw, (mid_x - 40, (top + bottom) // 2 - 40), text, font_size, color, sizing['text_padding'])
+                add_smart_text_box(draw, (mid_x - 36, (top + bottom) // 2 - 32), text, font_size, color, sizing['text_padding'])
             
             elif ann_type == 'time_period_region':
                 left = pct_to_px(ann['left_pct'])
                 right = pct_to_px(ann['right_pct'])
-                
-                draw.rectangle([left, int(height * 0.2), right, int(height * 0.8)], outline=color, width=sizing['border_width'])
-                
+
+                draw.rectangle([left, int(height * 0.24), right, int(height * 0.76)], outline=color, width=sizing['border_width'])
+
                 text = ann.get('text', '')
-                add_smart_text_box(draw, ((left + right) // 2 - 50, int(height * 0.1)), text, font_size, color, sizing['text_padding'])
+                add_smart_text_box(draw, ((left + right) // 2 - 42, int(height * 0.12)), text, font_size, color, sizing['text_padding'])
             
             # DIRECTION ARROWS
             elif ann_type in ['impact_arrow_down', 'lag_arrow_down', 'growth_arrow_up']:

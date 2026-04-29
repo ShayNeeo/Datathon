@@ -2,10 +2,79 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
 OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/01_product_market_dominance'
+
+
+def _font(size):
+    try:
+        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
+    except Exception:
+        return ImageFont.load_default()
+
+
+def _text(draw, xy, text, color, size, pad=8):
+    font = _font(size)
+    bbox = draw.textbbox((0, 0), text, font=font)
+    w = bbox[2] - bbox[0]
+    h = bbox[3] - bbox[1]
+    x = max(pad, min(xy[0], draw._image.size[0] - w - pad))
+    y = max(pad, min(xy[1], draw._image.size[1] - h - pad))
+    draw.rounded_rectangle([x - pad, y - pad, x + w + pad, y + h + pad], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
+    draw.text((x, y), text, font=font, fill=color)
+    return (x, y, x + w, y + h)
+
+
+def _circle(draw, center, radius, color, width=2):
+    x, y = center
+    draw.ellipse([x - radius, y - radius, x + radius, y + radius], outline=color, width=width)
+
+
+def _line_arrow(draw, start, end, color, width=3):
+    draw.line([start, end], fill=color, width=width)
+    ang = np.arctan2(end[1] - start[1], end[0] - start[0])
+    head = max(8, width * 3)
+    p1 = (end[0] - head * np.cos(ang - np.pi / 7), end[1] - head * np.sin(ang - np.pi / 7))
+    p2 = (end[0] - head * np.cos(ang + np.pi / 7), end[1] - head * np.sin(ang + np.pi / 7))
+    draw.polygon([end, p1, p2], fill=color)
+
+
+def annotate_output(path):
+    img = Image.open(path).convert('RGBA')
+    w, h = img.size
+    draw = ImageDraw.Draw(img, 'RGBA')
+    name = os.path.basename(path)
+
+    if name == 'segment_market_share_new.png':
+        radius = min(w, h) * 0.20
+        _circle(draw, (w * 0.43, h * 0.48), int(radius), '#CE2626', 3)
+        _text(draw, (w * 0.60, h * 0.18), '80% Streetwear', '#CE2626', max(16, int(min(w, h) / 120)))
+        _line_arrow(draw, (w * 0.60, h * 0.22), (w * 0.50, h * 0.42), '#CE2626', 3)
+    elif name == 'size_profitability_new.png':
+        draw.rectangle([w * 0.70, h * 0.20, w * 0.88, h * 0.68], outline='#2D5016', width=3)
+        draw.rectangle([w * 0.20, h * 0.28, w * 0.38, h * 0.66], outline='#CE2626', width=3)
+        _text(draw, (w * 0.71, h * 0.12), 'Premium 30–35%', '#2D5016', max(14, int(min(w, h) / 130)))
+        _text(draw, (w * 0.19, h * 0.72), 'Commodity 18–26%', '#CE2626', max(14, int(min(w, h) / 130)))
+    elif name == 'size_profitability_boxplot.png':
+        y = h * 0.16
+        draw.line([(w * 0.22, y), (w * 0.22, y - h * 0.06), (w * 0.80, y - h * 0.06), (w * 0.80, y)], fill='#CE2626', width=3)
+        _text(draw, (w * 0.36, h * 0.02), 'Premium Size 12–17pp', '#CE2626', max(14, int(min(w, h) / 130)))
+    elif name == 'monthly_trend_heatmap.png':
+        _circle(draw, (w * 0.43, h * 0.47), int(min(w, h) * 0.045), '#2D5016', 3)
+        _text(draw, (w * 0.58, h * 0.18), 'May Peak 2.6x', '#2D5016', max(14, int(min(w, h) / 130)))
+        _line_arrow(draw, (w * 0.57, h * 0.22), (w * 0.47, h * 0.43), '#2D5016', 3)
+    elif name == 'star_vs_bait_analysis.png':
+        draw.rectangle([w * 0.68, h * 0.16, w * 0.90, h * 0.36], outline='#2D5016', width=3)
+        draw.rectangle([w * 0.10, h * 0.60, w * 0.30, h * 0.82], outline='#CE2626', width=3)
+        _text(draw, (w * 0.70, h * 0.06), 'STAR 31.3%', '#2D5016', max(14, int(min(w, h) / 140)))
+        _text(draw, (w * 0.08, h * 0.84), 'BAIT 23–24%', '#CE2626', max(14, int(min(w, h) / 140)))
+    elif name == 'brand_performance.png':
+        _text(draw, (w * 0.68, h * 0.10), 'UR = STAR', '#2D5016', max(12, int(min(w, h) / 150)))
+
+    img.convert('RGB').save(path)
 
 sns.set_theme(style="whitegrid")
 plt.rcParams['font.family'] = 'sans-serif'
@@ -286,9 +355,13 @@ def main():
     print(f'Data loaded: {len(oi_df)} delivered order items')
     
     plot_segment_market_share(oi_df, products_df)
+    annotate_output(os.path.join(OUTPUT_DIR, 'segment_market_share_new.png'))
     plot_size_profitability(oi_df, products_df)
+    annotate_output(os.path.join(OUTPUT_DIR, 'size_profitability_new.png'))
     plot_size_profitability_boxplot(oi_df, products_df)
+    annotate_output(os.path.join(OUTPUT_DIR, 'size_profitability_boxplot.png'))
     plot_monthly_trend_heatmap(oi_df, products_df)
+    annotate_output(os.path.join(OUTPUT_DIR, 'monthly_trend_heatmap.png'))
     plot_top_products_treemap(oi_df, products_df)
     plot_segment_profitability_heatmap(oi_df, products_df)
     plot_pareto_curve(oi_df)

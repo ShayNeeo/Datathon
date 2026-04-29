@@ -12,6 +12,8 @@ import matplotlib.ticker as ticker
 from matplotlib import cm
 from matplotlib.colors import LinearSegmentedColormap
 import warnings
+import os
+import sys
 
 warnings.filterwarnings('ignore')
 
@@ -27,6 +29,12 @@ OUTPUT_DIR_03 = f'{BASE_DIR}/03_operational_friction_leakage'
 OUTPUT_DIR_04 = f'{BASE_DIR}/04_financial_payment_dynamics'
 TOP_PROD_DIR = f'{BASE_DIR}/top_product_segment'
 DEEP_DIVE_DIR = f'{BASE_DIR}/deep_dive'
+REPO_ROOT = '/home/shayneeo/Downloads/Datathon'
+
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+from scripts.annotate_figures_optimized import annotate_relpaths
 
 PALETTE = {
     'authority': '#003366',    # Deep Navy
@@ -579,6 +587,24 @@ fig.suptitle("PAYMENT TYPES ANALYSIS: GEOGRAPHY, PRODUCTS & TRAFFIC", fontsize=1
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR_04}/payment_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+annotate_relpaths([
+    '02_customer_lifecycle_acquisition/cohort_growth.png',
+    '01_product_market_dominance/category_pie.png',
+    '03_operational_friction_leakage/returns_bar.png',
+    '04_financial_payment_dynamics/revenue_trend.png',
+    '03_operational_friction_leakage/geography_map.png',
+    '03_operational_friction_leakage/seasonality_month.png',
+    '03_operational_friction_leakage/seasonality_dow.png',
+    '01_product_market_dominance/segments.png',
+    '03_operational_friction_leakage/inventory_friction.png',
+    '03_operational_friction_leakage/conversion_matrix.png',
+    '04_financial_payment_dynamics/financial_velocity.png',
+    '01_product_market_dominance/may_products.png',
+    '01_product_market_dominance/saigonflex_attributes.png',
+    '01_product_market_dominance/margin_by_size.png',
+    '04_financial_payment_dynamics/payment_analysis.png',
+])
 
 print("\nLONGITUDINAL MASTER SUITE REGENERATED.")
 print("="*60)

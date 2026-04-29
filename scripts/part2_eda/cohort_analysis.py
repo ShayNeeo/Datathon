@@ -3,6 +3,38 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
+import os
+from PIL import Image, ImageDraw, ImageFont
+
+
+def _font(size):
+    try:
+        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
+    except Exception:
+        return ImageFont.load_default()
+
+
+def _text(draw, xy, text, color, size):
+    font = _font(size)
+    bbox = draw.textbbox((0, 0), text, font=font)
+    w = bbox[2] - bbox[0]
+    h = bbox[3] - bbox[1]
+    x = max(10, min(xy[0], draw._image.size[0] - w - 10))
+    y = max(10, min(xy[1], draw._image.size[1] - h - 10))
+    draw.rounded_rectangle([x - 8, y - 8, x + w + 8, y + h + 8], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
+    draw.text((x, y), text, font=font, fill=color)
+
+
+def annotate_output(path):
+    img = Image.open(path).convert('RGBA')
+    w, h = img.size
+    draw = ImageDraw.Draw(img, 'RGBA')
+    name = os.path.basename(path)
+    if name == 'cohort_growth.png':
+        _text(draw, (w * 0.72, h * 0.06), 'Retention\n40→10%', '#CE2626', max(14, int(min(w, h) / 150)))
+    elif name == 'regime_double_day_ltv.png':
+        _text(draw, (w * 0.67, h * 0.08), 'Double-Day\nLTV gap', '#CE2626', max(12, int(min(w, h) / 160)))
+    img.convert('RGB').save(path)
 
 df_orders = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/orders.csv')
 df_customers = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/customers.csv')
@@ -63,6 +95,7 @@ plt.tight_layout()
 output_path = '/home/shayneeo/Downloads/Datathon/output/figures_living/cohort_growth.png'
 plt.savefig(output_path, dpi=150, bbox_inches='tight', facecolor='white')
 plt.close()
+annotate_output(output_path)
 
 print(f"Cohort analysis complete. Saved to {output_path}")
 print(f"Total cohorts: {len(retention)}")
@@ -152,4 +185,5 @@ plt.tight_layout()
 output_path = '/home/shayneeo/Downloads/Datathon/output/figures_living/02_customer_lifecycle_acquisition/regime_double_day_ltv.png'
 plt.savefig(output_path, dpi=200, bbox_inches='tight', facecolor='white')
 plt.close()
+annotate_output(output_path)
 print(f"Saved to {output_path}")

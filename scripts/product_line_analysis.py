@@ -2,11 +2,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import sys
 import numpy as np
 import re
 
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
 OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living'
+REPO_ROOT = '/home/shayneeo/Downloads/Datathon'
+
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+from scripts.annotate_figures_optimized import annotate_relpaths
 
 sns.set_theme(style="whitegrid")
 plt.rcParams['font.family'] = 'sans-serif'
@@ -302,6 +309,14 @@ def main():
     
     print("\n=== Generating Financial Impact Analysis for 04 ===")
     plot_line_financial_impact(oi_df, products_df)
+
+    annotate_relpaths([
+        '01_product_market_dominance/star_vs_bait_analysis.png',
+        '01_product_market_dominance/brand_performance.png',
+        '02_customer_lifecycle_acquisition/line_revenue_acquisition.png',
+        '03_operational_friction_leakage/line_failure_rate.png',
+        '04_financial_payment_dynamics/line_financial_impact.png',
+    ])
     
     print("\n=== Product Line Analysis Complete ===")
     print("\nLine Code Statistics:")

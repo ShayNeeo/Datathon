@@ -14,6 +14,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
 import warnings
 import os
+from PIL import Image, ImageDraw, ImageFont
 
 warnings.filterwarnings('ignore')
 
@@ -22,6 +23,44 @@ warnings.filterwarnings('ignore')
 # ----------------------------------------------------------------------------
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
 OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/03_operational_friction_leakage'
+
+
+def _font(size):
+    try:
+        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
+    except Exception:
+        return ImageFont.load_default()
+
+
+def _text(draw, xy, text, color, size):
+    font = _font(size)
+    bbox = draw.textbbox((0, 0), text, font=font)
+    w = bbox[2] - bbox[0]
+    h = bbox[3] - bbox[1]
+    x = max(10, min(xy[0], draw._image.size[0] - w - 10))
+    y = max(10, min(xy[1], draw._image.size[1] - h - 10))
+    draw.rounded_rectangle([x - 8, y - 8, x + w + 8, y + h + 8], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
+    draw.text((x, y), text, font=font, fill=color)
+
+
+def annotate_output(path):
+    img = Image.open(path).convert('RGBA')
+    w, h = img.size
+    draw = ImageDraw.Draw(img, 'RGBA')
+    name = os.path.basename(path)
+    if name == 'returns_bar.png':
+        _text(draw, (w * 0.62, h * 0.10), 'Wrong Size\n34.6%', '#CE2626', max(14, int(min(w, h) / 150)))
+    elif name == 'return_deep_dive.png':
+        _text(draw, (w * 0.62, h * 0.08), 'Margin\n-3.5pp', '#CE2626', max(14, int(min(w, h) / 150)))
+    elif name == 'return_reason_matrix.png':
+        _text(draw, (w * 0.58, h * 0.08), 'Wrong-Size', '#CE2626', max(12, int(min(w, h) / 160)))
+    elif name == 'inventory_risk_analysis.png':
+        _text(draw, (w * 0.58, h * 0.08), 'Overstock / Stockout', '#CE2626', max(12, int(min(w, h) / 160)))
+    elif name == 'tet_holiday_friction.png':
+        _text(draw, (w * 0.55, h * 0.08), 'Tết Failure Spike', '#CE2626', max(12, int(min(w, h) / 160)))
+    elif name == 'line_failure_rate.png':
+        _text(draw, (w * 0.58, h * 0.08), 'UC / RP hotspot', '#CE2626', max(12, int(min(w, h) / 160)))
+    img.convert('RGB').save(path)
 
 PALETTE = {
     'authority': '#003366',    # Deep Navy
@@ -588,5 +627,12 @@ fig.text(0.5, 0.02, "DIAGNOSTIC: Backlog bullwhip effect peaks in Recovery Phase
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/tet_holiday_friction.png', dpi=300, bbox_inches='tight')
 plt.close()
+
+annotate_output(f'{OUTPUT_DIR}/returns_bar.png')
+annotate_output(f'{OUTPUT_DIR}/return_deep_dive.png')
+annotate_output(f'{OUTPUT_DIR}/return_reason_matrix.png')
+annotate_output(f'{OUTPUT_DIR}/inventory_risk_analysis.png')
+annotate_output(f'{OUTPUT_DIR}/tet_holiday_friction.png')
+annotate_output(f'{OUTPUT_DIR}/line_failure_rate.png')
 
 print("\nOPERATIONAL FRICTION & LEAKAGE ANALYSIS COMPLETE (INCLUDING PART 3 ENHANCEMENTS).")

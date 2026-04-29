@@ -2,10 +2,51 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
 OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/04_financial_payment_dynamics'
+
+
+def _font(size):
+    try:
+        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
+    except Exception:
+        return ImageFont.load_default()
+
+
+def _text(draw, xy, text, color, size):
+    font = _font(size)
+    bbox = draw.textbbox((0, 0), text, font=font)
+    w = bbox[2] - bbox[0]
+    h = bbox[3] - bbox[1]
+    x = max(10, min(xy[0], draw._image.size[0] - w - 10))
+    y = max(10, min(xy[1], draw._image.size[1] - h - 10))
+    draw.rounded_rectangle([x - 8, y - 8, x + w + 8, y + h + 8], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
+    draw.text((x, y), text, font=font, fill=color)
+
+
+def annotate_output(path):
+    img = Image.open(path).convert('RGBA')
+    w, h = img.size
+    draw = ImageDraw.Draw(img, 'RGBA')
+    name = os.path.basename(path)
+    if name == 'installment_aov_boxplot.png':
+        _text(draw, (w * 0.62, h * 0.08), '+35% AOV', '#2D5016', max(14, int(min(w, h) / 150)))
+    elif name == 'promo_depth_volume.png':
+        _text(draw, (w * 0.58, h * 0.10), 'Optimal\n15–25%', '#2D5016', max(12, int(min(w, h) / 160)))
+    elif name == 'ltv_by_payment_method.png':
+        _text(draw, (w * 0.60, h * 0.08), 'Card > COD', '#2D5016', max(12, int(min(w, h) / 160)))
+    elif name == 'revenue_margin_trend.png':
+        _text(draw, (w * 0.58, h * 0.08), 'Revenue ↑\nMargin ↓', '#CE2626', max(12, int(min(w, h) / 160)))
+    elif name == 'cac_payback_by_channel.png':
+        _text(draw, (w * 0.56, h * 0.08), 'Organic best', '#2D5016', max(12, int(min(w, h) / 160)))
+    elif name == 'installment_revenue_share.png':
+        _text(draw, (w * 0.60, h * 0.08), 'Installment lift', '#2D5016', max(12, int(min(w, h) / 160)))
+    elif name == 'promo_urgency_stackability.png':
+        _text(draw, (w * 0.56, h * 0.08), 'Cap stackable promos', '#CE2626', max(12, int(min(w, h) / 160)))
+    img.convert('RGB').save(path)
 
 sns.set_theme(style="whitegrid")
 plt.rcParams['font.family'] = 'sans-serif'
@@ -313,6 +354,13 @@ def main():
     plot_cac_payback_by_channel(customers, orders_pay, payments)
     plot_installment_contribution_margin(orders_pay)
     plot_promo_urgency_stackability(oi_delivered, promotions)  # Part 3-inspired new chart
+    annotate_output(os.path.join(OUTPUT_DIR, 'installment_aov_boxplot.png'))
+    annotate_output(os.path.join(OUTPUT_DIR, 'promo_depth_volume.png'))
+    annotate_output(os.path.join(OUTPUT_DIR, 'ltv_by_payment_method.png'))
+    annotate_output(os.path.join(OUTPUT_DIR, 'revenue_margin_trend.png'))
+    annotate_output(os.path.join(OUTPUT_DIR, 'cac_payback_by_channel.png'))
+    annotate_output(os.path.join(OUTPUT_DIR, 'installment_revenue_share.png'))
+    annotate_output(os.path.join(OUTPUT_DIR, 'promo_urgency_stackability.png'))
 
     print("\nAll enhanced financial figures generated (including Part 3 urgency mechanics).")
 
