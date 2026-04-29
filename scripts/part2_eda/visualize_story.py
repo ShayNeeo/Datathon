@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-Strategic EDA - FINAL MASTER EXTENDED SUITE (Full 10-Year Cohort Accuracy)
-Theme: "The Forensic Audit"
-Scope: 2012-2022 (Entire Dataset)
-"""
+"""Strategic EDA - FINAL MASTER EXTENDED SUITE (Full 10-Year Cohort Accuracy) - v2"""
 
 import pandas as pd
 import numpy as np
@@ -35,13 +31,13 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 PALETTE = {
-    'authority': '#0072B2',    # STYLING.md Blue
-    'context':   '#56B4E9',    # STYLING.md Sky Blue
-    'friction':  '#D55E00',    # STYLING.md Vermillion
-    'gold':      '#E69F00',    # STYLING.md Orange
-    'highlight': '#F0E442',    # STYLING.md Yellow
+    'authority': '#93FA64',    # brand green (v2)
+    'context':   '#93FA64',    # soft green highlight
+    'friction':  '#DC2626',    # alert red
+    'gold':      '#F59E0B',    # amber accent
+    'highlight': '#DCFCE7',    # pale green wash
     'paper':     '#FFFFFF',    # Clean White
-    'ink':       '#000000',    # Black
+    'ink':       '#0F172A',    # slate
     'grid':      '#D1D1D1',
 }
 
@@ -616,6 +612,66 @@ plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR_04}/payment_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
 
+print("[29/29] Asset 29: Rendering standalone payment panel figures...")
+
+top_method = pm_dist.idxmax()
+top_method_share = pm_dist.max() / pm_dist.sum() * 100
+
+fig, ax = plt.subplots(figsize=(10, 6.5))
+wedges, texts, autotexts = ax.pie(
+    pm_dist.values,
+    labels=pm_dist.index,
+    autopct='%1.1f%%',
+    colors=['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#E91E63'][:len(pm_dist)],
+    startangle=90
+)
+ax.set_title("PAYMENT METHOD DISTRIBUTION", fontsize=14, fontweight='bold', color=PALETTE['authority'])
+for autotext in autotexts:
+    autotext.set_fontweight('bold')
+add_callout(ax, f"Dominant method: {top_method}\n{top_method_share:.1f}% share", xy=(0, 0), xytext=(0.8, -0.2), color='#D55E00')
+plt.savefig(f'{OUTPUT_DIR_04}/payment_method_share.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+fig, ax = plt.subplots(figsize=(10, 6.5))
+im = ax.imshow(pm_by_region_pct.values, cmap='Blues', aspect='auto')
+ax.set_xticks(range(len(pm_by_region.columns)))
+ax.set_xticklabels(pm_by_region.columns, rotation=45, ha='right', fontweight='bold')
+ax.set_yticks(range(len(pm_by_region.index)))
+ax.set_yticklabels(pm_by_region.index, fontweight='bold')
+ax.set_title("PAYMENT BY REGION (%)", fontsize=14, fontweight='bold', color=PALETTE['authority'])
+for i in range(len(pm_by_region.index)):
+    for j in range(len(pm_by_region.columns)):
+        val = pm_by_region_pct.iloc[i, j]
+        if val > 0:
+            ax.text(j, i, f'{val:.0f}%', ha='center', va='center', color='white' if val > 30 else 'black', fontsize=9)
+plt.colorbar(im, ax=ax, label='%')
+add_callout(ax, "East region dominates the mix", xy=(0, 0), xytext=(1.2, 0.8), color='#D55E00')
+plt.savefig(f'{OUTPUT_DIR_04}/payment_by_region.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+fig, ax = plt.subplots(figsize=(12, 7))
+product_top = pm_by_product_pct.mean(axis=1).sort_values(ascending=False).head(10)
+ax.barh(product_top.index[::-1], product_top.values[::-1], color='#93FA64', edgecolor='#0F172A')
+ax.set_title("PAYMENT BY TOP 10 PRODUCTS (%)", fontsize=14, fontweight='bold', color=PALETTE['authority'])
+ax.set_xlabel("Average payment mix share (%)", fontsize=11)
+for i, v in enumerate(product_top.values[::-1]):
+    ax.text(v + 0.5, i, f'{v:.1f}%', va='center', fontsize=9, fontweight='bold')
+add_callout(ax, "Product mix differs by basket value", xy=(product_top.values.max(), 0), xytext=(product_top.values.max() * 0.7, 8), color='#D55E00')
+plt.savefig(f'{OUTPUT_DIR_04}/payment_by_product.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+fig, ax = plt.subplots(figsize=(10, 6.5))
+im = ax.imshow(pm_by_traffic_pct.values, cmap='Oranges', aspect='auto')
+ax.set_xticks(range(len(pm_by_traffic.columns)))
+ax.set_xticklabels(pm_by_traffic.columns, rotation=45, ha='right', fontweight='bold')
+ax.set_yticks(range(len(pm_by_traffic.index)))
+ax.set_yticklabels(pm_by_traffic.index, fontsize=9)
+ax.set_title("PAYMENT BY TRAFFIC SOURCE (%)", fontsize=14, fontweight='bold', color=PALETTE['authority'])
+plt.colorbar(im, ax=ax, label='%')
+add_callout(ax, "Traffic source changes payment mix", xy=(0, 0), xytext=(1.2, 0.8), color='#D55E00')
+plt.savefig(f'{OUTPUT_DIR_04}/payment_by_traffic_source.png', dpi=300, bbox_inches='tight')
+plt.close()
+
 # ----------------------------------------------------------------------------
 # ASSET 28: PAYDAY EFFECT (Vietnam Local Insight)
 # ----------------------------------------------------------------------------
@@ -626,7 +682,7 @@ dom_avg = sales_pre.groupby('day')['Revenue'].mean()
 dom_ratio = (dom_avg / dom_avg.mean() - 1) * 100
 
 fig, ax = plt.subplots(figsize=(12, 6))
-colors = ['#D55E00' if r > 10 else '#0072B2' if r < -10 else '#64748B' for r in dom_ratio.values]
+colors = ['#DC2626' if r > 10 else '#16A34A' if r < -10 else '#64748B' for r in dom_ratio.values]
 ax.bar(dom_ratio.index, dom_ratio.values, color=colors, alpha=0.8, edgecolor='black', linewidth=1)
 
 apply_editorial_style(fig, ax, "The Vietnamese Payday Effect", "Revenue spikes on the 1st and 30th follow local salary cycles")
@@ -635,7 +691,7 @@ ax.set_xlabel("Day of Month", fontweight='bold')
 ax.set_ylabel("Revenue Variance (%)", fontweight='bold')
 
 add_callout(ax, "Month-end salary surge", xy=(30, 15), xytext=(25, 25), color='#D55E00')
-add_callout(ax, "Post-spend fatigue", xy=(5, -15), xytext=(10, -25), color='#0072B2')
+add_callout(ax, "Post-spend fatigue", xy=(5, -15), xytext=(10, -25), color='#16A34A')
 
 plt.savefig(f'{OUTPUT_DIR_04}/payday_effect.png', dpi=300, bbox_inches='tight')
 plt.close()

@@ -44,7 +44,7 @@ def load_data():
     print("Loading data...")
     products = pd.read_csv(os.path.join(INPUT_DIR, 'products.csv'))
     products = products.rename(columns={'cogs': 'cogs_products'})
-    order_items = pd.read_csv(os.path.join(INPUT_DIR, 'order_items.csv'))
+    order_items = pd.read_csv(os.path.join(INPUT_DIR, 'order_items.csv'), low_memory=False)
     orders = pd.read_csv(os.path.join(INPUT_DIR, 'orders.csv'), parse_dates=['order_date'])
     customers = pd.read_csv(os.path.join(INPUT_DIR, 'customers.csv'))
     
@@ -94,7 +94,7 @@ def plot_star_vs_bait(oi_df, products_df):
     
     # 1. Bar chart: Price vs Margin by line code
     ax1 = axes[0, 0]
-    colors = ['#009E73' if x > avg_margin * 1.1 else '#D55E00' if x < avg_margin * 0.9 else '#E69F00' for x in line_stats['margin_pct']]
+    colors = ['#16A34A' if x > avg_margin * 1.1 else '#DC2626' if x < avg_margin * 0.9 else '#F59E0B' for x in line_stats['margin_pct']]
     bars = ax1.bar(range(len(line_stats)), line_stats['margin_pct'] * 100, color=colors, edgecolor='white', linewidth=1.5)
     ax1.set_xticks(range(len(line_stats)))
     ax1.set_xticklabels(line_stats.index, rotation=45, ha='right')
@@ -120,7 +120,7 @@ def plot_star_vs_bait(oi_df, products_df):
     # 3. Horizontal bar: Product count by line
     ax3 = axes[1, 0]
     line_stats_sorted = line_stats.sort_values('product_count', ascending=True)
-    colors3 = ['#009E73' if c == 'STAR' else '#D55E00' if c == 'BAIT' else '#E69F00' for c in line_stats_sorted['classification']]
+    colors3 = ['#16A34A' if c == 'STAR' else '#DC2626' if c == 'BAIT' else '#F59E0B' for c in line_stats_sorted['classification']]
     ax3.barh(line_stats_sorted.index, line_stats_sorted['product_count'], color=colors3, edgecolor='white')
     ax3.set_title('Product Count by Line Code', fontsize=14, fontweight='bold')
     ax3.set_xlabel('Number of Products', fontsize=12)
@@ -128,7 +128,7 @@ def plot_star_vs_bait(oi_df, products_df):
     # 4. Classification pie chart
     ax4 = axes[1, 1]
     class_counts = line_stats['classification'].value_counts()
-    colors4 = {'STAR': '#009E73', 'BALANCED': '#E69F00', 'BAIT': '#D55E00'}
+    colors4 = {'STAR': '#16A34A', 'BALANCED': '#F59E0B', 'BAIT': '#DC2626'}
     ax4.pie(class_counts, labels=class_counts.index, autopct='%1.0f%%', 
            colors=[colors4[c] for c in class_counts.index], startangle=90)
     ax4.set_title('Line Code Classification', fontsize=14, fontweight='bold')
@@ -137,7 +137,7 @@ def plot_star_vs_bait(oi_df, products_df):
     apply_editorial_style(fig, axes[0,0], "Star vs Bait Analysis: Product Portfolio", "Identifying high-margin growth drivers vs low-margin traffic generators")
     
     # Native callout
-    add_callout(axes[1,1], "Prioritize STAR expansion", xy=(0.5, 0.5), xytext=(0.5, 0.8), color='#009E73')
+    add_callout(axes[1,1], "Prioritize STAR expansion", xy=(0.5, 0.5), xytext=(0.5, 0.8), color='#16A34A')
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_path, 'star_vs_bait_analysis.png'), dpi=150, bbox_inches='tight')
@@ -162,16 +162,16 @@ def plot_brand_performance(oi_df, products_df):
     x = np.arange(len(brand_stats))
     width = 0.35
     
-    ax.bar(x - width/2, brand_stats['margin_pct'] * 100, width, label='Margin %', color='#3498db', alpha=0.8)
+    ax.bar(x - width/2, brand_stats['margin_pct'] * 100, width, label='Margin %', color='#16A34A', alpha=0.8)
     ax.set_xticks(x)
     ax.set_xticklabels(brand_stats.index, rotation=45, ha='right')
-    ax.set_ylabel('Margin %', fontsize=12, color='#3498db')
-    ax.tick_params(axis='y', labelcolor='#3498db')
+    ax.set_ylabel('Margin %', fontsize=12, color='#16A34A')
+    ax.tick_params(axis='y', labelcolor='#16A34A')
     
     ax2 = ax.twinx()
-    ax2.bar(x + width/2, brand_stats['product_count'], width, label='Product Count', color='#e74c3c', alpha=0.6)
-    ax2.set_ylabel('Product Count', fontsize=12, color='#e74c3c')
-    ax2.tick_params(axis='y', labelcolor='#e74c3c')
+    ax2.bar(x + width/2, brand_stats['product_count'], width, label='Product Count', color='#DC2626', alpha=0.6)
+    ax2.set_ylabel('Product Count', fontsize=12, color='#DC2626')
+    ax2.tick_params(axis='y', labelcolor='#DC2626')
     
     ax.set_title('Brand Performance: Margin vs Product Count', fontsize=16, fontweight='bold')
     ax.set_xlabel('Brand', fontsize=12)
@@ -202,7 +202,7 @@ def plot_line_by_customer_segment(oi_df, products_df):
     fig, axes = plt.subplots(1, 2, figsize=(16, 7))
     
     # Revenue by line code
-    axes[0].bar(range(len(line_revenue)), line_revenue.values, color='#3498db', edgecolor='white')
+    axes[0].bar(range(len(line_revenue)), line_revenue.values, color='#16A34A', edgecolor='white')
     axes[0].set_xticks(range(len(line_revenue)))
     axes[0].set_xticklabels(line_revenue.index, rotation=45, ha='right')
     axes[0].set_title('Revenue by Product Line', fontsize=14, fontweight='bold')
@@ -210,7 +210,7 @@ def plot_line_by_customer_segment(oi_df, products_df):
     axes[0].set_ylabel('Revenue (VND)', fontsize=12)
     
     # Order count by line code
-    axes[1].bar(range(len(line_count)), line_count.values, color='#e74c3c', edgecolor='white')
+    axes[1].bar(range(len(line_count)), line_count.values, color='#DC2626', edgecolor='white')
     axes[1].set_xticks(range(len(line_count)))
     axes[1].set_xticklabels(line_count.index, rotation=45, ha='right')
     axes[1].set_title('_order Count by Product Line', fontsize=14, fontweight='bold')
@@ -229,7 +229,7 @@ def plot_line_operational_friction(oi_df, products_df):
     ensure_dir(output_path)
     
     # Get all orders (not just delivered) to see friction
-    order_items = pd.read_csv(os.path.join(INPUT_DIR, 'order_items.csv'))
+    order_items = pd.read_csv(os.path.join(INPUT_DIR, 'order_items.csv'), low_memory=False)
     orders = pd.read_csv(os.path.join(INPUT_DIR, 'orders.csv'), parse_dates=['order_date'])
     
     oi_all = order_items.merge(products_df[['product_id', 'line_code', 'brand']], on='product_id', how='left')
@@ -250,7 +250,7 @@ def plot_line_operational_friction(oi_df, products_df):
         
         fig, ax = plt.subplots(figsize=(14, 7))
         bars = ax.bar(range(len(failure_rate)), failure_rate.values, 
-                   color=['#e74c3c' if x > 10 else '#f39c12' if x > 5 else '#2ecc71' for x in failure_rate.values],
+                   color=['#DC2626' if x > 10 else '#F59E0B' if x > 5 else '#16A34A' for x in failure_rate.values],
                    edgecolor='white')
         ax.set_xticks(range(len(failure_rate)))
         ax.set_xticklabels(failure_rate.index, rotation=45, ha='right')
@@ -264,7 +264,7 @@ def plot_line_operational_friction(oi_df, products_df):
         apply_editorial_style(fig, ax, "Order Failure Rate by Product Line", "Identifying operational leakage across major product lines")
 
         # Native callout
-        add_callout(ax, "Significant failure hotspots", xy=(0, 10), xytext=(2, 15), color='#D55E00')
+        add_callout(ax, "Significant failure hotspots", xy=(0, 10), xytext=(2, 15), color='#DC2626')
 
         ax.legend(frameon=False)
         plt.tight_layout()
@@ -294,14 +294,14 @@ def plot_line_financial_impact(oi_df, products_df):
     fig, axes = plt.subplots(1, 2, figsize=(16, 7))
     
     # Revenue by line
-    axes[0].bar(range(len(line_financial)), line_financial['unit_price'], color='#3498db', edgecolor='white')
+    axes[0].bar(range(len(line_financial)), line_financial['unit_price'], color='#16A34A', edgecolor='white')
     axes[0].set_xticks(range(len(line_financial)))
     axes[0].set_xticklabels(line_financial.index, rotation=45, ha='right')
     axes[0].set_title('Revenue by Product Line', fontsize=14, fontweight='bold')
     axes[0].set_ylabel('Revenue (VND)', fontsize=12)
     
     # Margin by line
-    axes[1].bar(range(len(line_financial)), line_financial['margin'], color='#2ecc71', edgecolor='white')
+    axes[1].bar(range(len(line_financial)), line_financial['margin'], color='#16A34A', edgecolor='white')
     axes[1].set_xticks(range(len(line_financial)))
     axes[1].set_xticklabels(line_financial.index, rotation=45, ha='right')
     axes[1].set_title('Margin % by Product Line', fontsize=14, fontweight='bold')

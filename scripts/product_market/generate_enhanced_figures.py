@@ -43,7 +43,7 @@ def load_and_prepare():
     print("Loading data...")
     products = pd.read_csv(os.path.join(INPUT_DIR, 'products.csv'))
     products = products.rename(columns={'cogs': 'cogs_products'})
-    order_items = pd.read_csv(os.path.join(INPUT_DIR, 'order_items.csv'))
+    order_items = pd.read_csv(os.path.join(INPUT_DIR, 'order_items.csv'), low_memory=False)
     orders = pd.read_csv(os.path.join(INPUT_DIR, 'orders.csv'), parse_dates=['order_date'])
     
     oi = order_items.merge(products[['product_id', 'cogs_products']], on='product_id', how='left')
@@ -88,7 +88,7 @@ def plot_segment_market_share(oi_df, products_df):
     segment_revenue = oi_df.groupby('segment')['unit_price'].sum().sort_values(ascending=False)
     
     # STYLING.md Qualitative Palette
-    colors = ['#0072B2', '#009E73', '#E69F00', '#CC79A7', '#56B4E9', '#D55E00']
+    colors = ['#16A34A', '#93FA64', '#F59E0B', '#0F766E', '#DCFCE7', '#DC2626']
     
     wedges, texts, autotexts = ax.pie(segment_revenue, labels=segment_revenue.index, 
                                     autopct='%1.1f%%', colors=colors, startangle=90,
@@ -99,7 +99,7 @@ def plot_segment_market_share(oi_df, products_df):
     apply_editorial_style(fig, ax, "Market Share by Segment", "Revenue dominance of Streetwear and Standard segments")
     
     # Native callout
-    add_callout(ax, "80% Streetwear Hegemony", xy=(0.3, 0.3), xytext=(1.2, 0.8), color='#D55E00')
+    add_callout(ax, "80% Streetwear Hegemony", xy=(0.3, 0.3), xytext=(1.2, 0.8), color='#DC2626')
 
     plt.savefig(os.path.join(OUTPUT_DIR, 'segment_market_share_new.png'))
     plt.close()
@@ -113,7 +113,7 @@ def plot_size_profitability(oi_df, products_df):
     size_margin = oi_merged.groupby('size')['profit_margin'].mean().sort_values(ascending=False)
     
     # STYLING.md colors
-    colors = ['#009E73' if x > 0.3 else '#E69F00' if x > 0.2 else '#D55E00' for x in size_margin]
+    colors = ['#16A34A' if x > 0.3 else '#F59E0B' if x > 0.2 else '#DC2626' for x in size_margin]
     bars = ax.bar(size_margin.index, size_margin.values, color=colors, edgecolor='white', linewidth=1.5)
     
     ax.axhline(y=size_margin.mean(), color='#64748B', linestyle='--', alpha=0.7, label=f'Avg: {size_margin.mean():.1%}')
@@ -121,8 +121,8 @@ def plot_size_profitability(oi_df, products_df):
     apply_editorial_style(fig, ax, "Average Profit Margin by Size", "Premium sizes (L/XL) command 12-17pp higher margins")
     
     # Professional callouts
-    add_callout(ax, "Premium 30–35%", xy=(2, 0.32), xytext=(2.5, 0.45), color='#009E73')
-    add_callout(ax, "Commodity 18–26%", xy=(0, 0.22), xytext=(-0.5, 0.10), color='#D55E00')
+    add_callout(ax, "Premium 30–35%", xy=(2, 0.32), xytext=(2.5, 0.45), color='#16A34A')
+    add_callout(ax, "Commodity 18–26%", xy=(0, 0.22), xytext=(-0.5, 0.10), color='#DC2626')
 
     plt.legend(frameon=False, loc='upper right')
     plt.savefig(os.path.join(OUTPUT_DIR, 'size_profitability_new.png'))
@@ -140,10 +140,10 @@ def plot_size_profitability_boxplot(oi_df, products_df):
     
     apply_editorial_style(fig, ax, "Profit Margin Distribution by Size", "High variance in L/XL indicates pricing power and scarcity premium")
     
-    ax.axhline(y=0, color='#D55E00', linestyle='--', alpha=0.5)
+    ax.axhline(y=0, color='#DC2626', linestyle='--', alpha=0.5)
     
     # Professional callout
-    add_callout(ax, "Premium Size 12–17pp gap", xy=(3, 0.35), xytext=(4, 0.5), color='#0072B2')
+    add_callout(ax, "Premium Size 12–17pp gap", xy=(3, 0.35), xytext=(4, 0.5), color='#16A34A')
 
     plt.savefig(os.path.join(OUTPUT_DIR, 'size_profitability_boxplot.png'))
     plt.close()
@@ -170,7 +170,7 @@ def plot_monthly_trend_heatmap(oi_df, products_df):
         ax.set_xticklabels(monthly_pivot.index.tolist(), rotation=45, ha='right', fontsize=9)
         
         # Professional callout (pointing to a typical May peak area)
-        add_callout(ax, "May Peak 2.6x baseline", xy=(n_months * 0.8, 2), xytext=(n_months * 0.9, 0.5), color='#009E73')
+        add_callout(ax, "May Peak 2.6x baseline", xy=(n_months * 0.8, 2), xytext=(n_months * 0.9, 0.5), color='#16A34A')
 
         plt.savefig(os.path.join(OUTPUT_DIR, 'monthly_trend_heatmap.png'), dpi=150, bbox_inches='tight')
         plt.close()
@@ -198,7 +198,7 @@ def plot_top_products_treemap(oi_df, products_df):
     ax.set_xlabel('Revenue Share (%)', fontsize=12, fontweight='bold')
     
     # Professional callout
-    add_callout(ax, "Top 5 SKUs drive disproportionate value", xy=(norm_sizes.iloc[0], 49), xytext=(15, 45), color='#0072B2')
+    add_callout(ax, "Top 5 SKUs drive disproportionate value", xy=(norm_sizes.iloc[0], 49), xytext=(15, 45), color='#16A34A')
 
     plt.savefig(os.path.join(OUTPUT_DIR, 'top_products_treemap.png'), dpi=150)
     plt.close()
@@ -218,7 +218,7 @@ def plot_segment_profitability_heatmap(oi_df, products_df):
         apply_editorial_style(fig, ax, "Profitability by Segment and Size", "Heatmap of average gross margin across the product matrix")
         
         # Professional callout
-        add_callout(ax, "Negative margin in small sizes", xy=(0.5, 3.5), xytext=(2.5, 4.5), color='#D55E00')
+        add_callout(ax, "Negative margin in small sizes", xy=(0.5, 3.5), xytext=(2.5, 4.5), color='#DC2626')
 
         plt.savefig(os.path.join(OUTPUT_DIR, 'segment_profitability_heatmap.png'))
         plt.close()
@@ -232,20 +232,20 @@ def plot_pareto_curve(oi_df):
     fig, ax1 = plt.subplots(figsize=(12, 6))
     x = np.arange(len(product_revenue))
     
-    ax1.bar(x, product_revenue.values, color='#0072B2', alpha=0.7, width=0.8)
+    ax1.bar(x, product_revenue.values, color='#16A34A', alpha=0.7, width=0.8)
     
     ax2 = ax1.twinx()
-    ax2.plot(x, cumulative_pct.values, color='#D55E00', linewidth=3)
+    ax2.plot(x, cumulative_pct.values, color='#DC2626', linewidth=3)
     ax2.axhline(y=80, color='#64748B', linestyle='--', alpha=0.5)
     
     apply_editorial_style(fig, ax1, "Product Revenue Pareto Analysis", "80% of revenue is driven by a small fraction of SKUs (Streetwear dominance)")
     
-    ax1.set_ylabel('Revenue (VND)', fontsize=12, fontweight='bold', color='#0072B2')
-    ax2.set_ylabel('Cumulative Revenue %', fontsize=12, fontweight='bold', color='#D55E00')
+    ax1.set_ylabel('Revenue (VND)', fontsize=12, fontweight='bold', color='#16A34A')
+    ax2.set_ylabel('Cumulative Revenue %', fontsize=12, fontweight='bold', color='#DC2626')
     ax2.set_ylim(0, 105)
     
     # Professional callout
-    add_callout(ax1, "80% Revenue Concentration", xy=(len(product_revenue)*0.15, 80), xytext=(len(product_revenue)*0.4, 60), color='#D55E00')
+    add_callout(ax1, "80% Revenue Concentration", xy=(len(product_revenue)*0.15, 80), xytext=(len(product_revenue)*0.4, 60), color='#DC2626')
 
     plt.savefig(os.path.join(OUTPUT_DIR, 'pareto_analysis.png'))
     plt.close()
@@ -264,7 +264,7 @@ def plot_cross_sell_opportunities(oi_df, products_df):
         apply_editorial_style(fig, ax, "Cross-Sell Opportunities: Segment-Size matrix", "Average order value (AOV) potential across categories")
         
         # Professional callout
-        add_callout(ax, "High AOV Bundle Potential", xy=(3.5, 0.5), xytext=(4.5, 1.5), color='#0072B2')
+        add_callout(ax, "High AOV Bundle Potential", xy=(3.5, 0.5), xytext=(4.5, 1.5), color='#16A34A')
 
         plt.savefig(os.path.join(OUTPUT_DIR, 'cross_sell_opportunities.png'))
         plt.close()
@@ -290,7 +290,7 @@ def plot_temporal_product_shifts(oi_df):
     ax.legend(title='Product Segment', bbox_to_anchor=(1.05, 1), loc='upper left', frameon=False)
     
     # Professional callout
-    add_callout(ax, "Double Day drives mix shift", xy=(2, 60), xytext=(2.2, 80), color='#E69F00')
+    add_callout(ax, "Double Day drives mix shift", xy=(2, 60), xytext=(2.2, 80), color='#F59E0B')
 
     plt.savefig(os.path.join(OUTPUT_DIR, 'temporal_product_shifts.png'))
     plt.close()

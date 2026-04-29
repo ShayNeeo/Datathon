@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026/Arch Linux) (preloaded format=xelatex 2026.4.6)  29 APR 2026 17:29
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026/Arch Linux) (preloaded format=xelatex 2026.4.6)  29 APR 2026 18:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -610,45 +610,62 @@ Package microtype Info: Loading generic protrusion settings for font family
 
 
 ]
-File: figures/1_loss_leader_trap.png Graphic file (type bmp)
-<figures/1_loss_leader_trap.png>
+File: figures/star_vs_bait_analysis.png Graphic file (type bmp)
+<figures/star_vs_bait_analysis.png>
 File: figures/2_logistics_paradox.png Graphic file (type bmp)
 <figures/2_logistics_paradox.png>
- [2] [3]
-File: figures/5_campaign_roi.png Graphic file (type bmp)
-<figures/5_campaign_roi.png>
-) [4]
-(./sections/30_references.tex) [5] (./sections/25_appendices.tex
+ [2]
+File: figures/installment_aov_boxplot.png Graphic file (type bmp)
+<figures/installment_aov_boxplot.png>
+File: figures/ltv_by_payment_method.png Graphic file (type bmp)
+<figures/ltv_by_payment_method.png>
+) [3]
+(./sections/30_references.tex) [4] (./sections/25_appendices.tex
 File: figures/margin_by_size.png Graphic file (type bmp)
 <figures/margin_by_size.png>
+File: figures/1_loss_leader_trap.png Graphic file (type bmp)
+<figures/1_loss_leader_trap.png>
 File: figures/3_product_lifecycle.png Graphic file (type bmp)
 <figures/3_product_lifecycle.png>
+ [5]
 File: figures/regime_double_day_ltv.png Graphic file (type bmp)
 <figures/regime_double_day_ltv.png>
+File: figures/acquisition_efficiency.png Graphic file (type bmp)
+<figures/acquisition_efficiency.png>
+File: figures/order_frequency_dist.png Graphic file (type bmp)
+<figures/order_frequency_dist.png>
  [6]
+[7]
 File: figures/4_tet_effect.png Graphic file (type bmp)
 <figures/4_tet_effect.png>
 File: figures/returns_bar.png Graphic file (type bmp)
 <figures/returns_bar.png>
- [7]
+File: figures/return_friction_matrix.png Graphic file (type bmp)
+<figures/return_friction_matrix.png>
+File: figures/inventory_risk_analysis.png Graphic file (type bmp)
+<figures/inventory_risk_analysis.png>
+ [8] [9]
+File: figures/5_campaign_roi.png Graphic file (type bmp)
+<figures/5_campaign_roi.png>
+File: figures/promo_urgency_stackability.png Graphic file (type bmp)
+<figures/promo_urgency_stackability.png>
 File: figures/revenue_margin_trend.png Graphic file (type bmp)
 <figures/revenue_margin_trend.png>
-)
-[8] (./main.aux)
+ [10]) [11] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E2AF9E950E85C80E8F9E5014CA4BCB83;3288.
+(rerunfilecheck)             Checksum: 454EA0A9A0071A74000A3D472EC2B586;3512.
  ) 
 Here is how much of TeX's memory you used:
- 15947 strings out of 469756
- 306020 string characters out of 5469261
- 793068 words of memory out of 5000000
- 44344 multiletter control sequences out of 15000+600000
+ 16026 strings out of 469756
+ 309007 string characters out of 5469261
+ 797624 words of memory out of 5000000
+ 44415 multiletter control sequences out of 15000+600000
  634734 words of font info for 88 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
  73i,10n,93p,1001b,397s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (8 pages).
+Output written on main.pdf (11 pages).

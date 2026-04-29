@@ -29,34 +29,45 @@ OUTPUT_DIR_04 = f'{BASE_DIR}/04_financial_payment_dynamics'
 DEEP_DIVE_DIR = f'{BASE_DIR}/deep_dive'
 
 PALETTE = {
-    'authority': '#003366',    # Deep Navy
-    'context':   '#7DAACB',    # Slate Blue
-    'friction':  '#CE2626',    # Strategic Red
-    'gold':      '#B8860B',    # Strategic Gold
-    'highlight': '#E8DBB3',    # Sand
-    'paper':     '#FFFDEB',    # Cream
-    'ink':       '#1A1A1A',    # Dark Gray
-    'grid':      '#D1D1D1',
+    'authority': '#16A34A',
+    'context':   '#93FA64',
+    'friction':  '#F43F5E',
+    'gold':      '#F59E0B',
+    'neutral':   '#E2E8F0',
+    'paper':     '#FFFFFF',
+    'ink':       '#0F172A',
+    'muted':     '#64748B',
+    'grid':      '#F1F5F9',
 }
 
-cmap_navy = LinearSegmentedColormap.from_list('MasterNavy', [PALETTE['paper'], PALETTE['authority']])
+cmap_navy = LinearSegmentedColormap.from_list('MasterNavy', [PALETTE['paper'], '#DCFCE7', PALETTE['authority']])
+cmap_red = LinearSegmentedColormap.from_list('MasterRed', [PALETTE['paper'], '#FEE2E2', PALETTE['friction']])
 
-plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['figure.facecolor'] = PALETTE['paper']
 plt.rcParams['axes.facecolor'] = PALETTE['paper']
 plt.rcParams['text.color'] = PALETTE['ink']
 
 def master_ax(ax, title, subtitle='', xlabel='', ylabel=''):
-    ax.set_title(title.upper(), fontsize=16, fontweight='bold', loc='left', pad=25, color=PALETTE['authority'])
+    ax.set_title(title, fontsize=20, fontweight='bold', loc='left', pad=28, color=PALETTE['ink'])
     if subtitle:
-        ax.text(0, 1.02, subtitle, transform=ax.transAxes, fontsize=10, color=PALETTE['ink'], fontstyle='italic')
-    if xlabel: ax.set_xlabel(xlabel, fontweight='bold', fontsize=10, labelpad=10)
-    if ylabel: ax.set_ylabel(ylabel, fontweight='bold', fontsize=10, labelpad=10)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_color(PALETTE['grid'])
-    ax.spines['bottom'].set_color(PALETTE['grid'])
-    ax.grid(axis='y', linestyle='--', alpha=0.3, color=PALETTE['grid'])
+        ax.text(0, 1.01, subtitle, transform=ax.transAxes, fontsize=12, color=PALETTE['muted'])
+    if xlabel: ax.set_xlabel(xlabel, fontweight='bold', fontsize=10, labelpad=10, color=PALETTE['muted'])
+    if ylabel: ax.set_ylabel(ylabel, fontweight='bold', fontsize=10, labelpad=10, color=PALETTE['muted'])
+    for spine in ['top', 'right', 'left']:
+        ax.spines[spine].set_visible(False)
+    ax.spines['bottom'].set_color(PALETTE['muted'])
+    ax.tick_params(axis='both', which='both', length=0, labelsize=10, colors=PALETTE['muted'])
+    ax.yaxis.grid(True, color=PALETTE['grid'], linewidth=0.8)
+    ax.set_axisbelow(True)
+
+def add_callout(ax, text, xy, xytext, color=None):
+    ax.annotate(
+        text, xy=xy, xytext=xytext,
+        arrowprops=dict(arrowstyle='->', color=PALETTE['muted'], lw=1.4),
+        bbox=dict(boxstyle='round,pad=0.45', fc='white', ec=PALETTE['neutral'], lw=1),
+        color=color or PALETTE['ink'], fontsize=11, fontweight='bold', ha='center'
+    )
 
 def format_vnd(x, pos):
     if x >= 1e9: return f'{x/1e9:.1f}B'
@@ -130,11 +141,13 @@ orders_acq = orders.merge(cust_channels, on='customer_id')
 acq_rev = orders_acq.merge(orders_items[['order_id', 'revenue']], on='order_id')
 acq_stats = acq_rev.groupby('acquisition_channel')['revenue'].sum().sort_values(ascending=False)
 
-fig, ax = plt.subplots(figsize=(12, 7))
-ax.bar(acq_stats.index, acq_stats.values / 1e6, color=PALETTE['context'], edgecolor=PALETTE['ink'])
-master_ax(ax, "ACQUISITION EFFICIENCY", subtitle="Total Revenue by Customer Acquisition Channel", xlabel="Channel", ylabel="Revenue (M VND)")
+fig, ax = plt.subplots(figsize=(14, 8))
+ax.bar(acq_stats.index, acq_stats.values / 1e6, color=[PALETTE['authority'] if i < 2 else PALETTE['neutral'] for i in range(len(acq_stats))], edgecolor=PALETTE['muted'], width=0.7)
+master_ax(ax, "ACQUISITION EFFICIENCY", subtitle="Total Revenue by Customer Acquisition Channel (M VND)", xlabel="Channel", ylabel="Revenue (M VND)")
 for i, v in enumerate(acq_stats.values):
-    ax.text(i, v/1e6 + 0.5, f'{v/1e6:.1f}M', ha='center', fontsize=10, fontweight='bold')
+    ax.text(i, v/1e6 + 0.5, f'{v/1e6:.1f}M', ha='center', fontsize=11, fontweight='bold', color=PALETTE['ink'])
+
+add_callout(ax, "Social Media & Search lead\nTop 2 channels drive 62% rev", xy=(0.5, 20), xytext=(2, 25), color=PALETTE['authority'])
 
 plt.savefig(f'{OUTPUT_DIR_02}/acquisition_efficiency.png', dpi=300, bbox_inches='tight')
 plt.close()
@@ -151,14 +164,14 @@ promo_stats = orders_items.groupby('has_promo').agg({
     'unit_price': 'mean'
 }).rename(columns={'order_id': 'order_count', 'unit_price': 'avg_unit_price'})
 
-fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+fig, axes = plt.subplots(1, 2, figsize=(16, 8))
 
 # Revenue
 ax1 = axes[0]
 labels = ['NO PROMO', 'WITH PROMO']
 rev_vals = [promo_stats.loc[False, 'revenue'], promo_stats.loc[True, 'revenue']]
-ax1.bar(labels, np.array(rev_vals) / 1e6, color=[PALETTE['context'], PALETTE['gold']], edgecolor=PALETTE['ink'])
-master_ax(ax1, "PROMO REVENUE IMPACT", xlabel="Promotion Status", ylabel="Total Revenue (M VND)")
+ax1.bar(labels, np.array(rev_vals) / 1e6, color=[PALETTE['neutral'], PALETTE['gold']], edgecolor=PALETTE['muted'], width=0.6)
+master_ax(ax1, "PROMO REVENUE IMPACT", subtitle="Total Revenue (M VND)", xlabel="Promotion Status", ylabel="Revenue (M VND)")
 for i, v in enumerate(rev_vals):
     ax1.text(i, v/1e6 + 0.5, f'{v/1e6:.1f}M', ha='center', fontsize=11, fontweight='bold')
 
@@ -166,8 +179,8 @@ for i, v in enumerate(rev_vals):
 ax2 = axes[1]
 aov_vals = [promo_stats.loc[False, 'revenue'] / promo_stats.loc[False, 'order_count'],
             promo_stats.loc[True, 'revenue'] / promo_stats.loc[True, 'order_count']]
-ax2.bar(labels, np.array(aov_vals) / 1e3, color=[PALETTE['context'], PALETTE['gold']], edgecolor=PALETTE['ink'])
-master_ax(ax2, "PROMO AOV IMPACT", xlabel="Promotion Status", ylabel="Avg Order Value (K VND)")
+ax2.bar(labels, np.array(aov_vals) / 1e3, color=[PALETTE['neutral'], PALETTE['gold']], edgecolor=PALETTE['muted'], width=0.6)
+master_ax(ax2, "PROMO AOV IMPACT", subtitle="Average Order Value (K VND)", xlabel="Promotion Status", ylabel="AOV (K VND)")
 for i, v in enumerate(aov_vals):
     ax2.text(i, v/1e3 + 5, f'{v/1e3:.1f}K', ha='center', fontsize=11, fontweight='bold')
 
@@ -183,21 +196,23 @@ returns_items = returns.merge(order_items[['order_id']], on='order_id')
 returns_items = returns_items.merge(products[['product_id', 'category']], on='product_id')
 return_pivot = returns_items.groupby(['category', 'return_reason']).size().unstack(fill_value=0)
 
-fig, ax = plt.subplots(figsize=(14, 8))
-im = ax.imshow(return_pivot, cmap='Reds', aspect='auto')
+fig, ax = plt.subplots(figsize=(15, 9))
+im = ax.imshow(return_pivot, cmap=cmap_red, aspect='auto')
 ax.set_xticks(np.arange(len(return_pivot.columns)))
-ax.set_xticklabels(return_pivot.columns, rotation=45, ha='right', fontweight='bold')
+ax.set_xticklabels(return_pivot.columns, rotation=45, ha='right', fontweight='bold', fontsize=11)
 ax.set_yticks(np.arange(len(return_pivot.index)))
-ax.set_yticklabels(return_pivot.index, fontweight='bold')
-master_ax(ax, "RETURN FRICTION MATRIX", subtitle="Volume of returns by Category and Reason", xlabel="Reason", ylabel="Category")
+ax.set_yticklabels(return_pivot.index, fontweight='bold', fontsize=11)
+master_ax(ax, "RETURN FRICTION MATRIX", subtitle="Returns by Category and Reason", xlabel="Reason", ylabel="Category")
 
 for i in range(len(return_pivot.index)):
     for j in range(len(return_pivot.columns)):
         val = return_pivot.iloc[i, j]
         if val > 0:
-            ax.text(j, i, str(val), ha='center', va='center', color='white' if val > return_pivot.values.max()/2 else 'black', fontsize=10, fontweight='bold')
+            ax.text(j, i, f'{val:,}', ha='center', va='center', color='white' if val > return_pivot.values.max()*0.7 else PALETTE['ink'], fontsize=11, fontweight='bold')
 
-plt.colorbar(im, ax=ax, label='Return Count')
+plt.colorbar(im, ax=ax, label='Return Count', shrink=0.8)
+add_callout(ax, "Wrong size dominates\nespecially in streetwear", xy=(2, 0), xytext=(4, -0.5), color=PALETTE['friction'])
+
 plt.savefig(f'{OUTPUT_DIR_03}/return_friction_matrix.png', dpi=300, bbox_inches='tight')
 plt.close()
 
@@ -299,12 +314,39 @@ inv_agg = inventory.groupby('product_id').agg({
 prod_rev = orders_items.groupby('product_id')['revenue'].sum().reset_index()
 risk_df = inv_agg.merge(prod_rev, on='product_id')
 
-fig, ax = plt.subplots(figsize=(12, 7))
-scatter = ax.scatter(risk_df['stockout_days'], risk_df['revenue'], 
-                    s=risk_df['fill_rate']*100, c=risk_df['revenue'], 
-                    cmap='viridis', alpha=0.6, edgecolors=PALETTE['ink'])
-master_ax(ax, "INVENTORY RISK: STOCKOUTS VS REVENUE", subtitle="Bubble size = Fill Rate; Color = Revenue", xlabel="Cumulative Stockout Days", ylabel="Total Product Revenue (VND)")
-plt.colorbar(scatter, ax=ax, label='Revenue (VND)')
+# Determine risk zone: high revenue + high stockout days
+rev_med = risk_df['revenue'].median()
+stock_med = risk_df['stockout_days'].median()
+risk_df['risk_zone'] = 'Safe'
+risk_df.loc[(risk_df['revenue'] >= rev_med) & (risk_df['stockout_days'] >= stock_med), 'risk_zone'] = 'HIGH RISK'
+risk_df.loc[(risk_df['revenue'] < rev_med) & (risk_df['stockout_days'] >= stock_med), 'risk_zone'] = 'Low Rev'
+risk_df.loc[(risk_df['revenue'] >= rev_med) & (risk_df['stockout_days'] < stock_med), 'risk_zone'] = 'Safe'
+
+color_map = {'HIGH RISK': PALETTE['friction'], 'Low Rev': PALETTE['gold'], 'Safe': PALETTE['authority']}
+colors = [color_map.get(z, PALETTE['neutral']) for z in risk_df['risk_zone']]
+
+fig, ax = plt.subplots(figsize=(13, 8))
+scatter = ax.scatter(risk_df['stockout_days'], risk_df['revenue'] / 1e6,
+                    s=risk_df['fill_rate'] * 80 + 10, c=colors,
+                    alpha=0.7, edgecolors='white', linewidths=0.5)
+master_ax(ax, "INVENTORY RISK", subtitle="Bubble size = Fill Rate  ·  Red = high-revenue SKUs with persistent stockouts", xlabel="Cumulative Stockout Days", ylabel="Product Revenue (M VND)")
+
+# Add quadrant lines
+ax.axvline(stock_med, color=PALETTE['muted'], linestyle='--', linewidth=0.8, alpha=0.5)
+ax.axhline(rev_med / 1e6, color=PALETTE['muted'], linestyle='--', linewidth=0.8, alpha=0.5)
+
+# Add quadrant label at top-right (high risk zone)
+ax.text(ax.get_xlim()[1] * 0.97 if ax.get_xlim()[1] > 0 else 100,
+        ax.get_ylim()[1] * 0.9 if ax.get_ylim()[1] > 0 else 100,
+        'HIGH RISK', color=PALETTE['friction'], fontsize=12, fontweight='bold', ha='right')
+
+# Get top risk item for annotation
+top_risk = risk_df[risk_df['risk_zone'] == 'HIGH RISK'].nlargest(1, 'revenue')
+if not top_risk.empty:
+    tx = float(top_risk['stockout_days'].iloc[0])
+    ty = float(top_risk['revenue'].iloc[0]) / 1e6
+    add_callout(ax, f"Top SKU: {ty:.0f}M VND\nstocked out {tx:.0f} days",
+                xy=(tx, ty), xytext=(tx + 10, ty + 2), color=PALETTE['friction'])
 
 plt.savefig(f'{OUTPUT_DIR_03}/inventory_risk_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()

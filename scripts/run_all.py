@@ -39,7 +39,7 @@ def run_phase(phase_num, phase_name, script_path):
     
     try:
         result = subprocess.run(
-            ['python', script_path],
+            [sys.executable, script_path],
             cwd=os.path.dirname(os.path.abspath(__file__)) + '/..',
             capture_output=False
         )

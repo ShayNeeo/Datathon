@@ -59,7 +59,7 @@ retention.columns = [f'M{int(col)}' for col in retention.columns]
 fig, ax = plt.subplots(figsize=(20, 14))
 
 # STYLING.md Sequential Palette
-cmap_colors = ['#FFFFFF', '#56B4E9', '#0072B2']
+cmap_colors = ['#FFFFFF', '#DCFCE7', '#16A34A']
 cmap = sns.blend_palette(cmap_colors, as_cmap=True)
 
 sns.heatmap(retention, annot=False, cmap=cmap, vmin=0, vmax=100, 
@@ -69,7 +69,7 @@ sns.heatmap(retention, annot=False, cmap=cmap, vmin=0, vmax=100,
 apply_editorial_style(fig, ax, "Customer Cohort Retention Matrix", "Retention decay from >40% (2012) to <10% (2021)")
 
 # Professional callout
-add_callout(ax, "Retention collapse in modern cohorts", xy=(100, 110), xytext=(80, 125), color='#D55E00')
+add_callout(ax, "Retention collapse in modern cohorts", xy=(100, 110), xytext=(80, 125), color='#DC2626')
 
 plt.xticks(rotation=45, ha='right')
 plt.yticks(rotation=0)
@@ -96,7 +96,7 @@ print("Generating regime and Double Day cohort quality analysis...")
 
 orders_full = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/orders.csv', parse_dates=['order_date'])
 customers_full = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/customers.csv', parse_dates=['signup_date'])
-order_items_full = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/order_items.csv')
+order_items_full = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/order_items.csv', low_memory=False)
 
 orders_full['year'] = orders_full['order_date'].dt.year
 orders_full['regime'] = np.where(orders_full['year'] <= 2018, 'High_PreCovid (2012-2018)', 'Low_CovidEra (2019-2022)')
@@ -128,7 +128,8 @@ customer_summary['acquisition_regime'] = np.where(
 )
 customer_summary['double_day_acquired'] = customer_summary['double_day_orders'] > 0
 
-fig, axes = plt.subplots(1, 2, figsize=(16, 7))
+fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+fig.patch.set_facecolor('white')
 
 regime_stats = customer_summary.groupby('acquisition_regime').agg(
     avg_orders=('order_count', 'mean'),
@@ -136,33 +137,86 @@ regime_stats = customer_summary.groupby('acquisition_regime').agg(
 ).reset_index()
 
 ax1 = axes[0]
+ax1.set_facecolor('white')
 x = np.arange(len(regime_stats))
-ax1.bar(x - 0.2, regime_stats['avg_orders'], 0.4, label='Avg Orders', color='#0072B2')
-ax1_t = ax1.twinx()
-ax1_t.bar(x + 0.2, regime_stats['median_ltv'] / 1_000_000, 0.4, label='Median LTV', color='#E69F00')
+bar_colors = ['#16A34A', '#F43F5E']
+bars1 = ax1.bar(x, regime_stats['avg_orders'], 0.5, color=bar_colors, alpha=0.9)
 
-apply_editorial_style(fig, ax1, "Customer Quality by Acquisition Regime", "High LTV decay in CovidEra cohorts (2019-2022)")
+for spine in ['top', 'right', 'left']:
+    ax1.spines[spine].set_visible(False)
+ax1.spines['bottom'].set_color('#64748B')
+ax1.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+ax1.yaxis.grid(True, color='#F1F5F9', linewidth=0.8)
+ax1.set_axisbelow(True)
+
+ax1.set_title("Customer Quality by Acquisition Regime", fontsize=20, fontweight='bold', loc='left', pad=28, color='#0F172A')
+ax1.text(0, 1.01, "Avg orders per customer — Pre-2018 vs Post-2018 cohorts", transform=ax1.transAxes, fontsize=12, color='#64748B')
+ax1.set_ylabel("Avg Orders per Customer", fontweight='bold', fontsize=10, color='#64748B')
 ax1.set_xticks(x)
-ax1.set_xticklabels(regime_stats['acquisition_regime'], rotation=0)
+ax1.set_xticklabels(regime_stats['acquisition_regime'], rotation=0, fontsize=10, color='#0F172A')
 
-# Professional callout
-add_callout(ax1, "4x LTV collapse in CovidEra", xy=(1, 1.5), xytext=(0.5, 3.5), color='#D55E00')
+# Callout: placed above the second bar (CovidEra, lower avg orders)
+y_max = float(regime_stats['avg_orders'].max())
+covid_val = float(regime_stats.loc[regime_stats['acquisition_regime'].str.contains('Low'), 'avg_orders'].iloc[0])
+pre_val   = float(regime_stats.loc[regime_stats['acquisition_regime'].str.contains('High'), 'avg_orders'].iloc[0])
+covid_idx = int(regime_stats[regime_stats['acquisition_regime'].str.contains('Low')].index[0])
+pre_idx   = int(regime_stats[regime_stats['acquisition_regime'].str.contains('High')].index[0])
 
+ax1.annotate(
+    f"CovidEra avg orders\n{covid_val:.1f} vs Pre-2018: {pre_val:.1f}",
+    xy=(covid_idx, covid_val),
+    xytext=(covid_idx, covid_val + y_max * 0.45),
+    arrowprops=dict(arrowstyle='->', color='#64748B', lw=1.4),
+    bbox=dict(boxstyle='round,pad=0.45', fc='white', ec='#E2E8F0', lw=1),
+    color='#F43F5E', fontsize=11, fontweight='bold', ha='center'
+)
+
+# Second panel: Double-Day vs non, using clean bars
 ax2 = axes[1]
+ax2.set_facecolor('white')
+
+# Build Double-Day LTV stats
 double_stats = customer_summary.groupby(['acquisition_regime', 'double_day_acquired']).agg(
     customers=('customer_id', 'count'),
     median_ltv=('ltv', 'median')
 ).reset_index()
-sns.barplot(data=double_stats, x='acquisition_regime', y='median_ltv', hue='double_day_acquired', ax=ax2, palette=['#56B4E9', '#D55E00'])
 
-# Editorial title for second subplot (fig.text already handles main title, but we can add secondary if needed)
-ax2.set_title("Double-Day Exposed vs Non-Exposed Customers", fontsize=12, fontweight='bold', color='#64748B')
-ax2.legend(title='Bought on Double Day', frameon=False)
+regimes = double_stats['acquisition_regime'].unique()
+bar_w = 0.35
+x2 = np.arange(len(regimes))
 
-# Professional callout
-add_callout(ax2, "Double-Day LTV gap", xy=(1.2, 5000), xytext=(1.5, 15000), color='#D55E00')
+for i, (dd, c) in enumerate([(False, '#16A34A'), (True, '#F43F5E')]):
+    vals = [float(double_stats[(double_stats['acquisition_regime'] == r) & (double_stats['double_day_acquired'] == dd)]['median_ltv'].iloc[0])
+            for r in regimes]
+    offset = (i - 0.5) * bar_w
+    ax2.bar(x2 + offset, np.array(vals) / 1e3, bar_w, color=c, alpha=0.9, label='Double Day' if dd else 'Organic')
 
-plt.tight_layout()
+for spine in ['top', 'right', 'left']:
+    ax2.spines[spine].set_visible(False)
+ax2.spines['bottom'].set_color('#64748B')
+ax2.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+ax2.yaxis.grid(True, color='#F1F5F9', linewidth=0.8)
+ax2.set_axisbelow(True)
+
+ax2.set_title("Double-Day Exposed vs Organic LTV", fontsize=20, fontweight='bold', loc='left', pad=28, color='#0F172A')
+ax2.text(0, 1.01, "Median customer LTV (K VND) by acquisition channel and discount regime", transform=ax2.transAxes, fontsize=12, color='#64748B')
+ax2.set_ylabel("Median LTV (K VND)", fontweight='bold', fontsize=10, color='#64748B')
+ax2.set_xticks(x2)
+ax2.set_xticklabels(regimes, rotation=0, fontsize=10, color='#0F172A')
+ax2.legend(frameon=False, fontsize=10)
+
+# Callout above highest-LTV bar (organic Pre-2018)
+ltv_max = double_stats['median_ltv'].max()
+ax2.annotate(
+    "Organic Pre-2018 customers\n3× higher LTV than Double-Day",
+    xy=(0 - bar_w/2, ltv_max / 1e3),
+    xytext=(0.5, ltv_max / 1e3 * 1.2),
+    arrowprops=dict(arrowstyle='->', color='#64748B', lw=1.4),
+    bbox=dict(boxstyle='round,pad=0.45', fc='white', ec='#E2E8F0', lw=1),
+    color='#16A34A', fontsize=11, fontweight='bold', ha='center'
+)
+
+plt.tight_layout(pad=2)
 output_path = '/home/shayneeo/Downloads/Datathon/output/figures_living/02_customer_lifecycle_acquisition/regime_double_day_ltv.png'
 plt.savefig(output_path, dpi=200, bbox_inches='tight', facecolor='white')
 plt.close()

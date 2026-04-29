@@ -41,13 +41,13 @@ def annotate_output(path):
     pass
 
 PALETTE = {
-    'authority': '#0072B2',    # STYLING.md Blue
-    'context':   '#56B4E9',    # STYLING.md Sky Blue
-    'friction':  '#D55E00',    # STYLING.md Vermillion
-    'gold':      '#E69F00',    # STYLING.md Orange
-    'highlight': '#F0E442',    # STYLING.md Yellow
+    'authority': '#16A34A',    # brand green
+    'context':   '#93FA64',    # soft green highlight
+    'friction':  '#DC2626',    # alert red
+    'gold':      '#F59E0B',    # amber accent
+    'highlight': '#DCFCE7',    # pale green wash
     'paper':     '#FFFFFF',    # Clean White
-    'ink':       '#000000',    # Black
+    'ink':       '#0F172A',    # slate
     'grid':      '#D1D1D1',
 }
 
@@ -75,6 +75,9 @@ def format_vnd(x, pos):
     if x >= 1e9: return f'{x/1e9:.1f}B'
     if x >= 1e6: return f'{x/1e6:.1f}M'
     return f'{x:,.0f}'
+
+INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
+OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/03_operational_friction_leakage'
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -141,7 +144,7 @@ master_ax(ax4, "RETURNS BY REGION", xlabel="Region", ylabel="Return Count")
 apply_editorial_style(fig, axes[0,0], "Returns Analysis: The Sizing Crisis", "Wrong size remains the #1 driver of reverse logistics friction")
 
 # Native callouts
-add_callout(axes[0,0], "34.6% returns due to Wrong Size", xy=(1, 5000), xytext=(2, 8000), color='#D55E00')
+add_callout(axes[0,0], "Wrong-size drives returns", xy=(0.5, ret_cat.max() * 0.75), xytext=(1.5, ret_cat.max() * 0.45), color='#DC2626')
 
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/return_deep_dive.png', dpi=300, bbox_inches='tight')
@@ -221,7 +224,7 @@ master_ax(ax2, "TOP 20 PRODUCTS BY STOCKOUT DAYS", xlabel="Cumulative Stockout D
 apply_editorial_style(fig, axes[0], "Inventory Risk: Stockout vs Revenue", "High-revenue 'hero' products face significant leakage risk")
 
 # Native callout
-add_callout(axes[0], "Hero product revenue leakage", xy=(15, 1e7), xytext=(40, 1.5e7), color='#D55E00')
+add_callout(axes[0], "Hero product revenue leakage", xy=(15, 1e7), xytext=(40, 1.5e7), color='#DC2626')
 
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/inventory_stockout_analysis.png', dpi=300, bbox_inches='tight')
@@ -591,13 +594,13 @@ fig, axes = plt.subplots(1, 2, figsize=(16, 7))
 # Plot delivery times by Tet Phase
 phase_order = ['Tet Approach (-21d)', 'Tet Holiday (DIP)', 'Tet Recovery (+14d)']
 ax1 = axes[0]
-sns.boxplot(data=tet_orders, x='temporal_phase', y='delivery_days', order=phase_order, palette=['#0072B2', '#D55E00', '#E69F00'], ax=ax1, showfliers=False)
+sns.boxplot(data=tet_orders, x='temporal_phase', y='delivery_days', order=phase_order, palette=['#16A34A', '#DC2626', '#F59E0B'], ax=ax1, showfliers=False)
 master_ax(ax1, "DELIVERY SLA BY TET PHASE", xlabel="Temporal Phase", ylabel="Delivery Days")
 
 # Plot cancellation rates
 ax2 = axes[1]
 cancel_rates = tet_orders.groupby('temporal_phase').apply(lambda x: (x['order_status'] == 'cancelled').mean() * 100).reindex(phase_order)
-ax2.bar(cancel_rates.index, cancel_rates.values, color=['#0072B2', '#D55E00', '#E69F00'])
+ax2.bar(cancel_rates.index, cancel_rates.values, color=['#16A34A', '#DC2626', '#F59E0B'])
 for i, v in enumerate(cancel_rates.values):
     ax2.text(i, v + 0.1, f'{v:.1f}%', ha='center', fontweight='bold')
 master_ax(ax2, "CANCELLATION RATE BY TET PHASE", xlabel="Temporal Phase", ylabel="Cancellation Rate (%)")
@@ -606,7 +609,7 @@ master_ax(ax2, "CANCELLATION RATE BY TET PHASE", xlabel="Temporal Phase", ylabel
 apply_editorial_style(fig, axes[0], "Tết Logistics Friction: The Bullwhip Effect", "Backlog peaks in Recovery Phase, causing cancellation spikes")
 
 # Native callout
-add_callout(axes[1], "Backlog recovery bottleneck", xy=(2, 4), xytext=(2.2, 8), color='#D55E00')
+add_callout(axes[1], "Backlog recovery bottleneck", xy=(2, 4), xytext=(2.2, 8), color='#DC2626')
 
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/tet_holiday_friction.png', dpi=300, bbox_inches='tight')

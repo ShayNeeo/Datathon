@@ -78,7 +78,7 @@ def plot_installment_aov_distribution(df):
     apply_editorial_style(fig, ax, "AOV Distribution: Installment Impact", "BNPL users generate +35% higher AOV than standard orders")
     
     # Native callout
-    add_callout(ax, "+35% AOV uplift with Installments", xy=(1, 15000), xytext=(1.2, 25000), color='#009E73')
+    add_callout(ax, "+35% AOV uplift with Installments", xy=(1, 15000), xytext=(1.2, 25000), color='#16A34A')
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'installment_aov_boxplot.png'))
@@ -102,7 +102,7 @@ def plot_monthly_avg_installments(df):
     """Trend of average installments over time"""
     plt.figure(figsize=(14, 6))
     monthly_inst = df.groupby('month')['installments'].mean()
-    monthly_inst.plot(kind='line', marker='o', color='#8e44ad', linewidth=2)
+    monthly_inst.plot(kind='line', marker='o', color='#16A34A', linewidth=2)
     plt.title('Average Installment Plan Duration Over Time', fontsize=16, fontweight='bold')
     plt.xlabel('Month', fontsize=12)
     plt.ylabel('Avg. Installments', fontsize=12)
@@ -123,16 +123,16 @@ def plot_promo_depth_vs_volume(oi_df, promotions_df):
     bin_stats = oi_promo.groupby('discount_bin').agg({'discount_rate': 'mean', 'quantity': 'sum'}).reset_index()
 
     fig, ax1 = plt.subplots(figsize=(12, 6))
-    ax1.scatter(bin_stats['discount_rate'], bin_stats['quantity'], s=100, color='#3498db', alpha=0.7)
+    ax1.scatter(bin_stats['discount_rate'], bin_stats['quantity'], s=100, color='#16A34A', alpha=0.7)
     ax1.set_xlabel('Average Discount Rate', fontsize=12)
-    ax1.set_ylabel('Total Units Sold', fontsize=12, color='#3498db')
-    ax1.tick_params(axis='y', labelcolor='#3498db')
+    ax1.set_ylabel('Total Units Sold', fontsize=12, color='#16A34A')
+    ax1.tick_params(axis='y', labelcolor='#16A34A')
 
     ax2 = ax1.twinx()
     bin_counts = oi_promo.groupby('discount_bin').size()
-    ax2.plot(bin_stats['discount_rate'], bin_counts.values, color='#e74c3c', marker='s', linewidth=2)
-    ax2.set_ylabel('Number of Orders (with promo)', fontsize=12, color='#e74c3c')
-    ax2.tick_params(axis='y', labelcolor='#e74c3c')
+    ax2.plot(bin_stats['discount_rate'], bin_counts.values, color='#DC2626', marker='s', linewidth=2)
+    ax2.set_ylabel('Number of Orders (with promo)', fontsize=12, color='#DC2626')
+    ax2.tick_params(axis='y', labelcolor='#DC2626')
 
     plt.title('Promotion Discount Depth: Volume vs Order Count', fontsize=16, fontweight='bold')
     plt.tight_layout()
@@ -159,7 +159,7 @@ def plot_customer_ltv_by_payment(df, customers_df):
     apply_editorial_style(fig, ax, "Customer LTV by Payment Method", "Card users exhibit significantly higher lifetime value than COD customers")
     
     # Native callout
-    add_callout(ax, "Card > COD: Significant LTV gap", xy=(0, 20000), xytext=(0.5, 40000), color='#009E73')
+    add_callout(ax, "Card > COD: Significant LTV gap", xy=(0, 20000), xytext=(0.5, 40000), color='#16A34A')
     
     plt.xticks(rotation=45)
     plt.tight_layout()
@@ -180,23 +180,25 @@ def plot_monthly_net_margin_trend(orders_df, order_items_df):
         oi_with_cogs = oi_with_cogs.merge(orders_subset, on='order_id', how='left')
         oi_with_cogs['month'] = oi_with_cogs['order_date'].dt.to_period('M')
 
-    monthly_margin = oi_with_cogs.groupby('month').agg({'margin': 'sum', 'unit_price': 'sum'})
-    monthly_margin['margin_rate'] = monthly_margin['margin'] / monthly_margin['unit_price']
+    annual_margin = oi_with_cogs.groupby(oi_with_cogs['month'].dt.year).agg({'margin': 'sum', 'unit_price': 'sum'})
+    annual_margin['margin_rate'] = annual_margin['margin'] / annual_margin['unit_price']
 
     fig, ax1 = plt.subplots(figsize=(14, 6))
-    ax1.plot(monthly_margin.index.astype(str), monthly_margin['unit_price'], color='#2ecc71', linewidth=2, label='Revenue')
-    ax1.set_ylabel('Revenue (VND)', fontsize=12, color='#2ecc71')
-    ax1.tick_params(axis='y', labelcolor='#2ecc71')
-    ax1.set_xlabel('Month', fontsize=12)
+    x = np.arange(len(annual_margin))
+    ax1.bar(x, annual_margin['unit_price'] / 1e9, color='#16A34A', alpha=0.85, label='Revenue')
+    ax1.set_ylabel('Revenue (Billion VND)', fontsize=12, color='#16A34A')
+    ax1.tick_params(axis='y', labelcolor='#16A34A')
+    ax1.set_xlabel('Year', fontsize=12)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(annual_margin.index.astype(str), rotation=45, ha='right')
 
     ax2 = ax1.twinx()
-    ax2.plot(monthly_margin.index.astype(str), monthly_margin['margin_rate'] * 100, color='#e67e22',
-             linewidth=2, marker='o', label='Margin Rate')
-    ax2.set_ylabel('Margin Rate (%)', fontsize=12, color='#e67e22')
-    ax2.tick_params(axis='y', labelcolor='#e67e22')
+    ax2.plot(x, annual_margin['margin_rate'] * 100, color='#DC2626',
+             linewidth=2.5, marker='o', label='Margin Rate')
+    ax2.set_ylabel('Margin Rate (%)', fontsize=12, color='#DC2626')
+    ax2.tick_params(axis='y', labelcolor='#DC2626')
 
     plt.title('Monthly Revenue and Margin Rate Trend', fontsize=16, fontweight='bold')
-    plt.xticks(rotation=45)
     fig.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'revenue_margin_trend.png'))
     plt.close()
@@ -214,7 +216,7 @@ def plot_cac_payback_by_channel(customers_df, orders_df, payments_df):
     channel_payback = channel_df.groupby('acquisition_channel')['days_to_first'].median().sort_values()
 
     plt.figure(figsize=(12, 6))
-    channel_payback.plot(kind='barh', color='#34495e')
+    channel_payback.plot(kind='barh', color='#64748B')
     plt.title('Median Days to First Purchase by Acquisition Channel (Proxy for CAC Payback)',
               fontsize=16, fontweight='bold')
     plt.xlabel('Median Days to First Purchase', fontsize=12)
@@ -236,16 +238,16 @@ def plot_installment_contribution_margin(orders_pay_df):
 
     fig, ax1 = plt.subplots(figsize=(14, 6))
     x = np.arange(len(monthly))
-    ax1.bar(x, monthly.get(False, 0), label='Non-Installment', color='#95a5a6')
-    ax1.bar(x, monthly.get(True, 0), bottom=monthly.get(False, 0), label='Installment', color='#9b59b6')
+    ax1.bar(x, monthly.get(False, 0), label='Non-Installment', color='#CBD5E1')
+    ax1.bar(x, monthly.get(True, 0), bottom=monthly.get(False, 0), label='Installment', color='#16A34A')
     ax1.set_ylabel('Revenue (VND)', fontsize=12)
     ax1.set_xlabel('Month', fontsize=12)
     ax1.legend(loc='upper left')
 
     ax2 = ax1.twinx()
-    ax2.plot(x, monthly['installment_pct'], color='#e74c3c', marker='o', linewidth=2, label='Installment %')
-    ax2.set_ylabel('Installment Share (%)', fontsize=12, color='#e74c3c')
-    ax2.tick_params(axis='y', labelcolor='#e74c3c')
+    ax2.plot(x, monthly['installment_pct'], color='#DC2626', marker='o', linewidth=2, label='Installment %')
+    ax2.set_ylabel('Installment Share (%)', fontsize=12, color='#DC2626')
+    ax2.tick_params(axis='y', labelcolor='#DC2626')
     ax2.legend(loc='upper right')
 
     plt.title('Monthly Revenue Composition: Installment vs Non-Installment', fontsize=16, fontweight='bold')
@@ -285,7 +287,7 @@ def plot_promo_urgency_stackability(oi_df, promotions_df):
 
     # --- Urgency Curve: Revenue as countdown to promo end ---
     ax1 = axes[0]
-    ax1.bar(urgency_rev.index.astype(str), urgency_rev.values / 1e9, color='#e74c3c', alpha=0.8)
+    ax1.bar(urgency_rev.index.astype(str), urgency_rev.values / 1e9, color='#DC2626', alpha=0.8)
     ax1.invert_xaxis()
     ax1.set_title("Promo Urgency: Revenue Surge Toward End-of-Promo", fontsize=13, fontweight='bold')
     ax1.set_xlabel("Days Until Promo Ends (0 = last day)", fontsize=11)
@@ -301,7 +303,7 @@ def plot_promo_urgency_stackability(oi_df, promotions_df):
     stack_labels = {0: 'Non-Stackable', 1: 'Stackable'}
     oi_promo['stack_label'] = oi_promo['stackable_flag'].map(stack_labels)
     sns.boxplot(data=oi_promo, x='stack_label', y='discount_rate', hue='stack_label',
-                palette={'Non-Stackable': '#34495e', 'Stackable': '#e74c3c'},
+                palette={'Non-Stackable': '#64748B', 'Stackable': '#16A34A'},
                 showfliers=False, legend=False, ax=ax2)
     ax2.axhline(y=0.30, color='red', linestyle='--', linewidth=2, label='30% Danger Threshold')
     ax2.set_title("Margin Dilution:\nNon-Stackable vs Stackable Promotions", fontsize=13, fontweight='bold')
@@ -317,7 +319,7 @@ def plot_promo_urgency_stackability(oi_df, promotions_df):
     apply_editorial_style(fig, axes[0], "Promo Urgency & Stackability Risk", "Revenue surges toward end-of-promo while stackability dilutes margins")
     
     # Native callout
-    add_callout(axes[1], "Stackable promos dilute margins", xy=(1, 0.25), xytext=(0.5, 0.45), color='#D55E00')
+    add_callout(axes[1], "Stackable promos dilute margins", xy=(1, 0.25), xytext=(0.5, 0.45), color='#DC2626')
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'promo_urgency_stackability.png'), dpi=200, bbox_inches='tight')
