@@ -14,69 +14,47 @@ from matplotlib.colors import LinearSegmentedColormap
 import seaborn as sns
 import warnings
 import os
-from PIL import Image, ImageDraw, ImageFont
 
 warnings.filterwarnings('ignore')
 
-# ----------------------------------------------------------------------------
-# CONFIGURATION & UNIFIED THEME
-# ----------------------------------------------------------------------------
-INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
-OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/03_operational_friction_leakage'
+# Helper functions for professional styling
+def apply_editorial_style(fig, ax, title, subtitle):
+    for spine in ['top', 'right', 'left']:
+        ax.spines[spine].set_visible(False)
+    ax.spines['bottom'].set_color('#CBD5E1')
+    ax.spines['bottom'].set_linewidth(1.5)
+    ax.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+    ax.grid(axis='y', color='#F1F5F9', linewidth=1.5, linestyle='-')
+    ax.set_axisbelow(True)
+    fig.text(0.04, 0.95, title.upper(), fontsize=20, fontweight='black', color='#0F172A')
+    fig.text(0.04, 0.90, subtitle, fontsize=12, color='#64748B')
+    plt.subplots_adjust(top=0.82, bottom=0.12, left=0.08, right=0.95)
 
-
-def _font(size):
-    try:
-        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
-    except Exception:
-        return ImageFont.load_default()
-
-
-def _text(draw, xy, text, color, size):
-    font = _font(size)
-    bbox = draw.textbbox((0, 0), text, font=font)
-    w = bbox[2] - bbox[0]
-    h = bbox[3] - bbox[1]
-    x = max(10, min(xy[0], draw._image.size[0] - w - 10))
-    y = max(10, min(xy[1], draw._image.size[1] - h - 10))
-    draw.rounded_rectangle([x - 8, y - 8, x + w + 8, y + h + 8], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
-    draw.text((x, y), text, font=font, fill=color)
-
+def add_callout(ax, text, xy, xytext, color='#0F172A', arrow_color='#64748B'):
+    ax.annotate(text, xy=xy, xytext=xytext,
+                arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5, connectionstyle="arc3,rad=0.2"),
+                color=color, fontweight="600", ha="center", fontsize=11,
+                bbox=dict(boxstyle="round,pad=0.6,rounding_size=0.3", facecolor="#FFFFFF", 
+                          edgecolor="#E2E8F0", alpha=0.95, lw=1))
 
 def annotate_output(path):
-    img = Image.open(path).convert('RGBA')
-    w, h = img.size
-    draw = ImageDraw.Draw(img, 'RGBA')
-    name = os.path.basename(path)
-    if name == 'returns_bar.png':
-        _text(draw, (w * 0.62, h * 0.10), 'Wrong Size\n34.6%', '#CE2626', max(14, int(min(w, h) / 150)))
-    elif name == 'return_deep_dive.png':
-        _text(draw, (w * 0.62, h * 0.08), 'Margin\n-3.5pp', '#CE2626', max(14, int(min(w, h) / 150)))
-    elif name == 'return_reason_matrix.png':
-        _text(draw, (w * 0.58, h * 0.08), 'Wrong-Size', '#CE2626', max(12, int(min(w, h) / 160)))
-    elif name == 'inventory_risk_analysis.png':
-        _text(draw, (w * 0.58, h * 0.08), 'Overstock / Stockout', '#CE2626', max(12, int(min(w, h) / 160)))
-    elif name == 'tet_holiday_friction.png':
-        _text(draw, (w * 0.55, h * 0.08), 'Tết Failure Spike', '#CE2626', max(12, int(min(w, h) / 160)))
-    elif name == 'line_failure_rate.png':
-        _text(draw, (w * 0.58, h * 0.08), 'UC / RP hotspot', '#CE2626', max(12, int(min(w, h) / 160)))
-    img.convert('RGB').save(path)
+    pass
 
 PALETTE = {
-    'authority': '#003366',    # Deep Navy
-    'context':   '#7DAACB',    # Slate Blue
-    'friction':  '#CE2626',    # Strategic Red
-    'gold':      '#B8860B',    # Strategic Gold
-    'highlight': '#E8DBB3',    # Sand
-    'paper':     '#FFFDEB',    # Cream
-    'ink':       '#1A1A1A',    # Dark Gray
+    'authority': '#0072B2',    # STYLING.md Blue
+    'context':   '#56B4E9',    # STYLING.md Sky Blue
+    'friction':  '#D55E00',    # STYLING.md Vermillion
+    'gold':      '#E69F00',    # STYLING.md Orange
+    'highlight': '#F0E442',    # STYLING.md Yellow
+    'paper':     '#FFFFFF',    # Clean White
+    'ink':       '#000000',    # Black
     'grid':      '#D1D1D1',
 }
 
 cmap_navy = LinearSegmentedColormap.from_list('MasterNavy', [PALETTE['paper'], PALETTE['authority']])
 cmap_red = LinearSegmentedColormap.from_list('MasterRed', [PALETTE['paper'], PALETTE['friction']])
 
-plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['figure.facecolor'] = PALETTE['paper']
 plt.rcParams['axes.facecolor'] = PALETTE['paper']
 plt.rcParams['text.color'] = PALETTE['ink']
@@ -159,9 +137,11 @@ ret_region = returns_geo['region'].value_counts()
 ax4.bar(ret_region.index, ret_region.values, color=PALETTE['authority'], edgecolor=PALETTE['ink'])
 master_ax(ax4, "RETURNS BY REGION", xlabel="Region", ylabel="Return Count")
 
-# PRESCRIPTIVE ANNOTATION
-fig.text(0.5, 0.02, "PREDICTIVE: Sizing crisis (34.6% of returns) will compound logistics costs by 15% in 2024.\nACTION: Implement AI Sizing Widget on high-return Streetwear product pages.", 
-         ha='center', fontsize=12, fontweight='bold', bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#CE2626'))
+# Professional Styling
+apply_editorial_style(fig, axes[0,0], "Returns Analysis: The Sizing Crisis", "Wrong size remains the #1 driver of reverse logistics friction")
+
+# Native callouts
+add_callout(axes[0,0], "34.6% returns due to Wrong Size", xy=(1, 5000), xytext=(2, 8000), color='#D55E00')
 
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/return_deep_dive.png', dpi=300, bbox_inches='tight')
@@ -237,9 +217,11 @@ ax2.set_yticks(range(len(top_stockout)))
 ax2.set_yticklabels([p[:25] + '...' if len(p) > 25 else p for p in top_stockout['product_name']], fontsize=8)
 master_ax(ax2, "TOP 20 PRODUCTS BY STOCKOUT DAYS", xlabel="Cumulative Stockout Days", ylabel="Product")
 
-# PREDICTIVE ANNOTATION
-fig.text(0.5, 0.02, "PREDICTIVE: High-revenue 'hero' products face 20% revenue leakage risk in May 2023 peak seasonality.\nACTION: Apply Predictive Safety Stock (+25%) to these top 20 products by mid-April.", 
-         ha='center', fontsize=11, fontweight='bold', bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#003366'))
+# Professional Styling
+apply_editorial_style(fig, axes[0], "Inventory Risk: Stockout vs Revenue", "High-revenue 'hero' products face significant leakage risk")
+
+# Native callout
+add_callout(axes[0], "Hero product revenue leakage", xy=(15, 1e7), xytext=(40, 1.5e7), color='#D55E00')
 
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/inventory_stockout_analysis.png', dpi=300, bbox_inches='tight')
@@ -609,20 +591,22 @@ fig, axes = plt.subplots(1, 2, figsize=(16, 7))
 # Plot delivery times by Tet Phase
 phase_order = ['Tet Approach (-21d)', 'Tet Holiday (DIP)', 'Tet Recovery (+14d)']
 ax1 = axes[0]
-sns.boxplot(data=tet_orders, x='temporal_phase', y='delivery_days', order=phase_order, palette=['#003366', '#CE2626', '#B8860B'], ax=ax1, showfliers=False)
+sns.boxplot(data=tet_orders, x='temporal_phase', y='delivery_days', order=phase_order, palette=['#0072B2', '#D55E00', '#E69F00'], ax=ax1, showfliers=False)
 master_ax(ax1, "DELIVERY SLA BY TET PHASE", xlabel="Temporal Phase", ylabel="Delivery Days")
 
 # Plot cancellation rates
 ax2 = axes[1]
 cancel_rates = tet_orders.groupby('temporal_phase').apply(lambda x: (x['order_status'] == 'cancelled').mean() * 100).reindex(phase_order)
-ax2.bar(cancel_rates.index, cancel_rates.values, color=['#003366', '#CE2626', '#B8860B'])
+ax2.bar(cancel_rates.index, cancel_rates.values, color=['#0072B2', '#D55E00', '#E69F00'])
 for i, v in enumerate(cancel_rates.values):
     ax2.text(i, v + 0.1, f'{v:.1f}%', ha='center', fontweight='bold')
 master_ax(ax2, "CANCELLATION RATE BY TET PHASE", xlabel="Temporal Phase", ylabel="Cancellation Rate (%)")
 
-# PRESCRIPTIVE ANNOTATION
-fig.text(0.5, 0.02, "DIAGNOSTIC: Backlog bullwhip effect peaks in Recovery Phase (+14d), causing 3x cancellation spikes.\nPRESCRIPTIVE: Stage popular items pre-holiday; dynamically extend storefront SLAs by +7 days during recovery.", 
-         ha='center', fontsize=11, fontweight='bold', bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#B8860B'))
+# Professional Styling
+apply_editorial_style(fig, axes[0], "Tết Logistics Friction: The Bullwhip Effect", "Backlog peaks in Recovery Phase, causing cancellation spikes")
+
+# Native callout
+add_callout(axes[1], "Backlog recovery bottleneck", xy=(2, 4), xytext=(2.2, 8), color='#D55E00')
 
 plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR}/tet_holiday_friction.png', dpi=300, bbox_inches='tight')

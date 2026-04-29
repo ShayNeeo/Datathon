@@ -1,382 +1,106 @@
-# BÁO CÁO EDA CHIẾN LƯỢC TOÀN DIỆN
+# BẢN KIỂM TOÁN CHIẾN LƯỢC: 10 NĂM TMĐT VÀ NHỮNG NGHỊCH LÝ CỦA SỰ TĂNG TRƯỞNG
 
 **Dự án:** Fashion E-commerce Strategic Audit (2012–2022)  
-**Mục tiêu:** Chỉ ra các điểm nghẽn tăng trưởng, bóc tách nguyên nhân, dự báo rủi ro, và đề xuất hành động cụ thể theo khung **Descriptive → Diagnostic → Predictive → Prescriptive**.  
-
-**Khung chấm điểm Part 2 (exam.tex §198–204):**
-- **Descriptive:** thống kê đúng, biểu đồ rõ nhãn, có ngữ cảnh
-- **Diagnostic:** giải thích nguyên nhân có chứng cứ
-- **Predictive:** xu hướng, mùa vụ, chỉ báo dẫn dắt
-- **Prescriptive:** đề xuất có đánh đổi và lộ trình
+**Tác giả:** Đội ngũ Forensic Data Science  
+**Khung phân tích:** Forensic Storytelling (Descriptive → Diagnostic → Predictive → Prescriptive)
 
 ---
 
-## 1. Tóm tắt điều hành
+## 1. KHỞI ĐẦU CỦA MỘT THẬP KỶ: NHÌN LẠI CON SỐ 16.4 TỶ
 
-Doanh nghiệp tăng trưởng cực mạnh trong giai đoạn 04/2012–12/2022 và đạt **16.43B VND doanh thu**, nhưng tăng trưởng đó đi kèm 5 rủi ro cấu trúc lớn: phụ thuộc sản phẩm, suy giảm trung thành, ma sát vận hành, méo mó khuyến mãi, và co hẹp biên lợi nhuận.
+Hành trình từ năm 2012 đến 2022 của doanh nghiệp không chỉ là những con số trên bảng cân đối kế toán; đó là một câu chuyện về sự thích nghi, bùng nổ và hiện tại là sự tự vấn. Với tổng doanh thu tích lũy đạt **16.43 tỷ VND**, chúng ta đã khẳng định được vị thế trên thị trường. Tuy nhiên, đằng sau ánh quang đó là những "vết nứt" lặng lẽ trong nền móng vận hành. 
 
-### Bảng rủi ro chiến lược 4 cấp
-
-| Trục chiến lược | Descriptive | Diagnostic | Predictive | Prescriptive |
-|---|---|---|---|---|
-| **Thống trị sản phẩm** | Streetwear chiếm **80%** sản lượng | PMF sớm + thuật toán ưu tiên làm nghẹt danh mục khác | Xu hướng chậm lại; lệ thuộc 1 danh mục sẽ rủi ro nếu thị trường đổi hướng | Giới hạn Streetwear **+5% YoY**, chuyển **15%** ngân sách sang Premium/Activewear |
-| **Trung thành khách hàng** | Retention giảm từ **>40%** xuống **<10%** | Chuyển từ organic sang Double-Day/flash-deal | CAC có thể vượt LTV nếu đà này tiếp diễn | Tạo **Founders Club**, cắt **30%** chi Double-Day |
-| **Ma sát vận hành** | **34.6%** returns do wrong_size | Sai lệch sizing + thiếu fit standardization | Lỗ margin do logistics và trả hàng sẽ tiếp tục tăng | AI fit-finder + audit sizing top SKU |
-| **Vận tốc tài chính** | Đỉnh doanh thu tháng 5 = **2.6×** nền tháng 12 | Nhu cầu dồn cục gặp nút thắt cung ứng | Ứ đọng nhu cầu = mất doanh thu mùa cao điểm | Pre-stage hàng 60 ngày trước May |
-| **Co hẹp biên lợi nhuận** | Margin 25% (2012) → **12%** (2022) | Cạnh tranh giá + mix shift + chi phí tăng | Nếu không sửa, cần ~2.5× doanh thu để giữ lợi nhuận tuyệt đối | Tier-based promo thay cho giảm giá đồng loạt |
-
-### Phân loại Star vs Bait
-
-| Loại | Line code | Margin | Diễn giải | Hành động |
-|---|---|---|---|---|
-| **STAR** | UR | **31.3%** | Định vị premium, biên tốt | Tăng tồn kho +25%, mở bundle cao cấp |
-| **BALANCED** | MP, RS, MA, RP, UE, UM | **25.8–28.7%** | Nhóm ổn định | Giữ nhịp, dùng cross-sell |
-| **BAIT** | YY, UC | **23.6–24.1%** | Commoditized, phụ thuộc khuyến mãi | Giảm tỷ trọng hoặc chỉ dùng làm loss-leader có kiểm soát |
+Biên lợi nhuận đang bị bào mòn bởi các chiến dịch khuyến mãi chồng chéo, và lòng trung thành của khách hàng – tài sản quý giá nhất – đang có dấu hiệu sụp đổ. Bản báo cáo này đóng vai trò như một cuộc "giám định pháp y" dữ liệu, bóc tách từng nghịch lý để tìm ra lộ trình tái sinh lợi nhuận.
 
 ---
 
-## 2. Phân tích theo 4 trục
+## 2. CHƯƠNG I: THỊ TRƯỜNG & SẢN PHẨM - ẢO GIÁC VỀ SỰ THỐNG TRỊ
 
-### CẤP 01: Product & Market Dominance
+### 2.1. Cạm bẫy "Sản phẩm mồi" (The Loss Leader Trap)
+![Loss Leader Trap](figures_living/01_product_market_dominance/loss_leader_trap.png)
 
-#### 1. Độc quyền Streetwear
+*   **Mô tả**: Chúng ta duy trì 461 SKU với biên lợi nhuận cực thấp (≤ 5.5%), đóng vai trò là "vũ khí" thu hút lưu lượng khách hàng.
+*   **Chẩn đoán**: Dữ liệu phơi bày một sự thật đau lòng: khách hàng của chúng ta cực kỳ thực dụng. Họ đến vì hàng giảm giá và rời đi ngay sau đó. Mỗi đơn hàng chứa "sản phẩm mồi" chỉ kéo theo thêm **0.22 sản phẩm** khác, không đủ để bù đắp khoản lỗ vận hành lên tới **-1,472 VNĐ/đơn**. Chúng ta đang "bán máu" mà không tạo ra được hệ sinh thái giá trị.
+*   **Dự báo**: Nếu không thay đổi, dòng tiền sẽ tiếp tục bị rò rỉ tại các phân khúc giá rẻ, nơi đối thủ có thể dễ dàng bắt bài bằng giá thấp hơn.
+*   **Đề xuất**: Loại bỏ ngay lập tức các SKU có margin dưới mức an toàn. Chuyển đổi sang mô hình **Bundling (Combo chiến lược)**: chỉ cho phép hưởng giá ưu đãi khi đi kèm với các sản phẩm có biên lợi nhuận cao.
 
-![Category Distribution](figures_living/01_product_market_dominance/category_pie.png)
-![Market Share by Segment](figures_living/01_product_market_dominance/segment_market_share_new.png)
+### 2.2. Sức mạnh của sự lặp lại (The Power of Iteration)
+![Product Lifecycle](figures_living/01_product_market_dominance/product_iteration.png)
 
-**Descriptive**
-- Streetwear chiếm **80%** đơn vị bán ra (486,288 / 607,860)
-- Tương đương khoảng **75%** doanh thu
-- Ưu thế này kéo dài xuyên suốt 10 năm
-
-**Diagnostic**
-- PMF sớm tạo lợi thế lớn
-- Recommendation/homepage bias khiến các danh mục khác bị “nghẹt” discovery
-- Hình ảnh thương hiệu bị neo là “streetwear specialist”
-
-**Predictive**
-- Tăng trưởng Streetwear đang chậm dần; nếu thị phần rơi 10%, doanh thu có thể mất ~1.23B VND
-
-**Prescriptive**
-- Giới hạn tăng trưởng Streetwear
-- Dồn ngân sách sang Premium/Activewear
-- Đưa ra 3–5 SKU “gateway” để kéo khách sang danh mục mới
-
-#### 2. Tối ưu biên theo size
-
-![Margin by Size](figures_living/01_product_market_dominance/margin_by_size.png)
-![Size Profitability](figures_living/01_product_market_dominance/size_profitability_new.png)
-![Size Boxplot](figures_living/01_product_market_dominance/size_profitability_boxplot.png)
-
-**Descriptive**
-- L/XL có margin **30–35%**
-- M khoảng **22–26%**
-- S thấp nhất: **18–23%**
-- Chênh lệch L/XL vs S/M: **12–17pp**
-
-**Diagnostic**
-- L/XL có “scarcity premium”
-- Giá vốn gần như giống nhau nhưng willingness-to-pay khác
-- S/M bị commoditize mạnh hơn
-
-**Predictive**
-- Phân bổ mua hàng đồng đều sẽ tạo tồn kho S/M dư và L/XL thiếu
-
-**Prescriptive**
-- Chuyển procurement sang **1:2:3:3**
-- Giảm giá S/M 10–15%, giữ L/XL gần full price
-
-#### 3. Mùa vụ tháng 5
-
-![Monthly Seasonality Heatmap](figures_living/01_product_market_dominance/monthly_trend_heatmap.png)
-
-**Descriptive**
-- Tháng 5 đạt **2.6×** baseline tháng 12
-- Dao động giữa đỉnh và đáy vào khoảng **40–60%**
-
-**Diagnostic**
-- Nhu cầu mùa hè và chu kỳ mua sắm sau Tết tạo đỉnh tháng 5
-- Hàng hot thường bị thiếu trước mùa cao điểm
-
-**Predictive**
-- Nếu không pre-stage, công ty có thể bỏ lỡ khoảng **8.5%** doanh thu năm
-
-**Prescriptive**
-- Chốt SKU hero trước mùa 60 ngày
-- Tăng ngân sách pre-campaign cho tháng 4–5
-
-#### 4. Star vs Bait
-
-![Star vs Bait](figures_living/01_product_market_dominance/star_vs_bait_analysis.png)
-![Brand Performance](figures_living/01_product_market_dominance/brand_performance.png)
-
-**Descriptive**
-- UR là STAR với margin **31.3%**
-- YY/UC là BAIT nhưng biên thấp hơn **7–8pp**
-
-**Diagnostic**
-- STAR phản ánh premium positioning
-- BAIT sống nhờ volume và khuyến mãi
-
-**Predictive**
-- Giữ BAIT ở mức cao sẽ khóa công ty trong biên 12–13%
-
-**Prescriptive**
-- Hạ BAIT xuống **20%** doanh thu
-- Dùng upsell/cross-sell để thay thế volume
-
-**Ghi chú mới từ báo cáo Gridbreakers**
-- Thế hệ SKU mới thường có doanh thu/SKU cao hơn rõ rệt so với đời cũ; nên tiếp tục đầu tư R&D thay vì cố cứu SKU lỗi thời.
-
-#### Tập tham chiếu thêm
-
-![Pareto Analysis](figures_living/01_product_market_dominance/pareto_analysis.png)
-![Top Products Treemap](figures_living/01_product_market_dominance/top_products_treemap.png)
-![Brand Performance](figures_living/01_product_market_dominance/brand_performance.png)
-![Category Revenue Margin](figures_living/01_product_market_dominance/category_revenue_margin.png)
-![Segment Profitability Heatmap](figures_living/01_product_market_dominance/segment_profitability_heatmap.png)
-![Cross Sell Opportunities](figures_living/01_product_market_dominance/cross_sell_opportunities.png)
-![Temporal Product Shifts](figures_living/01_product_market_dominance/temporal_product_shifts.png)
+*   **Mô tả**: Các thế hệ sản phẩm mới (được ký hiệu bởi Suffix 71-99) đang chứng minh sức mạnh áp đảo.
+*   **Chẩn đoán**: Phân tích cho thấy hiệu quả của đội ngũ R&D: mỗi lần lặp lại phiên bản sản phẩm đều giúp cải thiện độ khớp thị trường (PMF). Các dòng sản phẩm mới tạo ra doanh thu trên mỗi SKU cao hơn **64%** so với các dòng Classic đời đầu.
+*   **Dự báo**: Đầu tư vào đổi mới là động cơ sinh lời tốt nhất; việc giữ lại những thiết kế cũ kỹ chỉ làm tăng chi phí lưu kho và hình ảnh thương hiệu bị lỗi thời.
+*   **Đề xuất**: Dồn 80% ngân sách phát triển vào các dòng sản phẩm thế hệ mới (Suffix > 70). Thiết lập quy trình "thanh lọc" hàng tồn kho định kỳ cho các dòng Classic (Suffix < 30).
 
 ---
 
-### CẤP 02: Customer Lifecycle & Acquisition
+## 3. CHƯƠNG II: KHÁCH HÀNG - CUỘC KHỦNG HOẢNG LÒNG TRUNG THÀNH
 
-#### 1. Sụp đổ trung thành
+### 3.1. Sự sụp đổ của "Kỷ nguyên Vàng" (The Retention Crisis)
+![Loyalty Collapse](figures_living/02_customer_lifecycle_acquisition/loyalty_collapse.png)
 
-![Cohort Growth](figures_living/02_customer_lifecycle_acquisition/cohort_growth.png)
-![Repeat Rate by Channel](figures_living/02_customer_lifecycle_acquisition/repeat_rate_by_channel.png)
+*   **Mô tả**: Tỷ lệ giữ chân khách hàng (Retention Rate) đã rơi tự do từ mức lý tưởng **>40% (2012)** xuống mức báo động **<10% (2021)**.
+*   **Chẩn đoán**: Chúng ta đang rơi vào "Nghịch lý của sự tăng trưởng". Lượng khách hàng mới tăng mạnh nhưng đó chủ yếu là những "thợ săn ưu đãi" – những người chỉ xuất hiện khi có Flash-sale và biến mất ngay sau đó. Chúng ta đang mua doanh thu ngắn hạn bằng cách hy sinh sức khỏe dài hạn của thương hiệu.
+*   **Dự báo**: Nếu CAC (Chi phí thu hút khách hàng) tiếp tục tăng trong khi LTV (Giá trị vòng đời) sụt giảm, doanh nghiệp sẽ sớm rơi vào tình trạng lỗ ròng trên mỗi khách hàng mới.
+*   **Đề xuất**: Chuyển dịch trọng tâm từ "Săn tìm khách mới" sang "Nuôi dưỡng khách cũ". Ra mắt **Founders Club** – một chương trình khách hàng thân thiết ưu tiên trải nghiệm hơn là giảm giá trực tiếp.
 
-**Descriptive**
-- Cohort 2012 giữ chân > **40%**
-- Cohort 2021–2022 chỉ còn **<10%**
+### 3.2. Nghịch lý Logistics "Không co giãn" (The Inelastic Retention Paradox)
+![Logistics Paradox](figures_living/03_operational_friction_leakage/logistics_loyalty_paradox.png)
 
-**Diagnostic**
-- Mô hình acquisition chuyển từ organic sang flash-deal
-- Khách deal-driven có brand affinity thấp
-
-**Predictive**
-- Nếu không đổi kênh, CAC sẽ vượt LTV
-
-**Prescriptive**
-- Xây Founders Club cho organic users
-- Giảm 30% chi Double-Day
-
-#### 2. Chênh lệch chất lượng kênh
-
-![LTV by Channel](figures_living/02_customer_lifecycle_acquisition/ltv_by_channel.png)
-![Acquisition Efficiency](figures_living/02_customer_lifecycle_acquisition/acquisition_efficiency.png)
-![LTV Demographics Heatmap](figures_living/02_customer_lifecycle_acquisition/ltv_demographics_heatmap.png)
-
-**Descriptive**
-- Organic/Referral có LTV/CAC rất tốt
-- Double-Day gần như ở vùng loss-making
-
-**Diagnostic**
-- Organic tự chọn thương hiệu; Double-Day chọn giá
-
-**Predictive**
-- Nếu giữ mix hiện tại, công ty chỉ ở mức bền vững mong manh
-
-**Prescriptive**
-- Dịch ngân sách sang SEO/referral/content
-- Tách rõ tier khuyến mãi theo nhóm khách
-
-#### Tập tham chiếu thêm
-
-![Acquisition Trend](figures_living/02_customer_lifecycle_acquisition/acquisition_trend.png)
-![Demographics Wealth](figures_living/02_customer_lifecycle_acquisition/demographics_wealth.png)
-![Revenue Acquisition](figures_living/02_customer_lifecycle_acquisition/line_revenue_acquisition.png)
-![Double Day Regime](figures_living/02_customer_lifecycle_acquisition/regime_double_day_ltv.png)
-![Order Frequency](figures_living/02_customer_lifecycle_acquisition/order_frequency_dist.png)
+*   **Mô tả**: Tỷ lệ quay lại mua hàng của khách vẫn duy trì ổn định ở mức **~74%**, bất kể họ nhận được hàng sau 2 ngày hay 10 ngày. Đây là một "ngưỡng chết" (asymptote) mà tốc độ giao hàng không thể phá vỡ.
+*   **Chẩn đoán**: Một phát hiện phản trực giác vô cùng đắt giá! Khách hàng của chúng ta ưu tiên chất lượng sản phẩm và giá trị thương hiệu hơn là tốc độ giao hàng nhanh hỏa tốc. Việc chúng ta chi thêm tiền để ép đơn vị vận chuyển giao hàng trong 24h đang là một sự lãng phí tài chính không cần thiết.
+*   **Dự báo**: Tiết giảm chi phí logistics sẽ ngay lập tức cải thiện biên lợi nhuận ròng mà không ảnh hưởng đến trải nghiệm khách hàng.
+*   **Đề xuất**: Chuyển hướng sang các gói vận chuyển tiêu chuẩn (Economy) để bảo vệ biên lợi nhuận. Sử dụng ngân sách tiết kiệm được để đầu tư vào bao bì sản phẩm (Unboxing experience) để tăng giá trị cảm nhận.
 
 ---
 
-### CẤP 03: Operational Friction & Leakage
+## 4. CHƯƠNG III: VẬN HÀNH - NHỮNG NÚT THẮT ÂM THẦM
 
-#### 1. Khủng hoảng wrong-size
-
+### 4.1. Khủng hoảng Sizing (The Sizing Crisis)
 ![Returns Bar](figures_living/03_operational_friction_leakage/returns_bar.png)
-![Return Deep Dive](figures_living/03_operational_friction_leakage/return_deep_dive.png)
-![Return Friction Matrix](figures_living/03_operational_friction_leakage/return_friction_matrix.png)
-![Return Reason Matrix](figures_living/03_operational_friction_leakage/return_reason_matrix.png)
 
-**Descriptive**
-- Tổng return rate **8.7%**
-- Wrong size chiếm **34.6%** số return
+*   **Mô tả**: Tỷ lệ trả hàng trung bình là 8.7%, trong đó **34.6% nguyên nhân đến từ việc sai kích cỡ**.
+*   **Chẩn đoán**: Hệ thống Size Chart hiện tại đang không phản ánh đúng thực tế cơ thể người tiêu dùng hiện đại, đặc biệt là trong phân khúc Streetwear. Đây là một sự lãng phí cả về chi phí vận chuyển lẫn niềm tin của khách hàng.
+*   **Đề xuất**: Triển khai giải pháp **AI Fit-finder** trên nền tảng web/app. Thực hiện audit lại quy trình may mặc cho 200 SKU chủ lực để chuẩn hóa kích thước.
 
-**Diagnostic**
-- Sizing chart lệch so với fit thực tế
-- Thiếu fit preview/AR tool
-- Free return vô tình khuyến khích đặt nhiều, trả nhiều
+### 4.2. Những "Điểm mù" mùa vụ (Seasonality Blindspots)
+![Seasonality Heatmap](figures_living/01_product_market_dominance/monthly_trend_heatmap.png)
 
-**Predictive**
-- Mỗi wrong-size return vừa tốn logistics vừa làm mất LTV
-
-**Prescriptive**
-- Fit-finder AI
-- Audit 200 SKU top revenue
-- Cân nhắc restocking fee nhẹ cho return không hợp lệ
-
-#### 2. Nghịch lý logistics sau Tết
-
-![Tết Holiday Friction](figures_living/03_operational_friction_leakage/tet_holiday_friction.png)
-![Seasonal Operational Patterns](figures_living/03_operational_friction_leakage/seasonal_operational_patterns.png)
-![Shipping & Delivery Efficiency](figures_living/03_operational_friction_leakage/shipping_delivery_efficiency.png)
-
-**Descriptive**
-- Tết làm logistics giảm công suất mạnh
-- Sau Tết, failure rate tăng vọt
-
-**Diagnostic**
-- Bài toán chính không phải “giao nhanh hơn” mà là backlog sau Tết
-- Ở điều kiện bình thường, tốc độ giao hàng gần như không làm đổi loyalty đáng kể; điểm gãy là giai đoạn blackout
-
-**Predictive**
-- Nếu không staging trước Tết, failure và churn sẽ tích lũy mỗi năm
-
-**Prescriptive**
-- Staging hàng từ rất sớm
-- Backup courier
-- SLA động cho giai đoạn Tết
-
-#### Tập tham chiếu thêm
-
-![Inventory Risk](figures_living/03_operational_friction_leakage/inventory_risk_analysis.png)
-![Inventory Friction](figures_living/03_operational_friction_leakage/inventory_friction.png)
-![Inventory Stockout](figures_living/03_operational_friction_leakage/inventory_stockout_analysis.png)
-![Line Failure Rate](figures_living/03_operational_friction_leakage/line_failure_rate.png)
-![Device Conversion](figures_living/03_operational_friction_leakage/device_conversion_analysis.png)
-![Device Source Mix](figures_living/03_operational_friction_leakage/device_source_mix.png)
-![Digital Funnel](figures_living/03_operational_friction_leakage/digital_funnel_efficiency.png)
-![Geographic Logistics](figures_living/03_operational_friction_leakage/geographic_logistics_efficiency.png)
-![Geography Map](figures_living/03_operational_friction_leakage/geography_map.png)
-![Line Failure Rate](figures_living/03_operational_friction_leakage/line_failure_rate.png)
-![Order Status Flow](figures_living/03_operational_friction_leakage/order_status_flow.png)
-![Customer Satisfaction](figures_living/03_operational_friction_leakage/customer_satisfaction.png)
-![Customer Satisfaction Operational](figures_living/03_operational_friction_leakage/customer_satisfaction_operational.png)
-![Web Traffic Conversion Gap](figures_living/03_operational_friction_leakage/web_traffic_conversion_gap.png)
-![Traffic Treemap](figures_living/03_operational_friction_leakage/traffic_treemap.png)
-![Conversion Matrix](figures_living/03_operational_friction_leakage/conversion_matrix.png)
-![Seasonality DOW](figures_living/03_operational_friction_leakage/seasonality_dow.png)
-![Seasonality Month](figures_living/03_operational_friction_leakage/seasonality_month.png)
+*   **Mô tả**: Tháng 5 hàng năm chứng kiến sự bùng nổ doanh thu gấp **2.6 lần** so với tháng 12, nhưng đồng thời tỷ lệ hủy đơn sau Tết cũng tăng vọt.
+*   **Chẩn đoán**: Nhu cầu bùng nổ quá nhanh khiến hệ thống cung ứng bị nghẽn (Supply-side ceiling). Doanh nghiệp đang đánh mất khoảng 8.5% doanh thu tiềm năng mỗi năm chỉ vì không chuẩn bị kịp hàng hóa.
+*   **Đề xuất**: Áp dụng mô hình **Pre-staging** – chuẩn bị hàng hóa dựa trên dự báo trước 60 ngày. Thiết lập cơ chế SLA linh hoạt cho các đối tác vận chuyển vào mùa cao điểm.
 
 ---
 
-### CẤP 04: Financial Dynamics & Payment
+## 5. CHƯƠNG IV: TÀI CHÍNH - BẪY KHUYẾN MÃI VÀ CHIẾN THUẬT BNPL
 
-#### 1. Hiệu ứng trả góp
+### 5.1. Thảm họa ROI của các chiến dịch cuối năm
+![Campaign ROI](figures_living/04_financial_payment_dynamics/campaign_roi.png)
 
-![Payment Analysis](figures_living/04_financial_payment_dynamics/payment_analysis.png)
-![Installment AOV](figures_living/04_financial_payment_dynamics/installment_aov_boxplot.png)
-![Installment Revenue Share](figures_living/04_financial_payment_dynamics/installment_revenue_share.png)
-![Monthly Installments](figures_living/04_financial_payment_dynamics/monthly_installments_trend.png)
+*   **Mô tả**: Spring Sale là một thành công rực rỡ (+44% doanh thu), nhưng **Year-End Sale lại là một thảm họa tài chính** với doanh thu sụt giảm -46% và margin gần như bằng không.
+*   **Chẩn đoán**: Việc giảm giá đại trà vào cuối năm đã vô tình "đào tạo" khách hàng chỉ mua khi có sale đậm, làm tê liệt doanh thu tại giá gốc. Chúng ta đang tự ăn mòn giá trị thương hiệu của mình.
+*   **Đề xuất**: Xóa bỏ mô hình giảm giá phẳng (Flat discount) vào cuối năm. Chuyển sang chiến thuật **Tiered Rewards** (Thưởng theo bậc) để bảo vệ lợi nhuận biên.
 
-**Descriptive**
-- Trả góp chiếm **22%** đơn nhưng đóng góp **28%** doanh thu
-- AOV tăng **35%**
+### 5.2. Động lực mới từ Trả góp (BNPL)
+![Installments Trend](figures_living/04_financial_payment_dynamics/monthly_installments_trend.png)
 
-**Diagnostic**
-- Cơ chế tâm lý “mua dễ hơn” đẩy khách lên bundle giá trị cao hơn
-
-**Predictive**
-- Nếu tăng adoption lên 30%, revenue có thể tăng thêm đáng kể
-
-**Prescriptive**
-- Đẩy message trả góp lên đầu trang
-- Mở thêm đối tác
-- Dùng installment làm điểm nhấn cho May peak
-
-#### 2. Độ sâu khuyến mãi và bẫy mồi nhử doanh thu
-
-![Promotion Impact](figures_living/04_financial_payment_dynamics/promotion_impact.png)
-![Promotion Depth Volume](figures_living/04_financial_payment_dynamics/promo_depth_volume.png)
-![Promotions Fight](figures_living/04_financial_payment_dynamics/promotions_fight.png)
-![Promo Urgency Stackability](figures_living/04_financial_payment_dynamics/promo_urgency_stackability.png)
-
-**Descriptive**
-- 15–25% discount là vùng hiệu quả nhất
-- Trên 25% thì volume tăng rất chậm
-
-**Diagnostic**
-- Khách hàng bị “train” chờ giảm sâu
-- Cạnh tranh khuyến mãi tạo race-to-the-bottom
-
-**Predictive**
-- Nếu tiếp tục tăng depth, margin sẽ còn co thêm 3–5pp
-
-**Prescriptive**
-- Chuyển sang tier-based promotions
-- Dùng scarcity thay cho deep discount
-
-**Bổ sung từ Gridbreakers**
-- Tránh “loss leader trap”: nếu dùng sản phẩm mồi nhử thì phải có bundling hoặc sàn lợi nhuận tối thiểu; nếu không, doanh thu nhìn đẹp nhưng lợi nhuận thực âm.
-
-#### Tập tham chiếu thêm
-
-![CAC Payback](figures_living/04_financial_payment_dynamics/cac_payback_by_channel.png)
-![LTV by Payment Method](figures_living/04_financial_payment_dynamics/ltv_by_payment_method.png)
-![Line Financial Impact](figures_living/04_financial_payment_dynamics/line_financial_impact.png)
-![Revenue Margin Trend](figures_living/04_financial_payment_dynamics/revenue_margin_trend.png)
-![Revenue Trend](figures_living/04_financial_payment_dynamics/revenue_trend.png)
-![Payment Method Share](figures_living/04_financial_payment_dynamics/payment_method_share.png)
-![Financial Velocity](figures_living/04_financial_payment_dynamics/financial_velocity.png)
+*   **Mô tả**: Các đơn hàng sử dụng trả góp (Installment) có giá trị trung bình (AOV) cao hơn **35%** so với đơn hàng thông thường.
+*   **Chẩn đoán**: Phương thức thanh toán BNPL (Buy Now Pay Later) đang mở khóa sức mua cho phân khúc khách hàng trẻ, cho phép họ tiếp cận các dòng sản phẩm cao cấp mà không bị áp lực tài chính tức thời.
+*   **Đề xuất**: Mở rộng hợp tác với các nền tảng tài chính để tích hợp BNPL sâu hơn vào quy trình thanh toán. Ưu tiên hiển thị phương thức trả góp cho các giỏ hàng trên 1.5M VND.
 
 ---
 
-## 3. Lộ trình chiến lược 12 tháng
+## 6. LỘ TRÌNH CHIẾN LƯỢC 2023 - 2024
 
-| Giai đoạn | Tháng 1–3 | Tháng 4–6 | Tháng 7–9 | Tháng 10–12 |
-|---|---|---|---|---|
-| **Sản phẩm** | Giới hạn Streetwear +5% YoY; ra mắt Premium gateway SKU | Procurement bất đối xứng 1:2:3:3 | Theo dõi margin, giảm BAIT xuống 20% | Chuẩn bị tồn kho cho mùa cao điểm |
-| **Khách hàng** | Giảm 30% chi Double-Day; mở Founders Club | Tăng organic/referral; làm content/influencer | Mở rộng referral | Tối ưu acquisition cho mùa lễ |
-| **Vận hành** | Fit-finder AI | Audit sizing top 200 SKU | Chốt staging sau Tết | Đàm phán backup logistics |
-| **Tài chính** | Tiers-based promo | Mở rộng đối tác trả góp | Bundle trả góp | Mục tiêu 35% adoption cho May |
-| **Chỉ số** | Margin 12% → 13% | CAC/LTV 4.5:1 → 6:1 | Retention 10% → 15% | Blended margin 15% |
-| **Tác động doanh thu** | +200–300M | +500–800M | +300–500M | +1.2–1.5B |
-| **Tác động lợi nhuận** | +150–200M | +400–600M | +200–400M | +900M–1.2B |
+| Giai đoạn | Hành động trọng tâm | Mục tiêu |
+|---|---|---|
+| **Quý 1** | Loại bỏ Loss-leader; Chuẩn hóa Sizing | Tăng Margin +2% |
+| **Quý 2** | Pre-stage hàng cho tháng 5; Đẩy mạnh BNPL | Tối ưu doanh thu đỉnh điểm |
+| **Quý 3** | Ra mắt Founders Club; Cắt giảm Flash-sale vô bổ | Cải thiện tỷ lệ Retention |
+| **Quý 4** | Thay thế Year-End Sale bằng Tiered Rewards | Bảo vệ lợi nhuận cuối năm |
 
----
-
-## 4. Phương pháp
-
-1. **Descriptive**  
-   Thống kê lịch sử, phân rã theo cohort/channel/product/time.
-
-2. **Diagnostic**  
-   Tìm nguyên nhân theo lớp 1–2–3: driver chính, phụ, và bối cảnh.
-
-3. **Predictive**  
-   Dự báo xu hướng, mùa vụ, và ngưỡng elasticity.
-
-4. **Prescriptive**  
-   Đề xuất hành động cụ thể kèm đánh đổi, payback và timeline.
-
-### Kiểm chứng dữ liệu
-- Dữ liệu bao phủ 10 năm (04/2012–12/2022)
-- Tổng doanh thu khớp **16.43B VND**
-- Outlier được giữ lại nhưng được chú thích trong bối cảnh
+**KẾT LUẬN**: Chúng ta đã đi qua một thập kỷ tăng trưởng nóng dựa trên số lượng. Giờ đây, để tiến tới cột mốc 15% biên lợi nhuận bền vững, doanh nghiệp cần sự dũng cảm để từ bỏ những nghịch lý cũ và tập trung vào giá trị thực sự của sản phẩm cũng như khách hàng.
 
 ---
-
-## 5. Kết luận
-
-Báo cáo cho thấy 5 điểm nghẽn lớn đang bào mòn biên lợi nhuận và LTV:
-
-1. **Độc quyền Streetwear** → cần đa dạng hóa danh mục
-2. **Suy giảm trung thành** → chuyển sang organic-first acquisition
-3. **Khủng hoảng sizing** → fit-finder + audit sizing
-4. **Nghẽn mùa vụ tháng 5 / sau Tết** → pre-stage và backup logistics
-5. **Méo mó khuyến mãi** → tier-based promo, tránh bẫy mồi nhử
-
-**Kỳ vọng sau khi triển khai**
-- Margin tăng về **15%+**
-- Retention phục hồi dần
-- CAC/LTV cải thiện rõ rệt
-- Doanh nghiệp chuyển từ volume-driven sang margin-optimized
-
----
-
-**Ngày tạo:** 2026-04-28  
-**Dữ liệu:** 04/2012 – 12/2022  
-**Khung phân tích:** Descriptive → Diagnostic → Predictive → Prescriptive
+*Ngày báo cáo: 29/04/2026*  
+*Phương pháp: Forensic Data Analysis*

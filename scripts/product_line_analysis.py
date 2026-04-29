@@ -13,7 +13,25 @@ REPO_ROOT = '/home/shayneeo/Downloads/Datathon'
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-from scripts.annotate_figures_optimized import annotate_relpaths
+# Helper functions for professional styling
+def apply_editorial_style(fig, ax, title, subtitle):
+    for spine in ['top', 'right', 'left']:
+        ax.spines[spine].set_visible(False)
+    ax.spines['bottom'].set_color('#CBD5E1')
+    ax.spines['bottom'].set_linewidth(1.5)
+    ax.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+    ax.grid(axis='y', color='#F1F5F9', linewidth=1.5, linestyle='-')
+    ax.set_axisbelow(True)
+    fig.text(0.04, 0.95, title.upper(), fontsize=20, fontweight='black', color='#0F172A')
+    fig.text(0.04, 0.90, subtitle, fontsize=12, color='#64748B')
+    plt.subplots_adjust(top=0.82, bottom=0.12, left=0.08, right=0.95)
+
+def add_callout(ax, text, xy, xytext, color='#0F172A', arrow_color='#64748B'):
+    ax.annotate(text, xy=xy, xytext=xytext,
+                arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5, connectionstyle="arc3,rad=0.2"),
+                color=color, fontweight="600", ha="center", fontsize=11,
+                bbox=dict(boxstyle="round,pad=0.6,rounding_size=0.3", facecolor="#FFFFFF", 
+                          edgecolor="#E2E8F0", alpha=0.95, lw=1))
 
 sns.set_theme(style="whitegrid")
 plt.rcParams['font.family'] = 'sans-serif'
@@ -76,7 +94,7 @@ def plot_star_vs_bait(oi_df, products_df):
     
     # 1. Bar chart: Price vs Margin by line code
     ax1 = axes[0, 0]
-    colors = ['#2ecc71' if x > avg_margin * 1.1 else '#e74c3c' if x < avg_margin * 0.9 else '#f39c12' for x in line_stats['margin_pct']]
+    colors = ['#009E73' if x > avg_margin * 1.1 else '#D55E00' if x < avg_margin * 0.9 else '#E69F00' for x in line_stats['margin_pct']]
     bars = ax1.bar(range(len(line_stats)), line_stats['margin_pct'] * 100, color=colors, edgecolor='white', linewidth=1.5)
     ax1.set_xticks(range(len(line_stats)))
     ax1.set_xticklabels(line_stats.index, rotation=45, ha='right')
@@ -102,7 +120,7 @@ def plot_star_vs_bait(oi_df, products_df):
     # 3. Horizontal bar: Product count by line
     ax3 = axes[1, 0]
     line_stats_sorted = line_stats.sort_values('product_count', ascending=True)
-    colors3 = ['#2ecc71' if c == 'STAR' else '#e74c3c' if c == 'BAIT' else '#f39c12' for c in line_stats_sorted['classification']]
+    colors3 = ['#009E73' if c == 'STAR' else '#D55E00' if c == 'BAIT' else '#E69F00' for c in line_stats_sorted['classification']]
     ax3.barh(line_stats_sorted.index, line_stats_sorted['product_count'], color=colors3, edgecolor='white')
     ax3.set_title('Product Count by Line Code', fontsize=14, fontweight='bold')
     ax3.set_xlabel('Number of Products', fontsize=12)
@@ -110,18 +128,17 @@ def plot_star_vs_bait(oi_df, products_df):
     # 4. Classification pie chart
     ax4 = axes[1, 1]
     class_counts = line_stats['classification'].value_counts()
-    colors4 = {'STAR': '#2ecc71', 'BALANCED': '#f39c12', 'BAIT': '#e74c3c'}
+    colors4 = {'STAR': '#009E73', 'BALANCED': '#E69F00', 'BAIT': '#D55E00'}
     ax4.pie(class_counts, labels=class_counts.index, autopct='%1.0f%%', 
            colors=[colors4[c] for c in class_counts.index], startangle=90)
     ax4.set_title('Line Code Classification', fontsize=14, fontweight='bold')
     
-    # PRESCRIPTIVE ANNOTATION
-    plt.text(0.5, 0.5, "PREDICTIVE: BAIT lines (YY, UC) will continue to drag blended margins below 25%.\nACTION: Prioritize UR (STAR) expansion; use YY/UC strictly as cart-bumpers.", 
-             transform=ax4.transAxes, fontsize=10, verticalalignment='center', horizontalalignment='center',
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#CE2626'))
+    # Professional Styling
+    apply_editorial_style(fig, axes[0,0], "Star vs Bait Analysis: Product Portfolio", "Identifying high-margin growth drivers vs low-margin traffic generators")
     
-    plt.suptitle('Product Line Portfolio: Star vs Bait Analysis\n"Ai là ngôi sao, ai là hàng mồi?"', 
-                 fontsize=16, fontweight='bold', y=1.02)
+    # Native callout
+    add_callout(axes[1,1], "Prioritize STAR expansion", xy=(0.5, 0.5), xytext=(0.5, 0.8), color='#009E73')
+
     plt.tight_layout()
     plt.savefig(os.path.join(output_path, 'star_vs_bait_analysis.png'), dpi=150, bbox_inches='tight')
     plt.close()
@@ -243,16 +260,18 @@ def plot_line_operational_friction(oi_df, products_df):
         ax.set_xlabel('Line Code', fontsize=12)
         ax.set_ylabel('Failure Rate %', fontsize=12)
         
-        # ACTION NOTE
-        plt.text(0.95, 0.95, "DIAGNOSTIC: Lines >10% failure indicate severe leakage.\nPRESCRIPTIVE: Audit supply chain for UC and RP lines.", 
-                 transform=ax.transAxes, fontsize=10, verticalalignment='top', horizontalalignment='right',
-                 bbox=dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='#CE2626'))
-        
-        ax.legend()
+        # Professional Styling
+        apply_editorial_style(fig, ax, "Order Failure Rate by Product Line", "Identifying operational leakage across major product lines")
+
+        # Native callout
+        add_callout(ax, "Significant failure hotspots", xy=(0, 10), xytext=(2, 15), color='#D55E00')
+
+        ax.legend(frameon=False)
         plt.tight_layout()
         plt.savefig(os.path.join(output_path, 'line_failure_rate.png'), dpi=150)
         plt.close()
         print(f"Generated: {output_path}/line_failure_rate.png")
+
     else:
         print("No failure data available for line analysis")
 
@@ -310,14 +329,6 @@ def main():
     print("\n=== Generating Financial Impact Analysis for 04 ===")
     plot_line_financial_impact(oi_df, products_df)
 
-    annotate_relpaths([
-        '01_product_market_dominance/star_vs_bait_analysis.png',
-        '01_product_market_dominance/brand_performance.png',
-        '02_customer_lifecycle_acquisition/line_revenue_acquisition.png',
-        '03_operational_friction_leakage/line_failure_rate.png',
-        '04_financial_payment_dynamics/line_financial_impact.png',
-    ])
-    
     print("\n=== Product Line Analysis Complete ===")
     print("\nLine Code Statistics:")
     print(line_stats)

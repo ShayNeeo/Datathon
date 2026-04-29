@@ -34,22 +34,40 @@ REPO_ROOT = '/home/shayneeo/Downloads/Datathon'
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-from scripts.annotate_figures_optimized import annotate_relpaths
-
 PALETTE = {
-    'authority': '#003366',    # Deep Navy
-    'context':   '#7DAACB',    # Slate Blue
-    'friction':  '#CE2626',    # Strategic Red
-    'gold':      '#B8860B',    # Strategic Gold
-    'highlight': '#E8DBB3',    # Sand
-    'paper':     '#FFFDEB',    # Cream
-    'ink':       '#1A1A1A',    # Dark Gray
+    'authority': '#0072B2',    # STYLING.md Blue
+    'context':   '#56B4E9',    # STYLING.md Sky Blue
+    'friction':  '#D55E00',    # STYLING.md Vermillion
+    'gold':      '#E69F00',    # STYLING.md Orange
+    'highlight': '#F0E442',    # STYLING.md Yellow
+    'paper':     '#FFFFFF',    # Clean White
+    'ink':       '#000000',    # Black
     'grid':      '#D1D1D1',
 }
 
 cmap_navy = LinearSegmentedColormap.from_list('MasterNavy', [PALETTE['paper'], PALETTE['authority']])
 
-plt.rcParams['font.family'] = 'serif'
+# Helper functions for professional styling
+def apply_editorial_style(fig, ax, title, subtitle):
+    for spine in ['top', 'right', 'left']:
+        ax.spines[spine].set_visible(False)
+    ax.spines['bottom'].set_color('#CBD5E1')
+    ax.spines['bottom'].set_linewidth(1.5)
+    ax.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+    ax.grid(axis='y', color='#F1F5F9', linewidth=1.5, linestyle='-')
+    ax.set_axisbelow(True)
+    fig.text(0.04, 0.95, title.upper(), fontsize=20, fontweight='black', color='#0F172A')
+    fig.text(0.04, 0.90, subtitle, fontsize=12, color='#64748B')
+    plt.subplots_adjust(top=0.82, bottom=0.12, left=0.08, right=0.95)
+
+def add_callout(ax, text, xy, xytext, color='#0F172A', arrow_color='#64748B'):
+    ax.annotate(text, xy=xy, xytext=xytext,
+                arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5, connectionstyle="arc3,rad=0.2"),
+                color=color, fontweight="600", ha="center", fontsize=11,
+                bbox=dict(boxstyle="round,pad=0.6,rounding_size=0.3", facecolor="#FFFFFF", 
+                          edgecolor="#E2E8F0", alpha=0.95, lw=1))
+
+plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['figure.facecolor'] = PALETTE['paper']
 plt.rcParams['axes.facecolor'] = PALETTE['paper']
 plt.rcParams['text.color'] = PALETTE['ink']
@@ -109,8 +127,11 @@ ret_matrix = ret_matrix.divide(ret_matrix[0], axis=0) * 100
 
 fig, ax = plt.subplots(figsize=(14, 10))
 im = ax.imshow(ret_matrix, cmap=cmap_navy, aspect='auto')
-master_ax(ax, "THE BRAND LOYALTY DECAY (2012-2022)", "Yearly cohort retention tracking since first acquisition",
-          xlabel="Years Since First Purchase", ylabel="Customer Cohort (Acquisition Year)")
+
+# Professional Style
+apply_editorial_style(fig, ax, "The Brand Loyalty Decay", "Yearly cohort retention tracking since first acquisition")
+ax.set_xlabel("Years Since First Purchase", fontweight='bold')
+ax.set_ylabel("Customer Cohort (Acquisition Year)", fontweight='bold')
 
 # Annotate cells
 for i in range(ret_matrix.shape[0]):
@@ -120,6 +141,9 @@ for i in range(ret_matrix.shape[0]):
             ax.text(j, i, f'{val:.0f}', ha='center', va='center', color='white' if val > 40 else 'black', fontsize=9)
 
 plt.colorbar(im, label='Retention Rate (%)')
+# Callout for collapse
+add_callout(ax, "Retention collapse in modern cohorts", xy=(9, 10), xytext=(6, 12), color='#D55E00')
+
 plt.savefig(f'{OUTPUT_DIR_02}/cohort_growth.png', dpi=300, bbox_inches='tight')
 plt.close()
 
@@ -135,9 +159,13 @@ fig, ax = plt.subplots(figsize=(10, 6))
 ax2 = ax.twinx()
 ax.bar([0,1], p_stats['unit_price'] / 1e3, 0.35, color=PALETTE['context'], edgecolor=PALETTE['ink'])
 ax2.bar([0.35,1.35], p_stats['order_id'] / 1e3, 0.35, color=PALETTE['authority'], edgecolor=PALETTE['ink'])
-master_ax(ax, "THE PROMOTION PARADOX", xlabel="Order Type (Organic vs. Promoted)", ylabel="Avg Unit Price (K VND)")
+
+apply_editorial_style(fig, ax, "The Promotion Paradox", "Promoted orders drive volume but significantly lower average unit price")
 ax2.set_ylabel("Order Volume (K Units)", color=PALETTE['authority'], fontweight='bold')
 ax.set_xticks([0.17, 1.17]); ax.set_xticklabels(['ORGANIC', 'PROMOTED'], fontweight='bold')
+
+add_callout(ax, "Volume surge vs. Price dilution", xy=(1.17, 100), xytext=(0.8, 150), color='#D55E00')
+
 plt.savefig(f'{OUTPUT_DIR_04}/promotions_fight.png', dpi=300, bbox_inches='tight')
 plt.close()
 
@@ -588,23 +616,29 @@ plt.tight_layout()
 plt.savefig(f'{OUTPUT_DIR_04}/payment_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
 
-annotate_relpaths([
-    '02_customer_lifecycle_acquisition/cohort_growth.png',
-    '01_product_market_dominance/category_pie.png',
-    '03_operational_friction_leakage/returns_bar.png',
-    '04_financial_payment_dynamics/revenue_trend.png',
-    '03_operational_friction_leakage/geography_map.png',
-    '03_operational_friction_leakage/seasonality_month.png',
-    '03_operational_friction_leakage/seasonality_dow.png',
-    '01_product_market_dominance/segments.png',
-    '03_operational_friction_leakage/inventory_friction.png',
-    '03_operational_friction_leakage/conversion_matrix.png',
-    '04_financial_payment_dynamics/financial_velocity.png',
-    '01_product_market_dominance/may_products.png',
-    '01_product_market_dominance/saigonflex_attributes.png',
-    '01_product_market_dominance/margin_by_size.png',
-    '04_financial_payment_dynamics/payment_analysis.png',
-])
+# ----------------------------------------------------------------------------
+# ASSET 28: PAYDAY EFFECT (Vietnam Local Insight)
+# ----------------------------------------------------------------------------
+print("[28/28] Asset 28: Rendering Payday Effect Analysis...")
+sales_pre = sales[sales['Date'].dt.year <= 2018].copy()
+sales_pre['day'] = sales_pre['Date'].dt.day
+dom_avg = sales_pre.groupby('day')['Revenue'].mean()
+dom_ratio = (dom_avg / dom_avg.mean() - 1) * 100
+
+fig, ax = plt.subplots(figsize=(12, 6))
+colors = ['#D55E00' if r > 10 else '#0072B2' if r < -10 else '#64748B' for r in dom_ratio.values]
+ax.bar(dom_ratio.index, dom_ratio.values, color=colors, alpha=0.8, edgecolor='black', linewidth=1)
+
+apply_editorial_style(fig, ax, "The Vietnamese Payday Effect", "Revenue spikes on the 1st and 30th follow local salary cycles")
+ax.set_xticks(range(1, 32))
+ax.set_xlabel("Day of Month", fontweight='bold')
+ax.set_ylabel("Revenue Variance (%)", fontweight='bold')
+
+add_callout(ax, "Month-end salary surge", xy=(30, 15), xytext=(25, 25), color='#D55E00')
+add_callout(ax, "Post-spend fatigue", xy=(5, -15), xytext=(10, -25), color='#0072B2')
+
+plt.savefig(f'{OUTPUT_DIR_04}/payday_effect.png', dpi=300, bbox_inches='tight')
+plt.close()
 
 print("\nLONGITUDINAL MASTER SUITE REGENERATED.")
 print("="*60)

@@ -2,51 +2,33 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
-from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
 OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/04_financial_payment_dynamics'
 
+# Helper functions for professional styling
+def apply_editorial_style(fig, ax, title, subtitle):
+    for spine in ['top', 'right', 'left']:
+        ax.spines[spine].set_visible(False)
+    ax.spines['bottom'].set_color('#CBD5E1')
+    ax.spines['bottom'].set_linewidth(1.5)
+    ax.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+    ax.grid(axis='y', color='#F1F5F9', linewidth=1.5, linestyle='-')
+    ax.set_axisbelow(True)
+    fig.text(0.04, 0.95, title.upper(), fontsize=20, fontweight='black', color='#0F172A')
+    fig.text(0.04, 0.90, subtitle, fontsize=12, color='#64748B')
+    plt.subplots_adjust(top=0.82, bottom=0.12, left=0.08, right=0.95)
 
-def _font(size):
-    try:
-        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
-    except Exception:
-        return ImageFont.load_default()
-
-
-def _text(draw, xy, text, color, size):
-    font = _font(size)
-    bbox = draw.textbbox((0, 0), text, font=font)
-    w = bbox[2] - bbox[0]
-    h = bbox[3] - bbox[1]
-    x = max(10, min(xy[0], draw._image.size[0] - w - 10))
-    y = max(10, min(xy[1], draw._image.size[1] - h - 10))
-    draw.rounded_rectangle([x - 8, y - 8, x + w + 8, y + h + 8], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
-    draw.text((x, y), text, font=font, fill=color)
-
+def add_callout(ax, text, xy, xytext, color='#0F172A', arrow_color='#64748B'):
+    ax.annotate(text, xy=xy, xytext=xytext,
+                arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5, connectionstyle="arc3,rad=0.2"),
+                color=color, fontweight="600", ha="center", fontsize=11,
+                bbox=dict(boxstyle="round,pad=0.6,rounding_size=0.3", facecolor="#FFFFFF", 
+                          edgecolor="#E2E8F0", alpha=0.95, lw=1))
 
 def annotate_output(path):
-    img = Image.open(path).convert('RGBA')
-    w, h = img.size
-    draw = ImageDraw.Draw(img, 'RGBA')
-    name = os.path.basename(path)
-    if name == 'installment_aov_boxplot.png':
-        _text(draw, (w * 0.62, h * 0.08), '+35% AOV', '#2D5016', max(14, int(min(w, h) / 150)))
-    elif name == 'promo_depth_volume.png':
-        _text(draw, (w * 0.58, h * 0.10), 'Optimal\n15–25%', '#2D5016', max(12, int(min(w, h) / 160)))
-    elif name == 'ltv_by_payment_method.png':
-        _text(draw, (w * 0.60, h * 0.08), 'Card > COD', '#2D5016', max(12, int(min(w, h) / 160)))
-    elif name == 'revenue_margin_trend.png':
-        _text(draw, (w * 0.58, h * 0.08), 'Revenue ↑\nMargin ↓', '#CE2626', max(12, int(min(w, h) / 160)))
-    elif name == 'cac_payback_by_channel.png':
-        _text(draw, (w * 0.56, h * 0.08), 'Organic best', '#2D5016', max(12, int(min(w, h) / 160)))
-    elif name == 'installment_revenue_share.png':
-        _text(draw, (w * 0.60, h * 0.08), 'Installment lift', '#2D5016', max(12, int(min(w, h) / 160)))
-    elif name == 'promo_urgency_stackability.png':
-        _text(draw, (w * 0.56, h * 0.08), 'Cap stackable promos', '#CE2626', max(12, int(min(w, h) / 160)))
-    img.convert('RGB').save(path)
+    pass
 
 sns.set_theme(style="whitegrid")
 plt.rcParams['font.family'] = 'sans-serif'
@@ -92,15 +74,15 @@ def plot_installment_aov_distribution(df):
     ax.set_xticks([0, 1])
     ax.set_xticklabels(['No', 'Yes'])
     
-    # PRESCRIPTIVE ANNOTATION
-    plt.text(0.5, 0.95, "PREDICTIVE: BNPL users generate +35% higher AOV.\nACTION: Default '0% Installment' for carts > 1.5M VND.", 
-             transform=ax.transAxes, fontsize=10, verticalalignment='top', horizontalalignment='center',
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#003366'))
+    # Professional Styling
+    apply_editorial_style(fig, ax, "AOV Distribution: Installment Impact", "BNPL users generate +35% higher AOV than standard orders")
+    
+    # Native callout
+    add_callout(ax, "+35% AOV uplift with Installments", xy=(1, 15000), xytext=(1.2, 25000), color='#009E73')
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'installment_aov_boxplot.png'))
     plt.close()
-    print("Generated: installment_aov_boxplot.png")
 
 
 def plot_payment_method_market_share(df):
@@ -173,16 +155,16 @@ def plot_customer_ltv_by_payment(df, customers_df):
     ax.set_xlabel('Payment Method', fontsize=12)
     ax.set_ylabel('LTV (VND)', fontsize=12)
     
-    # PRESCRIPTIVE NOTE
-    plt.text(0.95, 0.95, "DIAGNOSTIC: Credit Card LTV is 2.5x COD.\nPRESCRIPTIVE: Incentivize 'COD to Card' upgrades.", 
-             transform=ax.transAxes, fontsize=10, verticalalignment='top', horizontalalignment='right',
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#B8860B'))
+    # Professional Styling
+    apply_editorial_style(fig, ax, "Customer LTV by Payment Method", "Card users exhibit significantly higher lifetime value than COD customers")
+    
+    # Native callout
+    add_callout(ax, "Card > COD: Significant LTV gap", xy=(0, 20000), xytext=(0.5, 40000), color='#009E73')
     
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'ltv_by_payment_method.png'))
     plt.close()
-    print("Generated: ltv_by_payment_method.png")
 
 
 def plot_monthly_net_margin_trend(orders_df, order_items_df):
@@ -331,14 +313,15 @@ def plot_promo_urgency_stackability(oi_df, promotions_df):
     plt.suptitle("Part 3 Feature → Part 2 Insight: Promo Urgency & Stackability Risk",
                  fontsize=14, fontweight='bold', y=1.01)
                  
-    # ACTION NOTE
-    fig.text(0.5, 0.01, "ACTION: Enforce a hard 28% discount cap for all stackable voucher combinations to protect net margins.\nPrioritize 'Urgency' marketing (final 48h) over 'Depth' (discount %).", 
-             ha='center', fontsize=10, fontweight='bold', bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#CE2626'))
+    # Professional Styling
+    apply_editorial_style(fig, axes[0], "Promo Urgency & Stackability Risk", "Revenue surges toward end-of-promo while stackability dilutes margins")
+    
+    # Native callout
+    add_callout(axes[1], "Stackable promos dilute margins", xy=(1, 0.25), xytext=(0.5, 0.45), color='#D55E00')
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'promo_urgency_stackability.png'), dpi=200, bbox_inches='tight')
     plt.close()
-    print("Generated: promo_urgency_stackability.png")
 
 
 def main():

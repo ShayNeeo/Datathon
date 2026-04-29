@@ -2,79 +2,35 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
-from PIL import Image, ImageDraw, ImageFont
+# Test comment
 import numpy as np
 
 INPUT_DIR = '/home/shayneeo/Downloads/Datathon/input'
 OUTPUT_DIR = '/home/shayneeo/Downloads/Datathon/output/figures_living/01_product_market_dominance'
 
+# Helper functions for professional styling
+def apply_editorial_style(fig, ax, title, subtitle):
+    for spine in ['top', 'right', 'left']:
+        ax.spines[spine].set_visible(False)
+    ax.spines['bottom'].set_color('#CBD5E1')
+    ax.spines['bottom'].set_linewidth(1.5)
+    ax.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+    ax.grid(axis='y', color='#F1F5F9', linewidth=1.5, linestyle='-')
+    ax.set_axisbelow(True)
+    fig.text(0.04, 0.95, title.upper(), fontsize=20, fontweight='black', color='#0F172A')
+    fig.text(0.04, 0.90, subtitle, fontsize=12, color='#64748B')
+    plt.subplots_adjust(top=0.82, bottom=0.12, left=0.08, right=0.95)
 
-def _font(size):
-    try:
-        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
-    except Exception:
-        return ImageFont.load_default()
-
-
-def _text(draw, xy, text, color, size, pad=8):
-    font = _font(size)
-    bbox = draw.textbbox((0, 0), text, font=font)
-    w = bbox[2] - bbox[0]
-    h = bbox[3] - bbox[1]
-    x = max(pad, min(xy[0], draw._image.size[0] - w - pad))
-    y = max(pad, min(xy[1], draw._image.size[1] - h - pad))
-    draw.rounded_rectangle([x - pad, y - pad, x + w + pad, y + h + pad], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
-    draw.text((x, y), text, font=font, fill=color)
-    return (x, y, x + w, y + h)
-
-
-def _circle(draw, center, radius, color, width=2):
-    x, y = center
-    draw.ellipse([x - radius, y - radius, x + radius, y + radius], outline=color, width=width)
-
-
-def _line_arrow(draw, start, end, color, width=3):
-    draw.line([start, end], fill=color, width=width)
-    ang = np.arctan2(end[1] - start[1], end[0] - start[0])
-    head = max(8, width * 3)
-    p1 = (end[0] - head * np.cos(ang - np.pi / 7), end[1] - head * np.sin(ang - np.pi / 7))
-    p2 = (end[0] - head * np.cos(ang + np.pi / 7), end[1] - head * np.sin(ang + np.pi / 7))
-    draw.polygon([end, p1, p2], fill=color)
+def add_callout(ax, text, xy, xytext, color='#0F172A', arrow_color='#64748B'):
+    ax.annotate(text, xy=xy, xytext=xytext,
+                arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5, connectionstyle="arc3,rad=0.2"),
+                color=color, fontweight="600", ha="center", fontsize=11,
+                bbox=dict(boxstyle="round,pad=0.6,rounding_size=0.3", facecolor="#FFFFFF", 
+                          edgecolor="#E2E8F0", alpha=0.95, lw=1))
 
 
 def annotate_output(path):
-    img = Image.open(path).convert('RGBA')
-    w, h = img.size
-    draw = ImageDraw.Draw(img, 'RGBA')
-    name = os.path.basename(path)
-
-    if name == 'segment_market_share_new.png':
-        radius = min(w, h) * 0.20
-        _circle(draw, (w * 0.43, h * 0.48), int(radius), '#CE2626', 3)
-        _text(draw, (w * 0.60, h * 0.18), '80% Streetwear', '#CE2626', max(16, int(min(w, h) / 120)))
-        _line_arrow(draw, (w * 0.60, h * 0.22), (w * 0.50, h * 0.42), '#CE2626', 3)
-    elif name == 'size_profitability_new.png':
-        draw.rectangle([w * 0.70, h * 0.20, w * 0.88, h * 0.68], outline='#2D5016', width=3)
-        draw.rectangle([w * 0.20, h * 0.28, w * 0.38, h * 0.66], outline='#CE2626', width=3)
-        _text(draw, (w * 0.71, h * 0.12), 'Premium 30–35%', '#2D5016', max(14, int(min(w, h) / 130)))
-        _text(draw, (w * 0.19, h * 0.72), 'Commodity 18–26%', '#CE2626', max(14, int(min(w, h) / 130)))
-    elif name == 'size_profitability_boxplot.png':
-        y = h * 0.16
-        draw.line([(w * 0.22, y), (w * 0.22, y - h * 0.06), (w * 0.80, y - h * 0.06), (w * 0.80, y)], fill='#CE2626', width=3)
-        _text(draw, (w * 0.36, h * 0.02), 'Premium Size 12–17pp', '#CE2626', max(14, int(min(w, h) / 130)))
-    elif name == 'monthly_trend_heatmap.png':
-        _circle(draw, (w * 0.43, h * 0.47), int(min(w, h) * 0.045), '#2D5016', 3)
-        _text(draw, (w * 0.58, h * 0.18), 'May Peak 2.6x', '#2D5016', max(14, int(min(w, h) / 130)))
-        _line_arrow(draw, (w * 0.57, h * 0.22), (w * 0.47, h * 0.43), '#2D5016', 3)
-    elif name == 'star_vs_bait_analysis.png':
-        draw.rectangle([w * 0.68, h * 0.16, w * 0.90, h * 0.36], outline='#2D5016', width=3)
-        draw.rectangle([w * 0.10, h * 0.60, w * 0.30, h * 0.82], outline='#CE2626', width=3)
-        _text(draw, (w * 0.70, h * 0.06), 'STAR 31.3%', '#2D5016', max(14, int(min(w, h) / 140)))
-        _text(draw, (w * 0.08, h * 0.84), 'BAIT 23–24%', '#CE2626', max(14, int(min(w, h) / 140)))
-    elif name == 'brand_performance.png':
-        _text(draw, (w * 0.68, h * 0.10), 'UR = STAR', '#2D5016', max(12, int(min(w, h) / 150)))
-
-    img.convert('RGB').save(path)
+    pass
 
 sns.set_theme(style="whitegrid")
 plt.rcParams['font.family'] = 'sans-serif'
@@ -128,99 +84,97 @@ def load_and_prepare():
     return oi_delivered, products
 
 def plot_segment_market_share(oi_df, products_df):
-    plt.figure(figsize=(10, 8))
+    fig, ax = plt.subplots(figsize=(10, 8))
     segment_revenue = oi_df.groupby('segment')['unit_price'].sum().sort_values(ascending=False)
-    plt.figure(figsize=(10, 8))
-    colors = plt.cm.Set2(np.linspace(0, 1, len(segment_revenue)))
-    wedges, texts, autotexts = plt.pie(segment_revenue, labels=segment_revenue.index, 
-                                    autopct='%1.1f%%', colors=colors, startangle=90)
+    
+    # STYLING.md Qualitative Palette
+    colors = ['#0072B2', '#009E73', '#E69F00', '#CC79A7', '#56B4E9', '#D55E00']
+    
+    wedges, texts, autotexts = ax.pie(segment_revenue, labels=segment_revenue.index, 
+                                    autopct='%1.1f%%', colors=colors, startangle=90,
+                                    wedgeprops={'edgecolor': 'white', 'linewidth': 2})
     plt.setp(autotexts, size=10, weight="bold", color="white")
-    plt.setp(texts, size=12)
-    plt.title('Market Share by Segment', fontsize=16, fontweight='bold')
-    plt.tight_layout()
+    plt.setp(texts, size=12, fontweight='600')
+    
+    apply_editorial_style(fig, ax, "Market Share by Segment", "Revenue dominance of Streetwear and Standard segments")
+    
+    # Native callout
+    add_callout(ax, "80% Streetwear Hegemony", xy=(0.3, 0.3), xytext=(1.2, 0.8), color='#D55E00')
+
     plt.savefig(os.path.join(OUTPUT_DIR, 'segment_market_share_new.png'))
     plt.close()
     print("Generated: segment_market_share_new.png")
 
 def plot_size_profitability(oi_df, products_df):
-    plt.figure(figsize=(12, 7))
+    fig, ax = plt.subplots(figsize=(12, 7))
     oi_merged = oi_df.merge(products_df[['product_id', 'size']], on='product_id', how='left')
     oi_merged['profit'] = oi_merged['unit_price'] - oi_merged['cogs_products']
     oi_merged['profit_margin'] = oi_merged['profit'] / oi_merged['unit_price']
     size_margin = oi_merged.groupby('size')['profit_margin'].mean().sort_values(ascending=False)
-    colors = ['#2ecc71' if x > 0.3 else '#f39c12' if x > 0.2 else '#e74c3c' for x in size_margin]
-    bars = plt.bar(size_margin.index, size_margin.values, color=colors, edgecolor='white', linewidth=1.5)
-    plt.axhline(y=size_margin.mean(), color='gray', linestyle='--', alpha=0.7, label=f'Avg: {size_margin.mean():.1%}')
-    plt.title('Average Profit Margin by Size', fontsize=16, fontweight='bold')
-    plt.xlabel('Size', fontsize=12)
-    plt.ylabel('Profit Margin', fontsize=12)
     
-    # PRESCRIPTIVE ANNOTATION
-    plt.text(0.5, 0.95, "PREDICTIVE: L/XL demand likely to outpace S/M in 2023.\nACTION: Shift procurement to L/XL (3:1 ratio).", 
-             transform=plt.gca().transAxes, fontsize=10, verticalalignment='top', 
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='#003366'))
+    # STYLING.md colors
+    colors = ['#009E73' if x > 0.3 else '#E69F00' if x > 0.2 else '#D55E00' for x in size_margin]
+    bars = ax.bar(size_margin.index, size_margin.values, color=colors, edgecolor='white', linewidth=1.5)
     
-    plt.legend()
-    plt.tight_layout()
+    ax.axhline(y=size_margin.mean(), color='#64748B', linestyle='--', alpha=0.7, label=f'Avg: {size_margin.mean():.1%}')
+    
+    apply_editorial_style(fig, ax, "Average Profit Margin by Size", "Premium sizes (L/XL) command 12-17pp higher margins")
+    
+    # Professional callouts
+    add_callout(ax, "Premium 30–35%", xy=(2, 0.32), xytext=(2.5, 0.45), color='#009E73')
+    add_callout(ax, "Commodity 18–26%", xy=(0, 0.22), xytext=(-0.5, 0.10), color='#D55E00')
+
+    plt.legend(frameon=False, loc='upper right')
     plt.savefig(os.path.join(OUTPUT_DIR, 'size_profitability_new.png'))
     plt.close()
     print("Generated: size_profitability_new.png")
 
 def plot_size_profitability_boxplot(oi_df, products_df):
-    plt.figure(figsize=(14, 7))
+    fig, ax = plt.subplots(figsize=(14, 7))
     oi_merged = oi_df.merge(products_df[['product_id', 'size']], on='product_id', how='left')
     oi_merged['profit'] = oi_merged['unit_price'] - oi_merged['cogs_products']
     oi_merged['profit_margin'] = oi_merged['profit'] / oi_merged['unit_price']
     df_plot = oi_merged[oi_merged['unit_price'] < oi_merged['unit_price'].quantile(0.99)]
-    sns.boxplot(data=df_plot, x='size', y='profit_margin', palette='RdYlGn')
-    plt.title('Profit Margin Distribution by Size', fontsize=16, fontweight='bold')
-    plt.xlabel('Size', fontsize=12)
-    plt.ylabel('Profit Margin', fontsize=12)
-    plt.axhline(y=0, color='red', linestyle='--', alpha=0.5)
     
-    # DIAGNOSTIC NOTE
-    plt.text(0.02, 0.05, "DIAGNOSTIC: Margin variance in L/XL indicates high pricing power.\nS/M margins are suppressed by commoditization.", 
-             transform=plt.gca().transAxes, fontsize=10, verticalalignment='bottom', 
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='#CE2626'))
+    sns.boxplot(data=df_plot, x='size', y='profit_margin', hue='size', palette='viridis', ax=ax, legend=False)
     
-    plt.tight_layout()
+    apply_editorial_style(fig, ax, "Profit Margin Distribution by Size", "High variance in L/XL indicates pricing power and scarcity premium")
+    
+    ax.axhline(y=0, color='#D55E00', linestyle='--', alpha=0.5)
+    
+    # Professional callout
+    add_callout(ax, "Premium Size 12–17pp gap", xy=(3, 0.35), xytext=(4, 0.5), color='#0072B2')
+
     plt.savefig(os.path.join(OUTPUT_DIR, 'size_profitability_boxplot.png'))
     plt.close()
     print("Generated: size_profitability_boxplot.png")
 
 def plot_monthly_trend_heatmap(oi_df, products_df):
-    import matplotlib.ticker as ticker
-    import matplotlib.dates as mdates
     oi_df = oi_df.copy()
     oi_df['year_month'] = oi_df['order_date'].dt.to_period('M')
     oi_df['year_month_str'] = oi_df['year_month'].astype(str)
     monthly = oi_df.groupby(['year_month_str', 'category'])['unit_price'].sum().reset_index()
     monthly_pivot = monthly.pivot(index='year_month_str', columns='category', values='unit_price').fillna(0)
     monthly_millions = monthly_pivot / 1_000_000
+    
     n_months = len(monthly_pivot)
-    fig_height = 8
-    fig_width = max(18, min(28, n_months * 0.12 + 4))
-    fig, ax = plt.subplots(figsize=(fig_width, fig_height))
-    if len(monthly_pivot) > 0:
-        sns.heatmap(monthly_millions.T, cmap='YlOrRd', annot=True, fmt='.0f', annot_kws={'size': 6}, 
-                    cbar_kws={'label': 'Revenue (Million VND)'}, ax=ax, linewidths=0.1, linecolor='white')
-        plt.title('Monthly Revenue Trends by Category (2012-2022)\nValues in Million VND', fontsize=14, fontweight='bold')
-        plt.xlabel('Year-Month', fontsize=12)
-        plt.ylabel('Category', fontsize=12)
-        plt.xticks(rotation=45, ha='right', fontsize=7)
-        plt.yticks(fontsize=10)
-        ax.set_xticks(range(n_months))
-        ax.set_xticklabels(monthly_pivot.index.tolist(), rotation=45, ha='right', fontsize=7)
+    fig, ax = plt.subplots(figsize=(18, 8))
+    
+    if not monthly_pivot.empty:
+        sns.heatmap(monthly_millions.T, cmap='YlGnBu', annot=True, fmt='.0f', annot_kws={'size': 8}, 
+                    cbar_kws={'label': 'Revenue (Million VND)'}, ax=ax, linewidths=0.5, linecolor='white')
         
-        # PREDICTIVE ANNOTATION
-        plt.text(0.98, 0.02, "PREDICTIVE: May Anomaly (2.6x Dec) will recur in 2023.\nACTION: Pre-stage inventory in East Engine by mid-April.", 
-                 transform=plt.gca().transAxes, fontsize=10, verticalalignment='bottom', horizontalalignment='right',
-                 bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#003366'))
+        apply_editorial_style(fig, ax, "Monthly Revenue Trends by Category", "Identifying seasonal surges and May anomaly across 10 years")
         
-        plt.tight_layout()
+        ax.set_xticks(np.arange(n_months) + 0.5)
+        ax.set_xticklabels(monthly_pivot.index.tolist(), rotation=45, ha='right', fontsize=9)
+        
+        # Professional callout (pointing to a typical May peak area)
+        add_callout(ax, "May Peak 2.6x baseline", xy=(n_months * 0.8, 2), xytext=(n_months * 0.9, 0.5), color='#009E73')
+
         plt.savefig(os.path.join(OUTPUT_DIR, 'monthly_trend_heatmap.png'), dpi=150, bbox_inches='tight')
         plt.close()
-        print("Generated: monthly_trend_heatmap.png (READABLE: Year-Month labels, Revenue in Millions)")
+        print("Generated: monthly_trend_heatmap.png")
 
 def plot_top_products_treemap(oi_df, products_df):
     product_revenue = oi_df[['product_id', 'unit_price']].copy()
@@ -228,123 +182,116 @@ def plot_top_products_treemap(oi_df, products_df):
     product_revenue = product_revenue.groupby(['product_id', 'product_name', 'category'])['unit_price'].sum().reset_index()
     product_revenue = product_revenue.sort_values('unit_price', ascending=False).head(50)
     norm_sizes = product_revenue['unit_price'] / product_revenue['unit_price'].sum() * 100
+    
     fig, ax = plt.subplots(figsize=(18, 12))
     y_positions = np.arange(len(product_revenue))
-    unique_cats = product_revenue['category'].unique()
-    colors = plt.cm.tab20(np.linspace(0, 1, len(unique_cats)))
-    category_color_map = {cat: colors[i] for i, cat in enumerate(unique_cats)}
-    ax.barh(y_positions, norm_sizes.values, left=np.zeros(len(product_revenue)),
-           color=[category_color_map[cat] for cat in product_revenue['category']],
-           edgecolor='white', height=0.7)
+    
+    # STYLING.md Sequential/Qualitative mix
+    colors = plt.cm.viridis(np.linspace(0.2, 0.8, 50))
+    
+    ax.barh(y_positions, norm_sizes.values, color=colors, edgecolor='white', height=0.7)
     ax.set_yticks(y_positions)
-    ax.set_yticklabels(product_revenue['product_name'], fontsize=8)
-    ax.set_xlabel('Revenue Share (%)', fontsize=12)
-    ax.set_title('Top 50 Products by Revenue (Treemap Style)', fontsize=16, fontweight='bold')
-    for i, (name, val) in enumerate(zip(product_revenue['product_name'], norm_sizes.values)):
-        if val > 2:
-            ax.text(val + 0.5, i, f'{val:.1f}%', va='center', fontsize=7)
+    ax.set_yticklabels(product_revenue['product_name'], fontsize=9, fontweight='600')
     
-    # PRESCRIPTIVE NOTE
-    plt.text(0.98, 0.05, "PRESCRIPTIVE: Focus marketing spend exclusively on these 50 products.\nLong-tail assets should be liquidated via Double Day promos.", 
-             transform=plt.gca().transAxes, fontsize=12, verticalalignment='bottom', horizontalalignment='right',
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#B8860B'))
+    apply_editorial_style(fig, ax, "Top 50 Products by Revenue", "Concentration analysis: Top 50 SKUs drive significant revenue share")
     
-    plt.tight_layout()
+    ax.set_xlabel('Revenue Share (%)', fontsize=12, fontweight='bold')
+    
+    # Professional callout
+    add_callout(ax, "Top 5 SKUs drive disproportionate value", xy=(norm_sizes.iloc[0], 49), xytext=(15, 45), color='#0072B2')
+
     plt.savefig(os.path.join(OUTPUT_DIR, 'top_products_treemap.png'), dpi=150)
     plt.close()
     print("Generated: top_products_treemap.png")
 
 def plot_segment_profitability_heatmap(oi_df, products_df):
-    plt.figure(figsize=(12, 8))
     oi_merged = oi_df.merge(products_df[['product_id', 'size']], on='product_id', how='left')
     oi_merged['profit'] = oi_merged['unit_price'] - oi_merged['cogs_products']
     oi_merged['profit_margin'] = oi_merged['profit'] / oi_merged['unit_price']
     pivot = oi_merged.pivot_table(index='segment', columns='size', values='profit_margin', aggfunc='mean')
+    
     if not pivot.empty:
-        sns.heatmap(pivot, annot=True, fmt='.3f', cmap='RdYlGn', center=0, 
-                    vmin=-0.5, vmax=0.5, cbar_kws={'label': 'Avg Profit Margin'})
-        plt.title('Profitability by Segment and Size', fontsize=16, fontweight='bold')
-        plt.xlabel('Size', fontsize=12)
-        plt.ylabel('Segment', fontsize=12)
+        fig, ax = plt.subplots(figsize=(12, 8))
+        sns.heatmap(pivot, annot=True, fmt='.2%', cmap='RdYlGn', center=0, 
+                    ax=ax, linewidths=0.5, linecolor='white')
         
-        # ACTION NOTE
-        plt.text(0.5, -0.1, "ACTION: PREMIUM and PERFORMANCE segments show negative margins in S size.\nPrescription: Increase S size retail price by 15% or drop line.", 
-                 transform=plt.gca().transAxes, fontsize=10, verticalalignment='top', horizontalalignment='center',
-                 bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#CE2626'))
+        apply_editorial_style(fig, ax, "Profitability by Segment and Size", "Heatmap of average gross margin across the product matrix")
         
-        plt.tight_layout()
+        # Professional callout
+        add_callout(ax, "Negative margin in small sizes", xy=(0.5, 3.5), xytext=(2.5, 4.5), color='#D55E00')
+
         plt.savefig(os.path.join(OUTPUT_DIR, 'segment_profitability_heatmap.png'))
         plt.close()
         print("Generated: segment_profitability_heatmap.png")
 
 def plot_pareto_curve(oi_df):
-    plt.figure(figsize=(12, 6))
     product_revenue = oi_df.groupby('product_id')['unit_price'].sum().sort_values(ascending=False)
     cumsum = product_revenue.cumsum()
     cumulative_pct = cumsum / cumsum.iloc[-1] * 100
+    
     fig, ax1 = plt.subplots(figsize=(12, 6))
     x = np.arange(len(product_revenue))
-    ax1.bar(x, product_revenue.values, color='#3498db', alpha=0.7, width=0.8)
-    ax1.set_xlabel('Product Rank', fontsize=12)
-    ax1.set_ylabel('Revenue (VND)', fontsize=12, color='#3498db')
-    ax1.tick_params(axis='y', labelcolor='#3498db')
+    
+    ax1.bar(x, product_revenue.values, color='#0072B2', alpha=0.7, width=0.8)
+    
     ax2 = ax1.twinx()
-    ax2.plot(x, cumulative_pct.values, color='#e74c3c', marker='o', markersize=3, linewidth=2)
-    ax2.axhline(y=80, color='gray', linestyle='--', alpha=0.5, label='80% threshold')
-    ax2.set_ylabel('Cumulative Revenue %', fontsize=12, color='#e74c3c')
-    ax2.tick_params(axis='y', labelcolor='#e74c3c')
+    ax2.plot(x, cumulative_pct.values, color='#D55E00', linewidth=3)
+    ax2.axhline(y=80, color='#64748B', linestyle='--', alpha=0.5)
+    
+    apply_editorial_style(fig, ax1, "Product Revenue Pareto Analysis", "80% of revenue is driven by a small fraction of SKUs (Streetwear dominance)")
+    
+    ax1.set_ylabel('Revenue (VND)', fontsize=12, fontweight='bold', color='#0072B2')
+    ax2.set_ylabel('Cumulative Revenue %', fontsize=12, fontweight='bold', color='#D55E00')
     ax2.set_ylim(0, 105)
-    ax1.set_title('Product Revenue Pareto Analysis', fontsize=16, fontweight='bold')
     
-    # PRESCRIPTIVE ANNOTATION
-    plt.text(0.6, 0.4, "ACTION: Capping Streetwear inventory at +5% YoY.\nFocus on category diversification to mitigate monopoly risk.", 
-             transform=plt.gca().transAxes, fontsize=10, verticalalignment='center', 
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='#003366'))
-    
-    key_points = [0, len(product_revenue)//4, len(product_revenue)//2, 3*len(product_revenue)//4, -1]
-    for pt in key_points:
-        if pt >= 0 and pt < len(cumulative_pct):
-            ax2.annotate(f'{cumulative_pct.iloc[pt]:.1f}%', 
-                        (pt, cumulative_pct.iloc[pt]),
-                        textcoords="offset points", xytext=(10,10), fontsize=8)
-    plt.tight_layout()
+    # Professional callout
+    add_callout(ax1, "80% Revenue Concentration", xy=(len(product_revenue)*0.15, 80), xytext=(len(product_revenue)*0.4, 60), color='#D55E00')
+
     plt.savefig(os.path.join(OUTPUT_DIR, 'pareto_analysis.png'))
     plt.close()
     print("Generated: pareto_analysis.png")
 
 def plot_cross_sell_opportunities(oi_df, products_df):
-    plt.figure(figsize=(14, 8))
     oi_merged = oi_df.merge(products_df[['product_id', 'size']], on='product_id', how='left')
     combo_revenue = oi_merged.groupby(['segment', 'size'])['unit_price'].agg(['sum', 'count']).reset_index()
     combo_revenue['avg_price'] = combo_revenue['sum'] / combo_revenue['count']
     pivot = combo_revenue.pivot(index='segment', columns='size', values='avg_price')
+    
     if not pivot.empty:
-        sns.heatmap(pivot, annot=True, fmt='.0f', cmap='Blues', cbar_kws={'label': 'Avg Order Value'})
-        plt.title('Cross-Sell Opportunities: Segment-Size Combinations', fontsize=16, fontweight='bold')
-        plt.xlabel('Size', fontsize=12)
-        plt.ylabel('Segment', fontsize=12)
-        plt.tight_layout()
+        fig, ax = plt.subplots(figsize=(14, 8))
+        sns.heatmap(pivot, annot=True, fmt='.0f', cmap='Blues', ax=ax, linewidths=0.5, linecolor='white')
+        
+        apply_editorial_style(fig, ax, "Cross-Sell Opportunities: Segment-Size matrix", "Average order value (AOV) potential across categories")
+        
+        # Professional callout
+        add_callout(ax, "High AOV Bundle Potential", xy=(3.5, 0.5), xytext=(4.5, 1.5), color='#0072B2')
+
         plt.savefig(os.path.join(OUTPUT_DIR, 'cross_sell_opportunities.png'))
         plt.close()
         print("Generated: cross_sell_opportunities.png")
 
 def plot_temporal_product_shifts(oi_df):
     """New Function: Tet vs Double Day Segment shifts"""
-    plt.figure(figsize=(14, 8))
+    fig, ax = plt.subplots(figsize=(12, 7))
     
     # Calculate revenue share per segment during each temporal event
     event_segment = oi_df.groupby(['temporal_event', 'segment'])['unit_price'].sum().unstack()
     event_segment_pct = event_segment.div(event_segment.sum(axis=1), axis=0) * 100
     
     event_segment_pct.loc[['Normal Day', 'Tet Approach', 'Double Day Promo']].plot(
-        kind='bar', stacked=True, colormap='tab20', figsize=(12, 7)
+        kind='bar', stacked=True, colormap='tab20', ax=ax
     )
-    plt.title('Product Segment Shift by Temporal Event\n(Normal vs Tet vs Double Day)', fontsize=16, fontweight='bold')
-    plt.ylabel('Revenue Share (%)', fontsize=12)
-    plt.xlabel('Event Phase', fontsize=12)
-    plt.xticks(rotation=0)
-    plt.legend(title='Product Segment', bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.tight_layout()
+    
+    apply_editorial_style(fig, ax, "Product Segment Shift by Temporal Event", "How demand mix changes during Tet and Double Day promotions")
+    
+    ax.set_ylabel('Revenue Share (%)', fontsize=12, fontweight='bold')
+    ax.set_xlabel('Event Phase', fontsize=12, fontweight='bold')
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=0)
+    ax.legend(title='Product Segment', bbox_to_anchor=(1.05, 1), loc='upper left', frameon=False)
+    
+    # Professional callout
+    add_callout(ax, "Double Day drives mix shift", xy=(2, 60), xytext=(2.2, 80), color='#E69F00')
+
     plt.savefig(os.path.join(OUTPUT_DIR, 'temporal_product_shifts.png'))
     plt.close()
     print("Generated: temporal_product_shifts.png")
@@ -355,20 +302,16 @@ def main():
     print(f'Data loaded: {len(oi_df)} delivered order items')
     
     plot_segment_market_share(oi_df, products_df)
-    annotate_output(os.path.join(OUTPUT_DIR, 'segment_market_share_new.png'))
     plot_size_profitability(oi_df, products_df)
-    annotate_output(os.path.join(OUTPUT_DIR, 'size_profitability_new.png'))
     plot_size_profitability_boxplot(oi_df, products_df)
-    annotate_output(os.path.join(OUTPUT_DIR, 'size_profitability_boxplot.png'))
     plot_monthly_trend_heatmap(oi_df, products_df)
-    annotate_output(os.path.join(OUTPUT_DIR, 'monthly_trend_heatmap.png'))
     plot_top_products_treemap(oi_df, products_df)
     plot_segment_profitability_heatmap(oi_df, products_df)
     plot_pareto_curve(oi_df)
     plot_cross_sell_opportunities(oi_df, products_df)
-    plot_temporal_product_shifts(oi_df)  # Added function
+    plot_temporal_product_shifts(oi_df)
     
-    print("\nAll enhanced product market figures generated successfully.")
+    print("\nAll professionally styled product market figures generated successfully.")
 
 if __name__ == "__main__":
     main()

@@ -4,37 +4,29 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 import os
-from PIL import Image, ImageDraw, ImageFont
 
+# Helper functions for professional styling
+def apply_editorial_style(fig, ax, title, subtitle):
+    for spine in ['top', 'right', 'left']:
+        ax.spines[spine].set_visible(False)
+    ax.spines['bottom'].set_color('#CBD5E1')
+    ax.spines['bottom'].set_linewidth(1.5)
+    ax.tick_params(axis='both', which='both', length=0, labelsize=11, colors='#64748B')
+    ax.grid(axis='y', color='#F1F5F9', linewidth=1.5, linestyle='-')
+    ax.set_axisbelow(True)
+    fig.text(0.04, 0.95, title.upper(), fontsize=20, fontweight='black', color='#0F172A')
+    fig.text(0.04, 0.90, subtitle, fontsize=12, color='#64748B')
+    plt.subplots_adjust(top=0.82, bottom=0.12, left=0.08, right=0.95)
 
-def _font(size):
-    try:
-        return ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', size)
-    except Exception:
-        return ImageFont.load_default()
-
-
-def _text(draw, xy, text, color, size):
-    font = _font(size)
-    bbox = draw.textbbox((0, 0), text, font=font)
-    w = bbox[2] - bbox[0]
-    h = bbox[3] - bbox[1]
-    x = max(10, min(xy[0], draw._image.size[0] - w - 10))
-    y = max(10, min(xy[1], draw._image.size[1] - h - 10))
-    draw.rounded_rectangle([x - 8, y - 8, x + w + 8, y + h + 8], radius=6, fill=(255, 255, 255, 235), outline=color, width=2)
-    draw.text((x, y), text, font=font, fill=color)
-
+def add_callout(ax, text, xy, xytext, color='#0F172A', arrow_color='#64748B'):
+    ax.annotate(text, xy=xy, xytext=xytext,
+                arrowprops=dict(arrowstyle="->", color=arrow_color, lw=1.5, connectionstyle="arc3,rad=0.2"),
+                color=color, fontweight="600", ha="center", fontsize=11,
+                bbox=dict(boxstyle="round,pad=0.6,rounding_size=0.3", facecolor="#FFFFFF", 
+                          edgecolor="#E2E8F0", alpha=0.95, lw=1))
 
 def annotate_output(path):
-    img = Image.open(path).convert('RGBA')
-    w, h = img.size
-    draw = ImageDraw.Draw(img, 'RGBA')
-    name = os.path.basename(path)
-    if name == 'cohort_growth.png':
-        _text(draw, (w * 0.72, h * 0.06), 'Retention\n40→10%', '#CE2626', max(14, int(min(w, h) / 150)))
-    elif name == 'regime_double_day_ltv.png':
-        _text(draw, (w * 0.67, h * 0.08), 'Double-Day\nLTV gap', '#CE2626', max(12, int(min(w, h) / 160)))
-    img.convert('RGB').save(path)
+    pass
 
 df_orders = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/orders.csv')
 df_customers = pd.read_csv('/home/shayneeo/Downloads/Datathon/input/customers.csv')
@@ -66,25 +58,22 @@ retention.columns = [f'M{int(col)}' for col in retention.columns]
 
 fig, ax = plt.subplots(figsize=(20, 14))
 
-cmap_colors = ['#CE2626', '#E8DBB3', '#FFFDEB', '#7DAACB']
+# STYLING.md Sequential Palette
+cmap_colors = ['#FFFFFF', '#56B4E9', '#0072B2']
 cmap = sns.blend_palette(cmap_colors, as_cmap=True)
 
 sns.heatmap(retention, annot=False, cmap=cmap, vmin=0, vmax=100, 
             cbar_kws={'label': 'Retention Rate (%)'}, ax=ax, 
             linewidths=0.5, linecolor='white')
 
-ax.set_title('Customer Cohort Retention Analysis\n(Based on Customer Signup Month - 2012-2022)', 
-             fontsize=16, fontweight='bold', pad=20)
-ax.set_xlabel('Months Since First Purchase', fontsize=12)
-ax.set_ylabel('Cohort (Signup Month)', fontsize=12)
+apply_editorial_style(fig, ax, "Customer Cohort Retention Matrix", "Retention decay from >40% (2012) to <10% (2021)")
 
-# PRESCRIPTIVE ANNOTATION
-plt.text(0.98, 0.98, "PREDICTIVE: Retention collapse indicates LTV < CAC by Q4 2023.\nACTION: Launch VIP Retention Program for organic cohorts.", 
-         transform=plt.gca().transAxes, fontsize=12, verticalalignment='top', horizontalalignment='right',
-         bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#CE2626'))
+# Professional callout
+add_callout(ax, "Retention collapse in modern cohorts", xy=(100, 110), xytext=(80, 125), color='#D55E00')
 
 plt.xticks(rotation=45, ha='right')
 plt.yticks(rotation=0)
+
 
 for i, label in enumerate(ax.get_yticklabels()):
     if i % 6 != 0:
@@ -148,38 +137,30 @@ regime_stats = customer_summary.groupby('acquisition_regime').agg(
 
 ax1 = axes[0]
 x = np.arange(len(regime_stats))
-ax1.bar(x - 0.2, regime_stats['avg_orders'], 0.4, label='Avg Orders / Customer', color='#003366')
-ax1.set_ylabel('Avg Orders / Customer', color='#003366', fontweight='bold')
-ax1.tick_params(axis='y', labelcolor='#003366')
-ax1.set_xticks(x)
-ax1.set_xticklabels(regime_stats['acquisition_regime'], rotation=15, ha='right')
+ax1.bar(x - 0.2, regime_stats['avg_orders'], 0.4, label='Avg Orders', color='#0072B2')
 ax1_t = ax1.twinx()
-ax1_t.bar(x + 0.2, regime_stats['median_ltv'] / 1_000_000, 0.4, label='Median LTV (M VND)', color='#B8860B')
-ax1_t.set_ylabel('Median LTV (M VND)', color='#B8860B', fontweight='bold')
-ax1_t.tick_params(axis='y', labelcolor='#B8860B')
-ax1.set_title('Customer Quality by Acquisition Regime', fontsize=14, fontweight='bold')
+ax1_t.bar(x + 0.2, regime_stats['median_ltv'] / 1_000_000, 0.4, label='Median LTV', color='#E69F00')
 
-# DIAGNOSTIC NOTE
-ax1.text(0.05, 0.95, "DIAGNOSTIC: CovidEra cohorts show 4x lower LTV.\nShift from community-driven to deal-driven model.", 
-         transform=ax1.transAxes, fontsize=10, verticalalignment='top', 
-         bbox=dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='#003366'))
+apply_editorial_style(fig, ax1, "Customer Quality by Acquisition Regime", "High LTV decay in CovidEra cohorts (2019-2022)")
+ax1.set_xticks(x)
+ax1.set_xticklabels(regime_stats['acquisition_regime'], rotation=0)
+
+# Professional callout
+add_callout(ax1, "4x LTV collapse in CovidEra", xy=(1, 1.5), xytext=(0.5, 3.5), color='#D55E00')
 
 ax2 = axes[1]
 double_stats = customer_summary.groupby(['acquisition_regime', 'double_day_acquired']).agg(
     customers=('customer_id', 'count'),
     median_ltv=('ltv', 'median')
 ).reset_index()
-sns.barplot(data=double_stats, x='acquisition_regime', y='median_ltv', hue='double_day_acquired', ax=ax2, palette=['#7DAACB', '#CE2626'])
-ax2.set_title('Median LTV: Double-Day Exposed vs Non-Exposed Customers', fontsize=14, fontweight='bold')
-ax2.set_xlabel('Acquisition Regime')
-ax2.set_ylabel('Median LTV (VND)')
-ax2.tick_params(axis='x', rotation=15)
-ax2.legend(title='Bought on Double Day')
+sns.barplot(data=double_stats, x='acquisition_regime', y='median_ltv', hue='double_day_acquired', ax=ax2, palette=['#56B4E9', '#D55E00'])
 
-# PRESCRIPTIVE NOTE
-ax2.text(0.95, 0.05, "PRESCRIPTIVE: Decouple Double-Day spend from organic targets.\nDeal-hunter acquisition is structurally unprofitable.", 
-         transform=ax2.transAxes, fontsize=10, verticalalignment='bottom', horizontalalignment='right',
-         bbox=dict(boxstyle='round', facecolor='white', alpha=0.8, edgecolor='#B8860B'))
+# Editorial title for second subplot (fig.text already handles main title, but we can add secondary if needed)
+ax2.set_title("Double-Day Exposed vs Non-Exposed Customers", fontsize=12, fontweight='bold', color='#64748B')
+ax2.legend(title='Bought on Double Day', frameon=False)
+
+# Professional callout
+add_callout(ax2, "Double-Day LTV gap", xy=(1.2, 5000), xytext=(1.5, 15000), color='#D55E00')
 
 plt.tight_layout()
 output_path = '/home/shayneeo/Downloads/Datathon/output/figures_living/02_customer_lifecycle_acquisition/regime_double_day_ltv.png'
