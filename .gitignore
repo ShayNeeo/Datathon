@@ -1,12 +1,66 @@
-exam.*
-.agents
-.kilo
-.venv
-.obsidian
-GEMINI.md
-context.md
-.ignore
-AGENTS.md
-REORGANIZATION_SUMMARY.md
-conductor
-docs/*
+# Public-friendly .gitignore — keep docs and outputs visible; ignore local env, raw data, caches, and secrets
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Secrets and local configuration
+.env
+*.secret
+secrets.*
+*.key
+*.pem
+credentials.json
+
+# Raw or sensitive data (do NOT publish)
+input/
+data/raw/
+# If certain sample files should be public, add them explicitly (e.g., !input/sample_submission.csv)
+
+# Agent and local metadata
+.agents/
+.claude/
+.kilo/
+.obsidian/
+conductor/
+
+# Build artifacts and packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Testing / Jupyter
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Logs and temporary files
+*.log
+tmp/
+*.tmp
+
+# LaTeX intermediate files (keep PDFs if desired)
+output/report/*.aux
+output/report/*.log
+output/report/*.out
+output/report/*.toc
+output/report/*.synctex.gz
+
+# Node
+node_modules/
+
+# Misc
+.DS_Store
