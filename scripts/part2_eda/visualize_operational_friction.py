@@ -606,7 +606,7 @@ for i, v in enumerate(cancel_rates.values):
 master_ax(ax2, "CANCELLATION RATE BY TET PHASE", xlabel="Temporal Phase", ylabel="Cancellation Rate (%)")
 
 # Professional Styling
-apply_editorial_style(fig, axes[0], "Tết Logistics Friction: The Bullwhip Effect", "Backlog peaks in Recovery Phase, causing cancellation spikes")
+apply_editorial_style(fig, axes[0], "Tet Logistics Friction: The Bullwhip Effect", "Backlog peaks in Recovery Phase, causing cancellation spikes")
 
 # Native callout
 add_callout(axes[1], "Backlog recovery bottleneck", xy=(2, 4), xytext=(2.2, 8), color='#DC2626')

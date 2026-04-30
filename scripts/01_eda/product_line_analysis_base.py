@@ -113,7 +113,7 @@ def plot_star_vs_bait(oi_df, products_df):
              transform=ax4.transAxes, fontsize=10, verticalalignment='center', horizontalalignment='center',
              bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='#CE2626'))
     
-    plt.suptitle('Product Line Portfolio: Star vs Bait Analysis\n"Ai là ngôi sao, ai là hàng mồi?"', 
+    plt.suptitle('Product Line Portfolio: Star vs Bait Analysis\n"Who is the star, who is the bait?"',
                  fontsize=16, fontweight='bold', y=1.02)
     plt.tight_layout()
     plt.savefig(os.path.join(output_path, 'star_vs_bait_analysis.png'), dpi=150, bbox_inches='tight')
